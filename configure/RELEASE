@@ -21,6 +21,9 @@
 
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
+GEMREC=/gem_sw/prod/R3.14.12.4/support/geminiRec/4-0
+SLALIB=/gem_sw/prod/R3.13.12.4/support/slalib/1-9-4
+TIMELIB=/gem_sw/prod/R3.13.12.4/support/timelib/1-8-6
 # If using the sequencer, point SNCSEQ at its top directory:
 #SNCSEQ=$(EPICS_BASE)/../modules/soft/seq
 
