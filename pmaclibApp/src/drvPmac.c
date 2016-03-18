@@ -16,6 +16,7 @@
 #include <string.h>
 #include <math.h>
 #include <epicsPrint.h>
+#include <epicsExit.h>
 
 /* EPICS Includes */
 
@@ -588,10 +589,10 @@ PMAC_LOCAL long drvPmacStartup (void)
 		PMAC_MESSAGE ("%s: Starting tasks for card %d.\n", MyName, i);
 	    )
 
-	    if ( drvPmacCard[i].enabledMbx )
-	    {
-	       drvPmacMbxScanInit (i);
-	    }
+	 if ( drvPmacCard[i].enabledMbx )
+	 {
+	    drvPmacMbxScanInit (i);
+	 }
 
 	 if ( drvPmacCard[i].enabledSvo )
 	 {
@@ -1518,7 +1519,7 @@ void drvPmacMbxScan
 	PMAC_MESSAGE ("%s: epicsRingPointerPush completed (card number = %d)\n", MyName, pCard->card);
       )
 
-      semGive (pCard->scanMbxSem);
+      epicsEventSignal (pCard->scanMbxSem);
    return;
 }
 
@@ -1538,20 +1539,20 @@ PMAC_LOCAL void drvPmacMbxScanInit
 
    if ( pCard->scanMbxQ == NULL )
    {
-      errMessage (0, "drvPmacMbxScanInit: rngCreate failed");
-      exit(1);
+      errMessage (0, "drvPmacMbxScanInit: epicsRingPointerCreate failed");
+      epicsExit(1);
    }
 
    pCard->scanMbxSem = epicsEventMustCreate(epicsEventEmpty);
    if ( pCard->scanMbxSem == NULL )
    {
-      errMessage (0, "drvPmacMbxScanInit: semBcreate failed.");
+      errMessage (0, "drvPmacMbxScanInit: epicsEventMustCreate failed.");
    }
    else
    {
       sprintf ( pCard->scanMbxTaskName, "%s%d", PMAC_MBX_SCAN, pCard->card);
       pCard->scanMbxTaskId = epicsThreadCreate ( pCard->scanMbxTaskName,
-	    PMAC_MBX_PRI, PMAC_MBX_OPT, PMAC_MBX_STACK,
+	    PMAC_MBX_PRI, PMAC_MBX_STACK,
 	    (FUNCPTR)drvPmacMbxTask,
 	    pCard->card );
       taskwdInsert (pCard->scanMbxTaskId, NULL, 0L);
@@ -1584,14 +1585,14 @@ int drvPmacMbxTask
 	      MyName);
 	 )
 
-	 if ( semTake(pCard->scanMbxSem,WAIT_FOREVER) != OK )
+	 if ( epicsEventMustWait(pCard->scanMbxSem,WAIT_FOREVER) != OK )
 	 {
 	    errMessage(0,"drvPmacMbxTask: semTake returned error.");
 	 }
 
-      while ( rngNBytes(pCard->scanMbxQ) >= sizeof(pMbxIo) )
+      while ( epicsRingBytesUsedBytes(pCard->scanMbxQ) >= sizeof(pMbxIo) )
       {
-	 if( rngBufGet(pCard->scanMbxQ,(void *)&pMbxIo,sizeof(pMbxIo)) != sizeof(pMbxIo) )
+	 if( epicsRingBytesGet(pCard->scanMbxQ,(void *)&pMbxIo,sizeof(pMbxIo)) != sizeof(pMbxIo) )
 	 {
 	    errMessage (0,"drvPmacMbxTask: rngBufGet returned error.");
 	 }
@@ -1686,7 +1687,7 @@ PMAC_LOCAL void drvPmacFldScanInit
    if ( pCard->scanFldQ == NULL )
    {
       errMessage (0, "drvPmacFldScanInit: rngCreate failed");
-      exit(1);
+      epicsExit(1);
    }
 
    pCard->scanFldSem = epicsEventMustCreate(epicsEventEmpty);
