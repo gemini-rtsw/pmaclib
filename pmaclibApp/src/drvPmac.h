@@ -69,6 +69,12 @@ DEVELOPMENT CENTER AT ARGONNE NATIONAL LABORATORY (708-252-2000).
 #include <pmacTypes.h>
 #include <epicsEvent.h>
 #include <epicsRingPointer.h>
+#include <epicsThread.h>
+
+
+#ifndef FOREVER
+#define FOREVER for (;;)
+#endif
 
 #define PMAC_MBX_OUT_BUFLEN   80
 #define PMAC_MBX_IN_BUFLEN    80
@@ -149,15 +155,15 @@ typedef struct  /* PMAC_CARD */
 	volatile double	scanVarRate;	/* MJR 20160314		OSI  */
 	volatile double	scanOpnRate;	/* MJR 20160314		OSI  */
 
-	int		scanMbxTaskId;
-	int		scanAscTaskId;
-	int		scanSvoTaskId;
-	int		scanBkgTaskId;
-	int		scanVarTaskId;
-	int		scanOpnTaskId;
-	int		scanFldTaskId;
-	int		scanGatReadId;
-	int		scanGatWriteId;
+	epicsThreadId		scanMbxTaskId;         /* MDW OSI work 10160321 next 8 lines */
+	epicsThreadId		scanAscTaskId;
+	epicsThreadId		scanSvoTaskId;
+	epicsThreadId		scanBkgTaskId;
+	epicsThreadId		scanVarTaskId;
+	epicsThreadId		scanOpnTaskId;
+	epicsThreadId		scanFldTaskId;
+	epicsThreadId		scanGatReadId;
+	epicsThreadId		scanGatWriteId;
 	
 	char		scanMbxTaskName[PMAC_TASKNAME_LEN];
 	char		scanAscTaskName[PMAC_TASKNAME_LEN];
@@ -201,27 +207,27 @@ PMAC_LOCAL int	drvPmacBkgScan(void);
 PMAC_LOCAL int	drvPmacVarScan(void);
 
 PMAC_LOCAL void	drvPmacSvoScanInit(int);
-int		drvPmacSvoTask(int);
+EPICSTHREADFUNC	drvPmacSvoTask(void *);
 
 PMAC_LOCAL void	drvPmacBkgScanInit(int);
-int		drvPmacBkgTask(int);
+EPICSTHREADFUNC drvPmacBkgTask(void *);
 
 PMAC_LOCAL void	drvPmacVarScanInit(int);
-int		drvPmacVarTask(int);
+EPICSTHREADFUNC drvPmacVarTask(void *);
 
 PMAC_LOCAL void	drvPmacOpnScanInit(int);
-int		drvPmacOpnTask(int);
+EPICSTHREADFUNC drvPmacOpnTask(void *);
 long            drvPmacOpnRead(int);
 
-PMAC_LOCAL void	drvPmacMbxScanInit(int);
-int		drvPmacMbxTask(int);
+PMAC_LOCAL void drvPmacMbxScanInit(int);
+EPICSTHREADFUNC drvPmacMbxTask(void *);
 char		drvPmacMbxWriteRead(int, char *, char *, char *);
 
 PMAC_LOCAL void	drvPmacAscScanInit(int);
-int		drvPmacAscTask(int);
+EPICSTHREADFUNC drvPmacAscTask(void *);
 
 PMAC_LOCAL void	drvPmacFldScanInit(int);
-int		drvPmacFldTask(int);
+EPICSTHREADFUNC drvPmacFldTask(void *);
 long		drvPmacFldLoop(int, char *, char *, char *);
 
 PMAC_LOCAL void	drvPmacGatScanInit(int);
