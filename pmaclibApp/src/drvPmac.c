@@ -18,6 +18,7 @@
 #include <epicsPrint.h>
 #include <epicsExit.h>
 #include <epicsRingPointer.h>
+#include <epicsExport.h>
 #include <string.h>
 
 /* EPICS Includes */
@@ -29,6 +30,7 @@
 #include <errMdef.h>
 #include <taskwd.h>
 #include <callback.h>
+#include <iocsh.h>
 
 /* local includes */
 
@@ -1567,7 +1569,7 @@ PMAC_LOCAL void drvPmacFldScanInit(int card)
       pCard->scanFldTaskId = epicsThreadCreate(pCard->scanFldTaskName,
                                                 PMAC_FLD_PRI, PMAC_FLD_STACK,
                                                 (EPICSTHREADFUNC)drvPmacFldTask,
-                                                &pCard->card );
+                                                (void *)&pCard->card );
       taskwdInsert (pCard->scanFldTaskId, NULL, NULL);
    }
 
@@ -1777,8 +1779,8 @@ PMAC_LOCAL void drvPmacSvoScanInit(int card)
    sprintf ( pCard->scanSvoTaskName, "%s%d", PMAC_SVO_SCAN, pCard->card);
    pCard->scanSvoTaskId = epicsThreadCreate (pCard->scanSvoTaskName,
                                              PMAC_SVO_PRI, PMAC_SVO_STACK,
-                                             drvPmacSvoTask,
-                                             &pCard->card );
+                                             (EPICSTHREADFUNC)drvPmacSvoTask,
+                                             (void *)&pCard->card );
    taskwdInsert (pCard->scanSvoTaskId, NULL, NULL);
 
    return;
@@ -1816,8 +1818,8 @@ PMAC_LOCAL void drvPmacBkgScanInit(int card)
    sprintf ( pCard->scanBkgTaskName, "%s%d", PMAC_BKG_SCAN, pCard->card);
    pCard->scanBkgTaskId = epicsThreadCreate (pCard->scanBkgTaskName,
                                              PMAC_BKG_PRI, PMAC_BKG_STACK,
-                                             drvPmacBkgTask,
-                                             &pCard->card );
+                                             (EPICSTHREADFUNC)drvPmacBkgTask,
+                                             (void *)&pCard->card );
    taskwdInsert (pCard->scanBkgTaskId, NULL, NULL);
 
    return;
@@ -1859,8 +1861,8 @@ PMAC_LOCAL void drvPmacVarScanInit(int card)
    sprintf ( pCard->scanVarTaskName, "%s%d", PMAC_VAR_SCAN, pCard->card);
    pCard->scanVarTaskId = epicsThreadCreate (pCard->scanVarTaskName,
                                              PMAC_VAR_PRI, PMAC_VAR_STACK,
-                                             drvPmacVarTask,
-                                             &pCard->card );
+                                             (EPICSTHREADFUNC)drvPmacVarTask,
+                                             (void *)&pCard->card );
    taskwdInsert(pCard->scanVarTaskId, NULL, NULL);
 
    return;
@@ -1900,8 +1902,8 @@ PMAC_LOCAL void drvPmacOpnScanInit(int card)
    sprintf ( pCard->scanOpnTaskName, "%s%d", PMAC_OPN_SCAN, pCard->card);
    pCard->scanOpnTaskId = epicsThreadCreate (pCard->scanOpnTaskName,
                                              PMAC_OPN_PRI, PMAC_OPN_STACK,
-                                             drvPmacOpnTask,
-                                             &pCard->card );
+                                             (EPICSTHREADFUNC)drvPmacOpnTask,
+                                             (void *)&pCard->card );
    taskwdInsert(pCard->scanOpnTaskId, NULL, NULL);
 
    return;
@@ -1935,3 +1937,28 @@ long drvPmacOpnRead(int card )
    }
    return(0);
 }
+
+/* Register these symbols for use by IOC code */
+/* Information needed by iocsh */
+static const iocshArg     pmacConfigArg0 = {"cardNumber", iocshArgInt};
+static const iocshArg     pmacConfigArg1 = {"addrBase",   iocshArgInt};
+static const iocshArg     pmacConfigArg2 = {"addrDpram",  iocshArgInt};
+static const iocshArg     pmacConfigArg3 = {"irqVector",  iocshArgInt};
+static const iocshArg     pmacConfigArg4 = {"irqLevel",   iocshArgInt};
+
+static const iocshArg    *pmacConfigArgs[] = {
+        &pmacConfigArg0, &pmacConfigArg1, &pmacConfigArg2, &pmacConfigArg3, &pmacConfigArg4
+};
+
+static const iocshFuncDef pmacConfigFuncDef = {"pmacConfig", 5, pmacConfigArgs};
+
+/* Wrapper called by iocsh, selects the argument types that pmacConfig needs */
+static void pmacConfigCallFunc(const iocshArgBuf *args) {
+    pmacConfig(args[0].ival, args[1].ival, args[2].ival, args[3].ival, args[4].ival);
+}
+
+/* Registration routine, runs at startup */
+static void pmacConfigRegister(void) {
+    iocshRegister(&pmacConfigFuncDef, pmacConfigCallFunc);
+}
+epicsExportRegistrar(pmacConfigRegister);
