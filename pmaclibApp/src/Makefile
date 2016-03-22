@@ -28,6 +28,7 @@ pmaclib_SRCS += devPmacMbx.c
 pmaclib_SRCS += devPmacRam.c
 pmaclib_SRCS += drvPmacVme.c
 pmaclib_SRCS += drvPmac.c
+pmaclib_SRCS += drvPmacGat.c
 #pmaclib_SRCS += xxx.st
 
 INC	+= drvPmac.h
