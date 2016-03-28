@@ -26,3 +26,6 @@ device( status,    VME_IO, devPmacRamStatus, "PMAC-VME DPRAM" )
 
 # Driver Support
 driver( drvPmac )
+
+
+registrar(pmacRegisterCommands)

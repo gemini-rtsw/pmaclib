@@ -34,8 +34,8 @@
 
 /* local includes */
 
-#include <pmacVme.h>
-#include <drvPmac.h>
+#include "pmacVme.h"
+#include "drvPmac.h"
 
 /*
  * DEFINES
@@ -1958,7 +1958,7 @@ static void pmacConfigCallFunc(const iocshArgBuf *args) {
 }
 
 /* Registration routine, runs at startup */
-static void pmacConfigRegister(void) {
+static void pmacRegisterCommands(void) {
     iocshRegister(&pmacConfigFuncDef, pmacConfigCallFunc);
 }
-epicsExportRegistrar(pmacConfigRegister);
+epicsExportRegistrar(pmacRegisterCommands);
