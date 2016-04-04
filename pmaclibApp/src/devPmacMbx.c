@@ -78,6 +78,7 @@ OWNED RIGHTS.
 #include 	<epicsStdlib.h>
 #include	<epicsStdioRedirect.h>
 #include	<epicsPrint.h>
+#include 	<epicsExport.h>
 
 /* EPICS Includes */
 
@@ -107,7 +108,7 @@ OWNED RIGHTS.
 
 /* local includes */
 
-#include	<drvPmac.h>
+#include	"drvPmac.h"
 
 /*
  * DEFINES
@@ -331,6 +332,7 @@ PMAC_DSET_AI devPmacMbxAi =
 	devPmacMbxAi_read,
 	NULL
 };
+epicsExportAddress(dset, devPmacMbxAi);
 
 PMAC_DSET_AO devPmacMbxAo =
 {
@@ -342,6 +344,7 @@ PMAC_DSET_AO devPmacMbxAo =
 	devPmacMbxAo_write,
 	NULL
 };
+epicsExportAddress(dset, devPmacMbxAo);
 
 PMAC_DSET_BI devPmacMbxBi =
 {
@@ -352,6 +355,7 @@ PMAC_DSET_BI devPmacMbxBi =
 	NULL,
 	devPmacMbxBi_read
 };
+epicsExportAddress(dset, devPmacMbxBi);
 
 PMAC_DSET_BO devPmacMbxBo =
 {
@@ -361,6 +365,7 @@ PMAC_DSET_BO devPmacMbxBo =
 	devPmacMbxBo_init,
 	NULL,
 	devPmacMbxBo_write};
+epicsExportAddress(dset, devPmacMbxBo);
 
 PMAC_DSET_LI devPmacMbxLi =
 {
@@ -371,6 +376,7 @@ PMAC_DSET_LI devPmacMbxLi =
 	NULL,
 	devPmacMbxLi_read
 };
+epicsExportAddress(dset, devPmacMbxLi);
 
 PMAC_DSET_LO devPmacMbxLo =
 {
@@ -381,6 +387,7 @@ PMAC_DSET_LO devPmacMbxLo =
 	NULL,
 	devPmacMbxLo_write
 };
+epicsExportAddress(dset, devPmacMbxLo);
 
 PMAC_DSET_MBBI devPmacMbxMbbi =
 {
@@ -391,6 +398,7 @@ PMAC_DSET_MBBI devPmacMbxMbbi =
 	NULL,
 	devPmacMbxMbbi_read
 };
+epicsExportAddress(dset, devPmacMbxMbbi);
 
 PMAC_DSET_MBBO devPmacMbxMbbo =
 {
@@ -401,6 +409,7 @@ PMAC_DSET_MBBO devPmacMbxMbbo =
 	NULL,
 	devPmacMbxMbbo_write
 };
+epicsExportAddress(dset, devPmacMbxMbbo);
 
 PMAC_DSET_STATUS devPmacMbxStatus =
 {
@@ -411,6 +420,7 @@ PMAC_DSET_STATUS devPmacMbxStatus =
 	NULL,
 	devPmacMbxStatus_read
 };
+epicsExportAddress(dset, devPmacMbxStatus);
 
 PMAC_DSET_SI devPmacMbxSi =
 {
@@ -421,6 +431,7 @@ PMAC_DSET_SI devPmacMbxSi =
 	NULL,
 	devPmacMbxSi_read
 };
+epicsExportAddress(dset, devPmacMbxSi);
 
 PMAC_DSET_SO devPmacMbxSo =
 {
@@ -431,6 +442,7 @@ PMAC_DSET_SO devPmacMbxSo =
 	NULL,
 	devPmacMbxSo_write
 };
+epicsExportAddress(dset, devPmacMbxSo);
 
 PMAC_DSET_LOAD devPmacMbxLoad =
 {
@@ -441,6 +453,7 @@ PMAC_DSET_LOAD devPmacMbxLoad =
 	NULL,
 	devPmacMbxLoad_proc
 };
+epicsExportAddress(dset, devPmacMbxLoad);
 
 /*
  * LOCALS

@@ -75,6 +75,7 @@ OWNED RIGHTS.
 #include	<string.h>
 #include	<epicsStdlib.h>
 #include	<epicsPrint.h>
+#include	<epicsExport.h>
 
 #include	<alarm.h>
 #include	<cvtTable.h>
@@ -99,7 +100,7 @@ OWNED RIGHTS.
 #include	<mbboRecord.h>
 #include	<statusRecord.h>
 
-#include	<drvPmac.h>
+#include	"drvPmac.h"
 
 /*
  * DEFINES
@@ -312,6 +313,7 @@ PMAC_DSET_AI devPmacRamAi =
 	devPmacRamAi_read,
 	NULL
 };
+epicsExportAddress(dset, devPmacRamAi);
 
 PMAC_DSET_AO devPmacRamAo =
 {
@@ -323,6 +325,7 @@ PMAC_DSET_AO devPmacRamAo =
 	devPmacRamAo_write,
 	NULL
 };
+epicsExportAddress(dset, devPmacRamAo);
 
 PMAC_DSET_BI devPmacRamBi =
 {
@@ -333,6 +336,7 @@ PMAC_DSET_BI devPmacRamBi =
 	devPmacRamBi_get_ioint_info,
 	devPmacRamBi_read
 };
+epicsExportAddress(dset, devPmacRamBi);
 
 PMAC_DSET_BO devPmacRamBo =
 {
@@ -343,6 +347,7 @@ PMAC_DSET_BO devPmacRamBo =
 	NULL,
 	devPmacRamBo_write
 };
+epicsExportAddress(dset, devPmacRamBo);
 
 PMAC_DSET_EVENT devPmacRamEvent =
 {
@@ -353,6 +358,7 @@ PMAC_DSET_EVENT devPmacRamEvent =
 	devPmacRamEvent_get_ioint_info,
 	devPmacRamEvent_read
 };
+epicsExportAddress(dset, devPmacRamEvent);
 
 PMAC_DSET_LI devPmacRamLi =
 {
@@ -363,6 +369,7 @@ PMAC_DSET_LI devPmacRamLi =
 	devPmacRamLi_get_ioint_info,
 	devPmacRamLi_read
 };
+epicsExportAddress(dset, devPmacRamLi);
 
 PMAC_DSET_LO devPmacRamLo =
 {
@@ -373,6 +380,7 @@ PMAC_DSET_LO devPmacRamLo =
 	NULL,
 	devPmacRamLo_write
 };
+epicsExportAddress(dset, devPmacRamLo);
 
 PMAC_DSET_MBBI devPmacRamMbbi =
 {
@@ -383,6 +391,7 @@ PMAC_DSET_MBBI devPmacRamMbbi =
 	devPmacRamMbbi_get_ioint_info,
 	devPmacRamMbbi_read
 };
+epicsExportAddress(dset, devPmacRamMbbi);
 
 PMAC_DSET_MBBO devPmacRamMbbo =
 {
@@ -393,6 +402,7 @@ PMAC_DSET_MBBO devPmacRamMbbo =
 	NULL,
 	devPmacRamMbbo_write
 };
+epicsExportAddress(dset, devPmacRamMbbo);
 
 PMAC_DSET_STATUS devPmacRamStatus =
 {
@@ -403,6 +413,7 @@ PMAC_DSET_STATUS devPmacRamStatus =
 	devPmacRamStatus_get_ioint_info,
 	devPmacRamStatus_read
 };
+epicsExportAddress(dset, devPmacRamStatus);
 
 
 /*

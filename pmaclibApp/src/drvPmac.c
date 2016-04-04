@@ -214,7 +214,6 @@ typedef struct  /* PMAC_DRVET */
    DRVSUPFUN   init;
 } PMAC_DRVET;
 
-
 /*
  * GLOBALS
  */
@@ -233,6 +232,7 @@ PMAC_DRVET drvPmac =
    drvPmac_report,
    drvPmac_init,
 };
+epicsExportAddress(drvet, drvPmac);
 
 
 /*******************************************************************************
