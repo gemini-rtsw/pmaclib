@@ -97,7 +97,7 @@ DEVELOPMENT CENTER AT ARGONNE NATIONAL LABORATORY (708-252-2000).
 
 typedef volatile char	PMAC_DPRAM_BASE;
 
-typedef struct  /* PMAC_MBX_BASE */
+typedef volatile struct  /* PMAC_MBX_BASE */
 {
 	struct pmacBaseMbxStruct
 	{
@@ -121,8 +121,8 @@ typedef struct  /* PMAC_CTLR */
 	int		activeDpram;
 	int		enabledGather;
 	int		activeGather;
-	PMAC_MBX_BASE *		pBase;
-	PMAC_DPRAM_BASE *	pDpramBase;
+	PMAC_MBX_BASE   *pBase;
+	PMAC_DPRAM_BASE *pDpramBase;
 	unsigned	irqVector;
 	unsigned	irqLevel;
 	unsigned long	vmebusBase;

@@ -290,8 +290,11 @@ long pmacConfig
    if( addrDpram == 0 )
       pPmacCtlr->enabledDpram = FALSE;
 
+
+epicsPrintf("PMAC VME BASE ADDR: 0x%x\n", pPmacCtlr->vmebusBase);
    status = devRegisterAddress ("PMAC BASE", atVMEA24, pPmacCtlr->vmebusBase,
     PMAC_MEM_SIZE_BASE, (void *) &(pPmacCtlr->pBase));
+epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", pPmacCtlr->pBase);
    if (!RTN_SUCCESS(status))
    {
       printf ("%s: Failure registering controller %d base address A24 %#010lx.\n",
@@ -299,7 +302,8 @@ long pmacConfig
       return (status);
    }
 
-   status = devReadProbe (sizeof(short), (char*) &pPmacCtlr->pBase->mailbox.MB[0].data, (char*)&val);
+epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
+   status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val);
    if (status != OK)
    {
       printf ("%s: Failure probing for base address.\n",
