@@ -317,10 +317,10 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
    pPmacCtlr->enabledBase   = TRUE;
    pPmacCtlr->presentBase   = TRUE;
    pPmacCtlr->activeBase    = FALSE;
-   pPmacCtlr->enabledDpram  = TRUE;
+   pPmacCtlr->enabledDpram  = FALSE; /*MRIPPA TEST LOCKUP...*/
    pPmacCtlr->presentDpram  = FALSE;
    pPmacCtlr->activeDpram   = FALSE;
-   pPmacCtlr->enabledGather = TRUE;
+   pPmacCtlr->enabledGather = FALSE; /*MRIPPA TEST LOCKUP...*/
    pPmacCtlr->activeGather  = FALSE;
 
    if ( pPmacCtlr->enabledDpram )
@@ -479,13 +479,13 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
    pCard->enabledMbx = TRUE;
    pCard->configured = TRUE;
    pCard->enabledAsc = FALSE;
-   pCard->enabledRam = TRUE;
-   pCard->enabledSvo = TRUE;
-   pCard->enabledBkg = TRUE;
-   pCard->enabledVar = TRUE;
-   pCard->enabledOpn = TRUE;
-   pCard->enabledFld = TRUE;
-   pCard->enabledGat = TRUE;
+   pCard->enabledRam = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledSvo = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledBkg = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledVar = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledOpn = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledFld = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledGat = FALSE; /*MRIPPA TEST LOCKUP...*/
    pmacCardsConfigured++;
 
    return(0);

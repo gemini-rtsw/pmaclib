@@ -33,7 +33,7 @@
 #define PMAC_GAT_WRITE      "pmacGatW"
 #define PMAC_GAT_PRI        45
 #define PMAC_GAT_OPT        VX_FP_TASK
-#define PMAC_GAT_STACK      8000
+#define PMAC_GAT_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 #define DPRAM_FACTOR        58          /* Allows Maximum DPRAM size to */
                                         /* not exceed 0xDCFF or 0xDD3F  */
 
