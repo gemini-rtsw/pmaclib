@@ -14,8 +14,9 @@ DBD += pmaclib.dbd
 
 # pmaclib.dbd will be made up from these files:
 pmaclib_DBD += base.dbd
-pmaclib_DBD += loadRecord.dbd
-pmaclib_DBD += statusRecord.dbd
+pmaclib_DBD += geminiRecords.dbd
+#pmaclib_DBD += loadRecord.dbd
+#pmaclib_DBD += statusRecord.dbd
 # List local .dbd files here
 pmaclib_DBD += pmacDev.dbd
 

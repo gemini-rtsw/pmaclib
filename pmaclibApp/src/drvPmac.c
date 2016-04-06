@@ -20,6 +20,7 @@
 #include <epicsRingPointer.h>
 #include <epicsExport.h>
 #include <string.h>
+#include <epicsError.h>
 
 /* EPICS Includes */
 
@@ -291,10 +292,8 @@ long pmacConfig
       pPmacCtlr->enabledDpram = FALSE;
 
 
-epicsPrintf("PMAC VME BASE ADDR: 0x%x\n", pPmacCtlr->vmebusBase);
-   status = devRegisterAddress ("PMAC BASE", atVMEA24, pPmacCtlr->vmebusBase,
+   status = devRegisterAddress ("PMAC_MBX", atVMEA24, pPmacCtlr->vmebusBase,
     PMAC_MEM_SIZE_BASE, (void *) &(pPmacCtlr->pBase));
-epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", pPmacCtlr->pBase);
    if (!RTN_SUCCESS(status))
    {
       printf ("%s: Failure registering controller %d base address A24 %#010lx.\n",
@@ -302,12 +301,17 @@ epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", pPmacCtlr->pBase);
       return (status);
    }
 
-epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
-   status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val);
+epicsPrintf("PMAC MBX VME Base Addr: 0x%lx\n", pPmacCtlr->vmebusBase);
+epicsPrintf("PMAC MBX CPU Base Addr: %p\n", pPmacCtlr->pBase);
+devAddressMap();
+   status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val); 
    if (status != OK)
    {
+char estr[128];
       printf ("%s: Failure probing for base address.\n",
        MyName);
+errSymLookup(status, estr, 128);
+epicsPrintf("status=%ld: %s\n", status, estr); 
       return (status);
    }
 
@@ -325,7 +329,7 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
 
    if ( pPmacCtlr->enabledDpram )
    {
-      status = devRegisterAddress ("PMAC DPRAM", atVMEA24, pPmacCtlr->vmebusDpram,
+      status = devRegisterAddress ("PMAC_DPRAM", atVMEA24, pPmacCtlr->vmebusDpram,
        PMAC_MEM_SIZE_DPRAM, (void *) &(pPmacCtlr->pDpramBase));
       if (!RTN_SUCCESS(status))
       {
