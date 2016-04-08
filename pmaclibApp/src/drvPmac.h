@@ -220,7 +220,7 @@ EPICSTHREADFUNC drvPmacOpnTask(void *);
 long            drvPmacOpnRead(int);
 
 PMAC_LOCAL void drvPmacMbxScanInit(int);
-EPICSTHREADFUNC drvPmacMbxTask(void *);
+EPICSTHREADFUNC drvPmacMbxTask(PMAC_CARD *pCard);
 char		drvPmacMbxWriteRead(int, char *, char *, char *);
 
 PMAC_LOCAL void	drvPmacAscScanInit(int);

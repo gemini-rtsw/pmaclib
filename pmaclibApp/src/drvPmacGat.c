@@ -21,18 +21,16 @@
 #include <errlog.h>
 #include <string.h>
 
-
 #include "pmacVme.h"
 #include "drvPmac.h"
 #include "drvPmacGat.h"
 
-#define DEBUG       0
-#define DEBUG_WRITE 0
+#define DEBUG       1
+#define DEBUG_WRITE 1
 
 #define PMAC_GAT_READ       "pmacGatR"
 #define PMAC_GAT_WRITE      "pmacGatW"
 #define PMAC_GAT_PRI        45
-#define PMAC_GAT_OPT        VX_FP_TASK
 #define PMAC_GAT_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 #define DPRAM_FACTOR        58          /* Allows Maximum DPRAM size to */
                                         /* not exceed 0xDCFF or 0xDD3F  */
@@ -47,8 +45,8 @@
 #define PMAC_GATTYP_F       0xF0
 #define PMAC_GATTYP_P       0xE0
 
-/* Global variables */
 
+/* Global variables */
 long prevDPRAMend[PMAC_MAX_CARDS];
 long DPRAMsize[PMAC_MAX_CARDS];      /* The size of the DPRAM buffer     */
 long pmac_buf_size[PMAC_MAX_CARDS];  /* The size of the in-memory buffer */
@@ -64,8 +62,8 @@ char *gatherBuffer[PMAC_MAX_CARDS];
 long buf_pos[PMAC_MAX_CARDS];
 char errorString[PMAC_MAX_CARDS][40];
 
-int  drvPmacGatReadTask( int );
-int  drvPmacGatWriteTask( int );
+int  drvPmacGatReadTask(PMAC_CARD *pCard);
+int  drvPmacGatWriteTask( PMAC_CARD *pCard);
 char drvPmacMbxWriteRead( int, char *, char *, char *);
 void init_buffer( int card );
 long write_buffer( int, char *, int );
@@ -74,7 +72,7 @@ long write_buffer( int, char *, int );
 PMAC_LOCAL void drvPmacGatScanInit( int   card )
 {
   PMAC_CARD *pCard = &drvPmacCard[card];
-   
+  
   /* pCard->scanGatReadSem = semBCreate(SEM_Q_FIFO,SEM_EMPTY); */
   pCard->scanGatReadSem = epicsEventMustCreate(epicsEventEmpty);;
   if( pCard->scanGatReadSem == NULL )
@@ -85,9 +83,12 @@ PMAC_LOCAL void drvPmacGatScanInit( int   card )
     pCard->scanGatReadId = epicsThreadCreate(pCard->scanGatReadName,
                               PMAC_GAT_PRI, PMAC_GAT_STACK,
                               (EPICSTHREADFUNC)drvPmacGatReadTask,
-                              (void *)&pCard->card);
+                              pCard);
     taskwdInsert(pCard->scanGatReadId, NULL, NULL);
   }
+
+  //printf("Bypass scanGatWriteCreate...\n");
+  //return;
 
   /* pCard->scanGatWriteSem = semBCreate(SEM_Q_FIFO,SEM_EMPTY); */
   pCard->scanGatWriteSem = epicsEventMustCreate(epicsEventEmpty);
@@ -99,7 +100,7 @@ PMAC_LOCAL void drvPmacGatScanInit( int   card )
     pCard->scanGatWriteId = epicsThreadCreate( pCard->scanGatWriteName,
                    PMAC_GAT_PRI, PMAC_GAT_STACK,
                         (EPICSTHREADFUNC)drvPmacGatWriteTask,
-                        (void *)&pCard->card);
+                        pCard);
     taskwdInsert(pCard->scanGatWriteId, NULL, 0L);
   }
 
@@ -179,7 +180,7 @@ long drvPmacGatSources( int card )
     printf("Error message returned from DEFINE GATHER %ld command: %s\n", DPRAMsize[card], errmsg);
 
 #if DEBUG
-  printf("drvPmacGatSources: DPRAMsize[%d] = %d, totSinglewords = %d\n", 
+  printf("drvPmacGatSources: DPRAMsize[%d] = %ld, totSinglewords = %d\n", 
           card, DPRAMsize[card], totSinglewords);
 #endif
 
@@ -187,7 +188,7 @@ long drvPmacGatSources( int card )
 }
 
 
-int drvPmacGatReadTask(int card)
+int drvPmacGatReadTask(PMAC_CARD *pCard)
 {
    int       ofs;
    char      *val;
@@ -198,16 +199,15 @@ int drvPmacGatReadTask(int card)
    long      terminator;
    long      pmac_gat_offset[PMAC_MAX_CARDS];
    long      pmac_gat_nextaddr[PMAC_MAX_CARDS];
-   int       delay;
+   double    delay;
    char      response[PMAC_MBX_IN_BUFLEN];
    char      errmsg[PMAC_MBX_ERR_BUFLEN];
-   PMAC_CARD *pCard = &drvPmacCard[card];
+   int       card;
 
 
-   /* delay = sysClkRateGet()/50; */  /* 50 Hz */
    delay = 0.02;   /* 50 Hz */
-
-   printf("Frequency of read = %d Hz\n", (int)(1.0/delay));
+   card = pCard->card;
+   printf("Gat Read task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
 
    terminator = drvPmacMbxWriteRead(card, "version", response, errmsg);
    if( errmsg[0] )
@@ -225,7 +225,9 @@ int drvPmacGatReadTask(int card)
          pmac_gat_nextaddr[card] = 0x07FE;
          printf("PMAC Card %d - Firmware version %s\n", card, response);
       }
-      else if( !strncmp(response, "1.16C", 5) || !strncmp(response, "1.16D", 5) )
+      else if( !strncmp(response, "1.16C", 5) ||
+               !strncmp(response, "1.16D", 5) ||
+               !strncmp(response, "1.16G", 5) )
       {
          pmac_gat_offset[card]   = 0x0900;
          pmac_gat_nextaddr[card] = 0x08FE;
@@ -278,7 +280,7 @@ int drvPmacGatReadTask(int card)
             }
 
 #if DEBUG
-            printf("WRAPPED(%d), read (top) = %d, read (bottom) = %d, prevDPRAMend = %d\n",
+            printf("WRAPPED(%ld), read (top) = %ld, read (bottom) = %ld, prevDPRAMend = %ld\n",
                                DPRAMsize[card], size, end, prevDPRAMend[card]);
 #endif
 
@@ -302,7 +304,7 @@ int drvPmacGatReadTask(int card)
             size = end - prevDPRAMend[card];
 
 #if DEBUG
-            printf("NOT WRAPPED(%d), Amount read = %d, prevDPRAMend = %d\n", 
+            printf("NOT WRAPPED(%ld), Amount read = %ld, prevDPRAMend = %ld\n", 
                             DPRAMsize[card], size, prevDPRAMend[card]);
 #endif
 
@@ -329,11 +331,14 @@ int drvPmacGatReadTask(int card)
 
 
 
-int drvPmacGatWriteTask(int card)
+int drvPmacGatWriteTask(PMAC_CARD *pCard)
 {
-   PMAC_CARD *pCard = &drvPmacCard[card];
    long      wflag;
    double    rate;
+   int       card;
+
+   card = pCard->card;
+   printf("Gat Write task starting for CARD[%d]\n", card);
 
    FOREVER
    {
@@ -479,7 +484,7 @@ int drvPmacGatFlush(int card)
    if( writeFlag[card] == WRITE_BOTTOM )
    {
 #if DEBUG
-      printf("drvPmacGatFlush(BOTTOM): buf_pos = %d\n", buf_pos[card]);
+      printf("drvPmacGatFlush(BOTTOM): buf_pos = %ld\n", buf_pos[card]);
 #endif
       /* ticksBefore[card] = tickGet(); */
       epicsTimeGetCurrent(&ticksBefore[card]);
@@ -491,7 +496,7 @@ int drvPmacGatFlush(int card)
    else
    {
 #if DEBUG
-      printf("drvPmacGatFlush(TOP): buf_pos = %d\n", buf_pos[card]);
+      printf("drvPmacGatFlush(TOP): buf_pos = %ld\n", buf_pos[card]);
 #endif
       if( buf_pos[card] < pmac_buf_size[card]/2 )
       {
@@ -575,7 +580,7 @@ long write_buffer(int card, char *buf, int size)
    long prevPos;
 
 #if DEBUG_WRITE
-   printf("Entering write_buffer with buf_pos = %d, size = %d\n", buf_pos[card], size);
+   printf("Entering write_buffer with buf_pos = %ld, size = %d\n", buf_pos[card], size);
 #endif
 
    prevPos = buf_pos[card];
@@ -614,7 +619,7 @@ long write_buffer(int card, char *buf, int size)
       ret = 0;
 
 #if DEBUG_WRITE
-   printf("Leaving write_buffer with buf_pos = %d, size = %d\n", buf_pos[card], size);
+   printf("Leaving write_buffer with buf_pos = %ld, size = %d\n", buf_pos[card], size);
 #endif
 
    return(ret);

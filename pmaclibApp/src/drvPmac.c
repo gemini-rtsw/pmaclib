@@ -20,7 +20,6 @@
 #include <epicsRingPointer.h>
 #include <epicsExport.h>
 #include <string.h>
-#include <epicsError.h>
 
 /* EPICS Includes */
 
@@ -292,8 +291,10 @@ long pmacConfig
       pPmacCtlr->enabledDpram = FALSE;
 
 
-   status = devRegisterAddress ("PMAC_MBX", atVMEA24, pPmacCtlr->vmebusBase,
+epicsPrintf("PMAC VME BASE ADDR: 0x%lx\n", pPmacCtlr->vmebusBase);
+   status = devRegisterAddress ("PMAC BASE", atVMEA24, pPmacCtlr->vmebusBase,
     PMAC_MEM_SIZE_BASE, (void *) &(pPmacCtlr->pBase));
+epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", pPmacCtlr->pBase);
    if (!RTN_SUCCESS(status))
    {
       printf ("%s: Failure registering controller %d base address A24 %#010lx.\n",
@@ -301,17 +302,12 @@ long pmacConfig
       return (status);
    }
 
-epicsPrintf("PMAC MBX VME Base Addr: 0x%lx\n", pPmacCtlr->vmebusBase);
-epicsPrintf("PMAC MBX CPU Base Addr: %p\n", pPmacCtlr->pBase);
-devAddressMap();
-   status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val); 
+epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
+   status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val);
    if (status != OK)
    {
-char estr[128];
       printf ("%s: Failure probing for base address.\n",
        MyName);
-errSymLookup(status, estr, 128);
-epicsPrintf("status=%ld: %s\n", status, estr); 
       return (status);
    }
 
@@ -321,15 +317,15 @@ epicsPrintf("status=%ld: %s\n", status, estr);
    pPmacCtlr->enabledBase   = TRUE;
    pPmacCtlr->presentBase   = TRUE;
    pPmacCtlr->activeBase    = FALSE;
-   pPmacCtlr->enabledDpram  = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pPmacCtlr->enabledDpram  = TRUE; /*MRIPPA TEST TRUE...*/
    pPmacCtlr->presentDpram  = FALSE;
    pPmacCtlr->activeDpram   = FALSE;
-   pPmacCtlr->enabledGather = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pPmacCtlr->enabledGather = TRUE; /*MRIPPA TEST TRUE...*/
    pPmacCtlr->activeGather  = FALSE;
 
    if ( pPmacCtlr->enabledDpram )
    {
-      status = devRegisterAddress ("PMAC_DPRAM", atVMEA24, pPmacCtlr->vmebusDpram,
+      status = devRegisterAddress ("PMAC DPRAM", atVMEA24, pPmacCtlr->vmebusDpram,
        PMAC_MEM_SIZE_DPRAM, (void *) &(pPmacCtlr->pDpramBase));
       if (!RTN_SUCCESS(status))
       {
@@ -342,7 +338,7 @@ epicsPrintf("status=%ld: %s\n", status, estr);
       pBlock = ((char *) pPmacCtlr->pBase) + 0x121;
 
       PMAC_DEBUG (1, 
-                  printf ("%s: Setting DPRAM mapping addr %#010lx val %d\n", MyName, (long unsigned int)pBlock, block);
+                  PMAC_MESSAGE ("%s: Setting DPRAM mapping addr %#010lx val %d\n", MyName, (long unsigned int)pBlock, block);
       )
 
     *pBlock = block;
@@ -358,6 +354,7 @@ epicsPrintf("status=%ld: %s\n", status, estr);
 
    }
 
+   printf("MRIPPA presentDpram set to TRUE.\n");
    pPmacCtlr->ioMbxReceiptSem = epicsEventMustCreate (epicsEventEmpty);
    if ( pPmacCtlr->ioMbxReceiptSem == NULL)
    {
@@ -413,7 +410,7 @@ epicsPrintf("status=%ld: %s\n", status, estr);
    }
 
    PMAC_DEBUG(1,
-              printf ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector - 1);
+              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector - 1);
    )
 
    status = devConnectInterruptVME (pPmacCtlr->irqVector - 1,
@@ -425,7 +422,7 @@ epicsPrintf("status=%ld: %s\n", status, estr);
    }
 
    PMAC_DEBUG(1,
-              printf ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector);
+              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector);
    )
 
    status = devConnectInterruptVME (pPmacCtlr->irqVector, adapterMbxReadme, (void *) pPmacCtlr);
@@ -436,7 +433,7 @@ epicsPrintf("status=%ld: %s\n", status, estr);
    }
 
    PMAC_DEBUG(1,
-              printf ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector + 1);
+              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector + 1);
    )
 
    status = devConnectInterruptVME(pPmacCtlr->irqVector + 1, adapterAscIn, (void *) pPmacCtlr);
@@ -447,7 +444,7 @@ epicsPrintf("status=%ld: %s\n", status, estr);
    }
 
    PMAC_DEBUG(1,
-              printf ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector + 2);
+              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector + 2);
    )
 
    status = devConnectInterruptVME ( pPmacCtlr->irqVector + 2, adapterGatBuffer, (void *) pPmacCtlr);
@@ -483,13 +480,13 @@ epicsPrintf("status=%ld: %s\n", status, estr);
    pCard->enabledMbx = TRUE;
    pCard->configured = TRUE;
    pCard->enabledAsc = FALSE;
-   pCard->enabledRam = FALSE; /*MRIPPA TEST LOCKUP...*/
-   pCard->enabledSvo = FALSE; /*MRIPPA TEST LOCKUP...*/
-   pCard->enabledBkg = FALSE; /*MRIPPA TEST LOCKUP...*/
-   pCard->enabledVar = FALSE; /*MRIPPA TEST LOCKUP...*/
-   pCard->enabledOpn = FALSE; /*MRIPPA TEST LOCKUP...*/
-   pCard->enabledFld = FALSE; /*MRIPPA TEST LOCKUP...*/
-   pCard->enabledGat = FALSE; /*MRIPPA TEST LOCKUP...*/
+   pCard->enabledRam = TRUE; /*MRIPPA TEST TRUE...*/
+   pCard->enabledSvo = TRUE; /*MRIPPA TEST TRUE...*/
+   pCard->enabledBkg = TRUE; /*MRIPPA TEST TRUE...*/
+   pCard->enabledVar = TRUE; /*MRIPPA TEST TRUE...*/
+   pCard->enabledOpn = TRUE; /*MRIPPA TEST TRUE...*/
+   pCard->enabledFld = TRUE; /*MRIPPA TEST TRUE...*/
+   pCard->enabledGat = TRUE; /*MRIPPA TEST TRUE...*/
    pmacCardsConfigured++;
 
    return(0);
@@ -1420,7 +1417,7 @@ void drvPmacMbxScan(PMAC_MBX_IO *pMbxIo)
       return;
    }
 
-   if ( epicsRingPointerPush(pCard->scanMbxQ,(void *)&pMbxIo) != OK )
+   if ( !epicsRingPointerPush(pCard->scanMbxQ,(void *)pMbxIo)  )
    {
       errMessage (0,"drvPmacMbxScan: epicsRingPointerPush overflow.");
    }
@@ -1442,7 +1439,7 @@ PMAC_LOCAL void drvPmacMbxScanInit(int card)
 {
    PMAC_CARD *pCard = &drvPmacCard[card];
 
-   pCard->scanMbxQ = epicsRingPointerCreate(PMAC_MBX_QUEUE_SIZE);
+   pCard->scanMbxQ = epicsRingPointerCreate(sizeof (void *) * PMAC_MBX_QUEUE_SIZE);
 
    if ( pCard->scanMbxQ == NULL )
    {
@@ -1461,7 +1458,7 @@ PMAC_LOCAL void drvPmacMbxScanInit(int card)
       pCard->scanMbxTaskId = epicsThreadCreate (pCard->scanMbxTaskName,
                                                 PMAC_MBX_PRI, PMAC_MBX_STACK,
                                                 (EPICSTHREADFUNC)drvPmacMbxTask,
-                                                (void *)&pCard->card);
+                                                pCard);
       taskwdInsert (pCard->scanMbxTaskId, NULL, NULL);
    }
 
@@ -1473,11 +1470,11 @@ PMAC_LOCAL void drvPmacMbxScanInit(int card)
  * drvPmacMbxTask - task for PMAC MBX input/output
  *
  */
-EPICSTHREADFUNC drvPmacMbxTask(void *c)     /* MDW OSI wor 20160321 */
+EPICSTHREADFUNC drvPmacMbxTask(PMAC_CARD *pCard)     /* MDW OSI wor 20160321 */
 {
-   int card = *(int *)c;
+   //int card = *(int *)c;
    char *MyName = "drvPmacMbxTask";
-   PMAC_CARD *pCard = &drvPmacCard[card];
+   //PMAC_CARD *pCard = &drvPmacCard[card];
    PMAC_MBX_IO *pMbxIo;
 
    FOREVER
@@ -1489,8 +1486,8 @@ EPICSTHREADFUNC drvPmacMbxTask(void *c)     /* MDW OSI wor 20160321 */
       epicsEventMustWait(pCard->scanMbxSem);
 
       while(epicsRingPointerGetUsed(pCard->scanMbxQ)) {
-         pMbxIo = epicsRingPointerPop(pCard->scanMbxQ);
-         PMAC_DEBUG(6,
+         pMbxIo = (PMAC_MBX_IO *)epicsRingPointerPop(pCard->scanMbxQ);
+         PMAC_DEBUG(2,
                      PMAC_MESSAGE ("%s: rngBufGet completed.\n", MyName);
                      PMAC_MESSAGE ("%s: card=%d command=[%s]\n", 
                                    MyName, pMbxIo->card, pMbxIo->command);
@@ -1510,13 +1507,13 @@ EPICSTHREADFUNC drvPmacMbxTask(void *c)     /* MDW OSI wor 20160321 */
                            MyName, pMbxIo->response);
          }
 
-         PMAC_DEBUG(6,
+         PMAC_DEBUG(2,
                     PMAC_MESSAGE ("%s: response=[%s]\n", MyName, pMbxIo->response);
          )
 
          callbackRequest (&pMbxIo->callback);
 
-         PMAC_DEBUG(6,
+         PMAC_DEBUG(2,
                     PMAC_MESSAGE ("%s: Callback requested.\n", MyName);
          )
       } 
@@ -1970,3 +1967,4 @@ static void pmacRegisterCommands(void) {
     iocshRegister(&pmacConfigFuncDef, pmacConfigCallFunc);
 }
 epicsExportRegistrar(pmacRegisterCommands);
+epicsExportAddress(int, drvPmacDebug);

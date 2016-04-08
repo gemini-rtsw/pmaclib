@@ -1,3 +1,8 @@
+variable( pmacVmeDebug, int)
+variable( drvPmacDebug, int)
+variable( devPmacMbxDebug, int)
+variable( devPmacRamDebug, int)
+
 # ASCII Mailbox Device Support
 device( ai,        VME_IO, devPmacMbxAi,     "PMAC-VME ASCII" )
 device( ao,        VME_IO, devPmacMbxAo,     "PMAC-VME ASCII" )

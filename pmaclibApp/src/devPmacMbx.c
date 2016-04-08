@@ -125,8 +125,8 @@ OWNED RIGHTS.
 
 #if PMAC_DIAGNOSTICS
 #define PMAC_MESSAGE	errlogPrintf
-#define PMAC_DEBUG(level,code)       { if (devPmacMbxDebug == (level)) { code } }
-#define PMAC_TRACE(level,code)       { if ( (pRec->tpro == (level)) || (devPmacMbxDebug == (level)) ) { code } }
+#define PMAC_DEBUG(level,code)       { if (devPmacMbxDebug >= (level)) { code } }
+#define PMAC_TRACE(level,code)       { if ( (pRec->tpro > (0)) || (devPmacMbxDebug >= (level)) ) { code } }
 #else
 #define PMAC_DEBUG(level,code)      ;
 #define PMAC_TRACE(level,code)      ;
@@ -1427,7 +1427,6 @@ LOCAL long devPmacMbxSi_read
  	char          *MyName = "devPmacMbxSi_read";
 	PMAC_MBX_DPVT *pDpvt  = (PMAC_MBX_DPVT *)pRec->dpvt;
 	PMAC_MBX_IO   *pMbxIo = &pDpvt->MbxIo;
-	
 	if (pRec->pact)
 	{
 
@@ -1474,7 +1473,6 @@ LOCAL long devPmacMbxSi_read
 	}
 
 }
-
 /*******************************************************************************
  *
  * devPmacMbxSo_write - EPICS PMAC device support stringout write
@@ -1488,7 +1486,7 @@ LOCAL long devPmacMbxSo_write
  	char          *MyName = "devPmacMbxSo_write";
 	PMAC_MBX_DPVT *pDpvt  = (PMAC_MBX_DPVT *)pRec->dpvt;
 	PMAC_MBX_IO   *pMbxIo = &pDpvt->MbxIo;
-	
+
 	if (pRec->pact)
 	{
 
@@ -1614,3 +1612,5 @@ LOCAL void devPmacMbxCallback
 				
 	return;
 }
+epicsExportAddress( int, devPmacMbxDebug);
+

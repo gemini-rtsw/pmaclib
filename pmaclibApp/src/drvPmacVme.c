@@ -23,6 +23,7 @@
 /* Local Includes */
 
 #include <pmacVme.h>
+#include 	<epicsExport.h>
 
 /*
  * DEFINES
@@ -1277,3 +1278,5 @@ PMAC_LOCAL void pmacGatBufferISR
 	
 	return;
 }
+epicsExportAddress(int, pmacVmeDebug); 
+

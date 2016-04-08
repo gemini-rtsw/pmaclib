@@ -117,8 +117,8 @@ OWNED RIGHTS.
 
 #if PMAC_DIAGNOSTICS
 #define PMAC_MESSAGE	errlogPrintf
-#define PMAC_DEBUG(level,code)       { if (devPmacRamDebug == (level)) { code } }
-#define PMAC_TRACE(level,code)       { if ( (pRec->tpro == (level)) || (devPmacRamDebug == (level)) ) { code } }
+#define PMAC_DEBUG(level,code)       { if (devPmacRamDebug >= (level)) { code } }
+#define PMAC_TRACE(level,code)       { if ( (pRec->tpro > (0)) || (devPmacRamDebug == (level)) ) { code } }
 #else
 #define PMAC_DEBUG(level,code)      ;
 #define PMAC_TRACE(level,code)      ;
@@ -1459,4 +1459,5 @@ long devPmacRamDpvtShow
 		MyName, pDpvt->pRamIo->valLong, pDpvt->pRamIo->valDouble);
 
 	return (0);
-}		
+}
+epicsExportAddress(int, devPmacRamDebug); 
