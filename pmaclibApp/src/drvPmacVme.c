@@ -166,6 +166,11 @@ PMAC_LOCAL void pmacMbxReadmeISR
 	return;
 }
 
+static int mbxoutA = 0;
+static int mbxoutB = 0;
+static int mbxoutC = 0;
+static int mbxoutD = 0;
+
 /*******************************************************************************
  *
  * pmacMbxOut - put characters in PMAC mailbox
@@ -187,23 +192,28 @@ PMAC_LOCAL char pmacMbxOut
     termination = 0;
     length = strlen (writebuf);
 
+    printf("pmacMbxOut:input=%s,length=%d\n", writebuf, length);
     firstcharacter = writebuf[0];
 
     for (i = 1; (i < length) && (i < PMAC_BASE_MBX_REGS_OUT); i++)
     {
+        mbxoutA++;
 	pPmacCtlr->pBase->mailbox.MB[i+1].data = writebuf[i];
     }
 
     if ((i == length) && (i < PMAC_BASE_MBX_REGS_OUT))
     {
+        mbxoutB++;
 	termination = PMAC_TERM_CR;
 	pPmacCtlr->pBase->mailbox.MB[i+1].data = PMAC_TERM_CR;
     }
     else if (i > length)
     {
+        mbxoutC++;
 	termination = PMAC_TERM_CR;
 	firstcharacter = PMAC_TERM_CR;
     }
+    mbxoutD++;
     pPmacCtlr->pBase->mailbox.MB[0].data = firstcharacter;
 
     return (termination);
@@ -332,11 +342,14 @@ PMAC_LOCAL char pmacMbxWrite
     terminator = 0;
     error      = 0;
 
+    printf("pmacMbxWrite:input=%s\n", writebuf);
+
     while ( (terminator == 0) && (error != ERROR) ) 
     {
 	terminator = pmacMbxOut (ctlr, &writebuf[i]);
 	error      = epicsEventWaitWithTimeout(pPmacCtlr->ioMbxReceiptSem, MBX_TIMEOUT);
 	i         += PMAC_BASE_MBX_REGS_OUT;
+        if (i>100) break;
     }
 
     if( error == ERROR )
@@ -1279,4 +1292,8 @@ PMAC_LOCAL void pmacGatBufferISR
 	return;
 }
 epicsExportAddress(int, pmacVmeDebug); 
+epicsExportAddress(int, mbxoutA); 
+epicsExportAddress(int, mbxoutB); 
+epicsExportAddress(int, mbxoutC); 
+epicsExportAddress(int, mbxoutD); 
 

@@ -3,6 +3,11 @@ variable( drvPmacDebug, int)
 variable( devPmacMbxDebug, int)
 variable( devPmacRamDebug, int)
 
+variable( mbxoutA, int)
+variable( mbxoutB, int)
+variable( mbxoutC, int)
+variable( mbxoutD, int)
+
 # ASCII Mailbox Device Support
 device( ai,        VME_IO, devPmacMbxAi,     "PMAC-VME ASCII" )
 device( ao,        VME_IO, devPmacMbxAo,     "PMAC-VME ASCII" )
