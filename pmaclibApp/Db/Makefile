@@ -17,7 +17,7 @@ DEPSCHS = $(wildcard ../*.sch)
 
 # Add target .db files below here. Each must
 # correspond to a .sch file
-# DB += xxx.db
+DB += pmactest.db
 
 # If .sym files are in this support module,
 # simply install them into <top>/db.

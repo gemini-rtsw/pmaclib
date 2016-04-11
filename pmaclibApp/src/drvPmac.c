@@ -409,10 +409,6 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
       return (status);
    }
 
-   PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector - 1);
-   )
-
    status = devConnectInterruptVME (pPmacCtlr->irqVector - 1,
    adapterMbxRx, (void *) pPmacCtlr);
    if (!RTN_SUCCESS(status))
@@ -420,10 +416,10 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
       printf ("%s: Failure to connect interrupt.\n", MyName);
       return (status);
    }
-
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector);
+              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterMbxRx\n", MyName, pPmacCtlr->irqVector - 1);
    )
+
 
    status = devConnectInterruptVME (pPmacCtlr->irqVector, adapterMbxReadme, (void *) pPmacCtlr);
    if (!RTN_SUCCESS(status))
@@ -433,7 +429,7 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
    }
 
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector + 1);
+              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterMbxReadme\n", MyName, pPmacCtlr->irqVector);
    )
 
    status = devConnectInterruptVME(pPmacCtlr->irqVector + 1, adapterAscIn, (void *) pPmacCtlr);
@@ -444,7 +440,7 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
    }
 
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connecting to interrupt vector %d\n", MyName, pPmacCtlr->irqVector + 2);
+              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterAscIn\n", MyName, pPmacCtlr->irqVector + 1);
    )
 
    status = devConnectInterruptVME ( pPmacCtlr->irqVector + 2, adapterGatBuffer, (void *) pPmacCtlr);
@@ -453,11 +449,20 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
       printf ("%s: Failure to connect interrupt.\n", MyName);
       return (status);
    }
+   PMAC_DEBUG(1,
+              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterGatBuffer\n", MyName, pPmacCtlr->irqVector + 2);
+   )
+
 
    status = devEnableInterruptLevelVME (pPmacCtlr->irqLevel);
+
+   PMAC_DEBUG(1,
+              PMAC_MESSAGE ("%s: Enabled interrupt level %d\n", MyName, pPmacCtlr->irqLevel);
+   )
+
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to enable interrupt level.\n", MyName);
+      printf ("%s: Failure to enable interrupt level %d.\n", MyName, pPmacCtlr>irqLevel);
       return (status);
    }
 
@@ -1379,9 +1384,8 @@ char drvPmacMbxWriteRead
       return 0;
    }
 
-   /*
+   
    printf("drvPmacMbxWriteRead: card = %d, writebuf = %s\n", card, writebuf);
-   */
    pmacMbxLock(card);
 
    terminator = pmacMbxWrite (card, writebuf);
@@ -1392,9 +1396,7 @@ char drvPmacMbxWriteRead
    }
 
    pmacMbxUnlock(card);
-   /*
    printf("drvPmacMbxWriteRead: card = %d, readbuf = %s, errmsg = %s\n", card, readbuf, errmsg);
-   */
 
    return (terminator);
 }

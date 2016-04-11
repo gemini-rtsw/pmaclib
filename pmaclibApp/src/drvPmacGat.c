@@ -207,12 +207,12 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
 
    delay = 0.02;   /* 50 Hz */
    card = pCard->card;
-   printf("Gat Read task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
+   errLogPrintf("Gat Read Task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
 
    terminator = drvPmacMbxWriteRead(card, "version", response, errmsg);
    if( errmsg[0] )
    {
-      printf("Error message returned from VERSION command: %s\n", errmsg);
+      errlogPrintf("Error message returned from VERSION command: %s\n", errmsg);
       return(1);
    }
    else
@@ -223,7 +223,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
       {
          pmac_gat_offset[card]   = 0x0800;
          pmac_gat_nextaddr[card] = 0x07FE;
-         printf("PMAC Card %d - Firmware version %s\n", card, response);
+         errlogPrintf("PMAC Card %d - Firmware version %s\n", card, response);
       }
       else if( !strncmp(response, "1.16C", 5) ||
                !strncmp(response, "1.16D", 5) ||
@@ -231,15 +231,14 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
       {
          pmac_gat_offset[card]   = 0x0900;
          pmac_gat_nextaddr[card] = 0x08FE;
-         printf("PMAC Card %d - Firmware version %s\n", card, response);
+         errlogPrintf("PMAC Card %d - Firmware version %s\n", card, response);
       }
       else
       {
-         printf("Unknown version of PMAC firmware: %s\n", response);
+         errlogPrintf("Unknown version of PMAC firmware: %s\n", response);
          return(1);
       }
    }
-
    FOREVER
    {
       epicsEventMustWait(pCard->scanGatReadSem);

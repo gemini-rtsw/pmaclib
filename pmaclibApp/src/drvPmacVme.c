@@ -67,11 +67,21 @@ PMAC_LOCAL long pmacVmeInit (void)
 {
 	int       i;
 	PMAC_CTLR *pPmacCtlr;
+	char *	MyName = "pmacVmeInit";
 
 	
 	for ( i=0; i < PMAC_MAX_CARDS; i++)
 	{
 		pPmacCtlr = &pmacVmeCtlr[i];
+
+	PMAC_DEBUG
+	(	7,
+		PMAC_MESSAGE ("%s: PMAC VME INIT for controller %d:\n"
+                              "configured = %d, presentBase = %d, enabledBase = %d", 
+                               MyName, pPmacCtlr->ctlr, pPmacCtlr->configured, 
+                               pPmacCtlr->presentBase, pPmacCtlr->enabledBase);
+	)
+
 
 		if ( pPmacCtlr->configured )
 		{
@@ -156,7 +166,7 @@ PMAC_LOCAL void pmacMbxReadmeISR
 	char *	MyName = "pmacMbxReadmeISR";
 
 	PMAC_DEBUG
-	(	10,
+	(	7,
 		PMAC_MESSAGE ("%s: PMAC IRQ MbxReadme for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
