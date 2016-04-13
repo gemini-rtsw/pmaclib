@@ -462,7 +462,7 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
 
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to enable interrupt level %d.\n", MyName, pPmacCtlr>irqLevel);
+      printf ("%s: Failure to enable interrupt level %d.\n", MyName, pPmacCtlr->irqLevel);
       return (status);
    }
 

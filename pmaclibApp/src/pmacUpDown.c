@@ -1,3 +1,4 @@
+#if 0
 #include <vxWorks.h>
 #include <stdio.h>
 #include <sysLib.h>
@@ -9,6 +10,19 @@
 #include <stdioLib.h>
 #include <ctype.h>
 #include <string.h>
+#endif
+
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <epicsStdioRedirect.h>
+#include <epicsStdlib.h>
+#include <epicsTypes.h>
+#include <epicsMath.h>
+#include <epicsString.h>
 
 #include <dbEvent.h>
 #include <dbDefs.h>
@@ -16,6 +30,11 @@
 #include <recSup.h>
 #include <genSubRecord.h>
 #include <menuCarstates.h>
+
+
+#define ERROR (-1)
+#define OK      0
+
 
 #define SMALL_BUF             16
 #define MEDIUM_BUF            64
@@ -263,7 +282,11 @@ long UpDownEnd( struct genSubRecord *pgsub )
     else
     {
       strncpy(str, pgsub->f, MAX_STRING_SIZE);
-      c   = (char *)strtok(str, "/");
+      if(!(c   = (char *)strtok(str, "/"))) {
+         printf("Bad file name in %s at line %d\n", __FILE__, __LINE__);
+         return ERROR; 
+      }
+      
       while( c )
       {
         cprev = c;
