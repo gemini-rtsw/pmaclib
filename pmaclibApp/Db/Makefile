@@ -10,10 +10,11 @@ vpath %.sym ..
 # Install database files created from .sch files
 # using TDCT (or just install .db files) into <top>/db.
 # TDCT_CFG can be redefined here if needed
-#TDCT_CFG = ../tdct.cfg
+TDCT_CFG = ../tdct.cfg
 
 # Make depends on all .sch files
 DEPSCHS = $(wildcard ../*.sch)
+DB += pmacUpDown.db
 
 # Add target .db files below here. Each must
 # correspond to a .sch file
@@ -27,4 +28,7 @@ DB += pmactest.db
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
+$(COMMON_DIR)/%.db: %.db
+	        cp $< $@
+
 
