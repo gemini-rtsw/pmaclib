@@ -21,6 +21,7 @@
 #include <errlog.h>
 #include <string.h>
 
+#include <epicsPrint.h>
 #include "pmacVme.h"
 #include "drvPmac.h"
 #include "drvPmacGat.h"
@@ -76,7 +77,7 @@ PMAC_LOCAL void drvPmacGatScanInit( int   card )
   /* pCard->scanGatReadSem = semBCreate(SEM_Q_FIFO,SEM_EMPTY); */
   pCard->scanGatReadSem = epicsEventMustCreate(epicsEventEmpty);;
   if( pCard->scanGatReadSem == NULL )
-    errlogPrintf("drvPmacGatScanInit: read semBcreate failed");
+    printf("drvPmacGatScanInit: read semBcreate failed");
   else
   {
     sprintf(pCard->scanGatReadName, "%s%d", PMAC_GAT_READ, pCard->card);
@@ -207,9 +208,11 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
 
    delay = 0.02;   /* 50 Hz */
    card = pCard->card;
-   errLogPrintf("Gat Read Task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
+   errlogPrintf("Gat Read Task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
 
    terminator = drvPmacMbxWriteRead(card, "version", response, errmsg);
+
+
    if( errmsg[0] )
    {
       errlogPrintf("Error message returned from VERSION command: %s\n", errmsg);

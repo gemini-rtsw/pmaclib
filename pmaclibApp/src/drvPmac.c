@@ -1387,7 +1387,6 @@ char drvPmacMbxWriteRead
    
    printf("drvPmacMbxWriteRead: card = %d, writebuf = %s\n", card, writebuf);
    pmacMbxLock(card);
-
    terminator = pmacMbxWrite (card, writebuf);
    terminator = pmacMbxRead (card, readbuf, errmsg);
    while ( terminator == PMAC_TERM_CR )

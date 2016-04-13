@@ -14,6 +14,7 @@
 #include <epicsPrint.h>
 #include <math.h>
 #include <string.h>
+#include <epicsEvent.h>
 
 /* EPICS Includes */
 
@@ -77,7 +78,7 @@ PMAC_LOCAL long pmacVmeInit (void)
 	PMAC_DEBUG
 	(	7,
 		PMAC_MESSAGE ("%s: PMAC VME INIT for controller %d:\n"
-                              "configured = %d, presentBase = %d, enabledBase = %d", 
+                              "configured = %d, presentBase = %d, enabledBase = %d\n\n", 
                                MyName, pPmacCtlr->ctlr, pPmacCtlr->configured, 
                                pPmacCtlr->presentBase, pPmacCtlr->enabledBase);
 	)
@@ -125,18 +126,22 @@ void adapterMbxRx(void *p) {
  * pmacMbxReceiptISR - interrupt service routine for mailbox receipt acknowledge
  *
  */
+static int mbxRcptISRcnt = 0;
 PMAC_LOCAL void pmacMbxReceiptISR
 (
 	PMAC_CTLR	*pPmacCtlr
 )
 {
 	char *	MyName = "pmacMbxReceiptISR";
+mbxRcptISRcnt++;
 
+#if 0
 	PMAC_DEBUG
 	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ MbxReceipt for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
+#endif
 	
 	epicsEventSignal (pPmacCtlr->ioMbxReceiptSem);
 	
@@ -158,20 +163,26 @@ void adapterMbxReadme(void *p) {
  * pmacMbxReadmeISR - interrupt service routine for mailbox message arrival
  *
  */
+static int mbxReadmeISRcnt = 0;
 PMAC_LOCAL void pmacMbxReadmeISR
 (
 	PMAC_CTLR	*pPmacCtlr
 )
 {
 	char *	MyName = "pmacMbxReadmeISR";
+mbxReadmeISRcnt++;
 
+#if 0
 	PMAC_DEBUG
 	(	7,
 		PMAC_MESSAGE ("%s: PMAC IRQ MbxReadme for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
+#endif
 	
 	epicsEventSignal (pPmacCtlr->ioMbxReadmeSem);
+
+mbxReadmeISRcnt++;
 	
 	return;
 }
@@ -305,7 +316,7 @@ PMAC_LOCAL char pmacMbxRead
 )
 {
     int		i;
-    STATUS      error;
+    epicsEventWaitStatus    status = epicsEventWaitOK;
     char	terminator;
     PMAC_CTLR	*pPmacCtlr;
     
@@ -313,18 +324,19 @@ PMAC_LOCAL char pmacMbxRead
     
     i          = 0;
     terminator = 0;
-    error      = 0;
 
-    while( (terminator == 0) && (error != ERROR) )
+    while( (terminator == 0) && (status == epicsEventWaitOK) )
     {
 	pPmacCtlr->pBase->mailbox.MB[1].data = 0;
-	error      = epicsEventWaitWithTimeout( pPmacCtlr->ioMbxReadmeSem, MBX_TIMEOUT);
+	status      = epicsEventWaitWithTimeout( pPmacCtlr->ioMbxReadmeSem, MBX_TIMEOUT);
 	terminator = pmacMbxIn (ctlr, &readbuf[i], errmsg);
 	i         += PMAC_BASE_MBX_REGS_IN;
     }
  
-    if( error == ERROR )
+    if( status == epicsEventWaitTimeout )
       printf("Read from PMAC Mailbox timed out: waiting for readme semaphore from PMAC, %d\n", ctlr);
+    else if( status == epicsEventWaitError )
+      printf("Read from PMAC Mailbox error: waiting for readme semaphore from PMAC, %d\n", ctlr);
 
     return (terminator);
 }
@@ -1001,19 +1013,22 @@ void adapterAscIn(void *p) {
  * pmacAscInISR - ASCII Host-Input Buffer Ready Interrupt Service Routine
  *
  */
+static int ascInISRcnt = 0;
 PMAC_LOCAL void pmacAscInISR
 (
 	PMAC_CTLR	*pPmacCtlr
 )
 {
 	char *	MyName = "pmacAscInISR";
-
+ascInISRcnt++;
+#if 0
 	PMAC_DEBUG
 	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ AscIn for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
-	
+#endif
+
 	epicsEventSignal (pPmacCtlr->ioAscReadmeSem);
 	
 	return;
@@ -1284,18 +1299,22 @@ void adapterGatBuffer(void *p) {
  * pmacGatBufferISR - interrupt service routine for DPRAM Data Gathering Buffer
  *
  */
+static int gatBufISRcnt = 0;
 PMAC_LOCAL void pmacGatBufferISR
 (
 	PMAC_CTLR	*pPmacCtlr
 )
 {
 	char *	MyName = "pmacGatBufferISR";
+gatBufISRcnt++;
 
+#if 0
 	PMAC_DEBUG
 	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ GatBuffer for ctlr %d\n",
                   MyName, pPmacCtlr->ctlr);
 	)
+#endif
 	
 	epicsEventSignal (pPmacCtlr->ioGatBufferSem);
 	
@@ -1306,4 +1325,8 @@ epicsExportAddress(int, mbxoutA);
 epicsExportAddress(int, mbxoutB); 
 epicsExportAddress(int, mbxoutC); 
 epicsExportAddress(int, mbxoutD); 
+epicsExportAddress(int, gatBufISRcnt); 
+epicsExportAddress(int, mbxReadmeISRcnt); 
+epicsExportAddress(int, mbxRcptISRcnt); 
+epicsExportAddress(int, ascInISRcnt); 
 
