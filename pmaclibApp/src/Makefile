@@ -15,6 +15,7 @@ DBD += pmaclib.dbd
 # pmaclib.dbd will be made up from these files:
 pmaclib_DBD += base.dbd
 pmaclib_DBD += geminiRecords.dbd
+pmaclib_DBD += genSubRecord.dbd
 #pmaclib_DBD += loadRecord.dbd
 #pmaclib_DBD += statusRecord.dbd
 # List local .dbd files here
@@ -30,6 +31,7 @@ pmaclib_SRCS += devPmacRam.c
 pmaclib_SRCS += drvPmacVme.c
 pmaclib_SRCS += drvPmac.c
 pmaclib_SRCS += drvPmacGat.c
+#pmaclib_SRCS += pmacUpDown.c
 #pmaclib_SRCS += xxx.st
 
 INC	+= drvPmac.h
