@@ -133,18 +133,17 @@ PMAC_LOCAL void pmacMbxReceiptISR
 )
 {
 	char *	MyName = "pmacMbxReceiptISR";
-mbxRcptISRcnt++;
 
-#if 0
 	PMAC_DEBUG
 	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ MbxReceipt for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
-#endif
+
 	
 	epicsEventSignal (pPmacCtlr->ioMbxReceiptSem);
-	
+
+        mbxRcptISRcnt++;
 	return;
 }
 
@@ -170,20 +169,15 @@ PMAC_LOCAL void pmacMbxReadmeISR
 )
 {
 	char *	MyName = "pmacMbxReadmeISR";
-mbxReadmeISRcnt++;
-
-#if 0
 	PMAC_DEBUG
-	(	7,
+	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ MbxReadme for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
-#endif
 	
 	epicsEventSignal (pPmacCtlr->ioMbxReadmeSem);
 
-mbxReadmeISRcnt++;
-	
+        mbxReadmeISRcnt++;
 	return;
 }
 
@@ -396,7 +390,7 @@ long pmacMbxLock
 
     pPmacCtlr = &pmacVmeCtlr[ctlr];
 	PMAC_DEBUG
-	(	7,
+	(	10,
 		PMAC_MESSAGE ("%s: PMAC MBX LOCK %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
@@ -420,7 +414,7 @@ long pmacMbxUnlock
 
     pPmacCtlr = &pmacVmeCtlr[ctlr];
 	PMAC_DEBUG
-	(	7,
+	(	10,
 		PMAC_MESSAGE ("%s: PMAC MBX UNLOCK %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
@@ -1020,17 +1014,15 @@ PMAC_LOCAL void pmacAscInISR
 )
 {
 	char *	MyName = "pmacAscInISR";
-ascInISRcnt++;
-#if 0
 	PMAC_DEBUG
 	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ AscIn for ctlr %d\n", 
                   MyName, pPmacCtlr->ctlr);
 	)
-#endif
 
 	epicsEventSignal (pPmacCtlr->ioAscReadmeSem);
-	
+
+        ascInISRcnt++;
 	return;
 }
 
@@ -1305,19 +1297,17 @@ PMAC_LOCAL void pmacGatBufferISR
 	PMAC_CTLR	*pPmacCtlr
 )
 {
-	char *	MyName = "pmacGatBufferISR";
-gatBufISRcnt++;
 
-#if 0
+	char *	MyName = "pmacGatBufferISR";
 	PMAC_DEBUG
 	(	10,
 		PMAC_MESSAGE ("%s: PMAC IRQ GatBuffer for ctlr %d\n",
                   MyName, pPmacCtlr->ctlr);
 	)
-#endif
 	
 	epicsEventSignal (pPmacCtlr->ioGatBufferSem);
 	
+        gatBufISRcnt++;
 	return;
 }
 epicsExportAddress(int, pmacVmeDebug); 
