@@ -30,7 +30,8 @@
 #include <recSup.h>
 #include <genSubRecord.h>
 #include <menuCarstates.h>
-
+#include <epicsExport.h>
+#include <registryFunction.h>
 
 #define ERROR (-1)
 #define OK      0
@@ -833,3 +834,7 @@ long createPlcSummary( char *readFile, char *writeFile )
   }
   return(error);
 }
+epicsRegisterFunction(UpDownTrigger);
+epicsRegisterFunction(UpDownStart);
+epicsRegisterFunction(UpDownEnd);
+
