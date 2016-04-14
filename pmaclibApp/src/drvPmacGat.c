@@ -230,7 +230,8 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
       }
       else if( !strncmp(response, "1.16C", 5) ||
                !strncmp(response, "1.16D", 5) ||
-               !strncmp(response, "1.16G", 5) )
+               !strncmp(response, "1.16G", 5) ||
+               !strncmp(response, "1.17C", 5) )
       {
          pmac_gat_offset[card]   = 0x0900;
          pmac_gat_nextaddr[card] = 0x08FE;
