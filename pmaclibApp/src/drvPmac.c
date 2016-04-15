@@ -1084,6 +1084,10 @@ long drvPmacBkgRead(int card)
       return (0);
    }
 
+   PMAC_DEBUG(4,
+              PMAC_MESSAGE ("%s: PMAC Background Read triggered, status = %ld\n", MyName, pmacStatus);
+   )
+
    /* Read PMAC Background Fixed Data Buffer */
    for (i=0; i<pCard->numBkgIo; i++)
    {
@@ -1801,6 +1805,7 @@ EPICSTHREADFUNC drvPmacBkgTask (void *c)               /* MDW OSI work 20160321 
 {
    int card = *(int *)c;
    PMAC_CARD *pCard = &drvPmacCard[card];
+
 
    FOREVER
    {

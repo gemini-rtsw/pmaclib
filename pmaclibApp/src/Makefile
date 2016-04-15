@@ -15,14 +15,11 @@ DBD += pmaclib.dbd
 # pmaclib.dbd will be made up from these files:
 pmaclib_DBD += base.dbd
 pmaclib_DBD += geminiRecords.dbd
-pmaclib_DBD += genSubRecord.dbd
-pmaclib_DBD += loadRecord.dbd
-pmaclib_DBD += statusRecord.dbd
+#pmaclib_DBD += genSubRecord.dbd
+#pmaclib_DBD += loadRecord.dbd
+#pmaclib_DBD += statusRecord.dbd
 # List local .dbd files here
 pmaclib_DBD += pmacDev.dbd
-
-# Include dbd files for external support modules:
-# pmaclib_DBD += genSubRecord.dbd
 
 # specify all source files to be compiled
 # including sequencer (.st) source files
