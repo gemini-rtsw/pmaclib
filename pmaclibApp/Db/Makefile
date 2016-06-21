@@ -19,7 +19,6 @@ DB += pmacUpDown.db
 # Add target .db files below here. Each must
 # correspond to a .sch file
 DB += pmactest.db
-DB += pmacMbxtest.db
 
 # If .sym files are in this support module,
 # simply install them into <top>/db.
