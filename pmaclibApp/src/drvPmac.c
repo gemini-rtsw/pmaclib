@@ -294,7 +294,7 @@ long pmacConfig
 epicsPrintf("PMAC VME BASE ADDR: 0x%lx\n", pPmacCtlr->vmebusBase);
    status = devRegisterAddress ("PMAC BASE", atVMEA24, pPmacCtlr->vmebusBase,
     PMAC_MEM_SIZE_BASE, (void *) &(pPmacCtlr->pBase));
-epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", pPmacCtlr->pBase);
+epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", (void *) pPmacCtlr->pBase);
    if (!RTN_SUCCESS(status))
    {
       printf ("%s: Failure registering controller %d base address A24 %#010lx.\n",
@@ -302,7 +302,7 @@ epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", pPmacCtlr->pBase);
       return (status);
    }
 
-epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
+epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val);
    if (status != OK)
    {
@@ -409,8 +409,7 @@ epicsPrintf("PMAC Probe addr: %p\n", pPmacCtlr->pBase);
       return (status);
    }
 
-   status = devConnectInterruptVME (pPmacCtlr->irqVector - 1,
-   adapterMbxRx, (void *) pPmacCtlr);
+   status = devConnectInterruptVME (pPmacCtlr->irqVector - 1, adapterMbxRx, (void *) pPmacCtlr);
    if (!RTN_SUCCESS(status))
    {
       printf ("%s: Failure to connect interrupt.\n", MyName);
