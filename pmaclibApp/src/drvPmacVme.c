@@ -111,6 +111,10 @@ PMAC_LOCAL long pmacVmeInit (void)
 	return (0);
 }
 
+static int cntRxISR = 0;
+static int cntReadmeISR = 0;
+static int cntAscinISR = 0;
+static int cntGatbufISR = 0;
 /***
  *
  *  OSI Compatibility Adapter 	MJR 20160314
@@ -141,6 +145,7 @@ PMAC_LOCAL void pmacMbxReceiptISR
 	)
 
 	
+        cntRxISR++;
 	epicsEventSignal (pPmacCtlr->ioMbxReceiptSem);
 
         mbxRcptISRcnt++;
@@ -175,6 +180,7 @@ PMAC_LOCAL void pmacMbxReadmeISR
                   MyName, pPmacCtlr->ctlr);
 	)
 	
+        cntReadmeISR++;
 	epicsEventSignal (pPmacCtlr->ioMbxReadmeSem);
 
         mbxReadmeISRcnt++;
@@ -1020,6 +1026,8 @@ PMAC_LOCAL void pmacAscInISR
                   MyName, pPmacCtlr->ctlr);
 	)
 
+        
+        cntAscinISR++;
 	epicsEventSignal (pPmacCtlr->ioAscReadmeSem);
 
         ascInISRcnt++;
@@ -1305,6 +1313,7 @@ PMAC_LOCAL void pmacGatBufferISR
                   MyName, pPmacCtlr->ctlr);
 	)
 	
+        cntGatbufISR++;
 	epicsEventSignal (pPmacCtlr->ioGatBufferSem);
 	
         gatBufISRcnt++;
@@ -1314,9 +1323,15 @@ epicsExportAddress(int, pmacVmeDebug);
 epicsExportAddress(int, mbxoutA); 
 epicsExportAddress(int, mbxoutB); 
 epicsExportAddress(int, mbxoutC); 
-epicsExportAddress(int, mbxoutD); 
+epicsExportAddress(int, mbxoutD);
 epicsExportAddress(int, gatBufISRcnt); 
 epicsExportAddress(int, mbxReadmeISRcnt); 
 epicsExportAddress(int, mbxRcptISRcnt); 
 epicsExportAddress(int, ascInISRcnt); 
+
+epicsExportAddress(int, cntRxISR);
+epicsExportAddress(int, cntReadmeISR);
+epicsExportAddress(int, cntAscinISR);
+epicsExportAddress(int, cntGatbufISR);
+
 
