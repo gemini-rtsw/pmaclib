@@ -202,9 +202,10 @@ PMAC_LOCAL long	drvPmacRamPutData(PMAC_RAM_IO *);
 PMAC_LOCAL long	drvPmac_report(int);
 PMAC_LOCAL long	drvPmac_init(void);
 
-PMAC_LOCAL int	drvPmacSvoScan(void);
-PMAC_LOCAL int	drvPmacBkgScan(void);
-PMAC_LOCAL int	drvPmacVarScan(void);
+//MJR  20160420 Extraneous variables not used
+//PMAC_LOCAL int	drvPmacSvoScan(void);
+//PMAC_LOCAL int	drvPmacBkgScan(void);
+//PMAC_LOCAL int	drvPmacVarScan(void);
 
 PMAC_LOCAL void	drvPmacSvoScanInit(int);
 EPICSTHREADFUNC	drvPmacSvoTask(void *);
