@@ -1,0 +1,175 @@
+[schematic2]
+uniq 66
+[tools]
+[detail]
+w 432 2019 100 0 n#1 estatus.dprStatus.LK00 416 2016 448 2016 448 2584 1280 2584 ebis.tsB0.SLNK
+w 440 1987 100 0 n#2 estatus.dprStatus.BI01 416 1984 464 1984 464 2512 1280 2512 ebis.tsB1.INP
+w 448 1955 100 0 n#3 estatus.dprStatus.LK01 416 1952 480 1952 480 2480 1280 2480 ebis.tsB1.SLNK
+w 456 1923 100 0 n#4 estatus.dprStatus.BI02 416 1920 496 1920 496 2408 1280 2408 ebis.tsB2.INP
+w 464 1891 100 0 n#5 estatus.dprStatus.LK02 416 1888 512 1888 512 2376 1280 2376 ebis.tsB2.SLNK
+w 488 1795 100 0 n#6 estatus.dprStatus.BI04 416 1792 560 1792 560 2200 1280 2200 ebis.tsB4.INP
+w 496 1763 100 0 n#7 estatus.dprStatus.LK04 416 1760 576 1760 576 2168 1280 2168 ebis.tsB4.SLNK
+w 424 2051 100 0 n#8 estatus.dprStatus.BI00 416 2048 432 2048 432 2616 1280 2616 ebis.tsB0.INP
+w 424 35 100 0 n#9 estatus.dprStatus.LK31 416 32 432 32 432 -640 1280 -640 ebis.tsB31.SLNK
+w 432 67 100 0 n#10 estatus.dprStatus.BI31 416 64 448 64 448 -608 1280 -608 ebis.tsB31.INP
+w 440 99 100 0 n#11 estatus.dprStatus.LK30 416 96 464 96 464 -536 1280 -536 ebis.tsB30.SLNK
+w 448 131 100 0 n#12 estatus.dprStatus.BI30 416 128 480 128 480 -504 1280 -504 ebis.tsB30.INP
+w 456 163 100 0 n#13 estatus.dprStatus.LK29 416 160 496 160 496 -432 1280 -432 ebis.tsB29.SLNK
+w 464 195 100 0 n#14 estatus.dprStatus.BI29 416 192 512 192 512 -400 1280 -400 ebis.tsB29.INP
+w 472 227 100 0 n#15 estatus.dprStatus.LK28 416 224 528 224 528 -328 1280 -328 ebis.tsB28.SLNK
+w 480 259 100 0 n#16 estatus.dprStatus.BI28 416 256 544 256 544 -296 1280 -296 ebis.tsB28.INP
+w 488 291 100 0 n#17 estatus.dprStatus.LK27 416 288 560 288 560 -224 1280 -224 ebis.tsB27.SLNK
+w 496 323 100 0 n#18 estatus.dprStatus.BI27 416 320 576 320 576 -192 1280 -192 ebis.tsB27.INP
+w 520 419 100 0 n#19 estatus.dprStatus.LK25 416 416 624 416 624 -16 1280 -16 ebis.tsB25.SLNK
+w 528 451 100 0 n#20 estatus.dprStatus.BI25 416 448 640 448 640 16 1280 16 ebis.tsB25.INP
+w 536 483 100 0 n#21 estatus.dprStatus.LK24 416 480 656 480 656 88 1280 88 ebis.tsB24.SLNK
+w 544 515 100 0 n#22 estatus.dprStatus.BI24 416 512 672 512 672 120 1280 120 ebis.tsB24.INP
+w 552 547 100 0 n#23 estatus.dprStatus.LK23 416 544 688 544 688 192 1280 192 ebis.tsB23.SLNK
+w 560 579 100 0 n#24 estatus.dprStatus.BI23 416 576 704 576 704 224 1280 224 ebis.tsB23.INP
+w 568 611 100 0 n#25 estatus.dprStatus.LK22 416 608 720 608 720 296 1280 296 ebis.tsB22.SLNK
+w 576 643 100 0 n#26 estatus.dprStatus.BI22 416 640 736 640 736 328 1280 328 ebis.tsB22.INP
+w 584 675 100 0 n#27 estatus.dprStatus.LK21 416 672 752 672 752 400 1280 400 ebis.tsB21.SLNK
+w 592 707 100 0 n#28 estatus.dprStatus.BI21 416 704 768 704 768 432 1280 432 ebis.tsB21.INP
+w 600 739 100 0 n#29 estatus.dprStatus.LK20 416 736 784 736 784 504 1280 504 ebis.tsB20.SLNK
+w 608 771 100 0 n#30 estatus.dprStatus.BI20 416 768 800 768 800 536 1280 536 ebis.tsB20.INP
+w 616 803 100 0 n#31 estatus.dprStatus.LK19 416 800 816 800 816 608 1280 608 ebis.tsB19.SLNK
+w 624 835 100 0 n#32 estatus.dprStatus.BI19 416 832 832 832 832 640 1280 640 ebis.tsB19.INP
+w 648 931 100 0 n#33 estatus.dprStatus.LK17 416 928 880 928 880 816 1280 816 ebis.tsB17.SLNK
+w 656 963 100 0 n#34 estatus.dprStatus.BI17 416 960 896 960 896 848 1280 848 ebis.tsB17.INP
+w 664 995 100 0 n#35 estatus.dprStatus.LK16 416 992 912 992 912 920 1280 920 ebis.tsB16.SLNK
+w 672 1027 100 0 n#36 estatus.dprStatus.BI16 416 1024 928 1024 928 952 1280 952 ebis.tsB16.INP
+w 504 1731 100 0 n#37 estatus.dprStatus.BI05 416 1728 592 1728 592 2096 1280 2096 ebis.tsB5.INP
+w 512 1699 100 0 n#38 estatus.dprStatus.LK05 416 1696 608 1696 608 2064 1280 2064 ebis.tsB5.SLNK
+w 520 1667 100 0 n#39 estatus.dprStatus.BI06 416 1664 624 1664 624 1992 1280 1992 ebis.tsB6.INP
+w 528 1635 100 0 n#40 estatus.dprStatus.LK06 416 1632 640 1632 640 1960 1280 1960 ebis.tsB6.SLNK
+w 536 1603 100 0 n#41 estatus.dprStatus.BI07 416 1600 656 1600 656 1888 1280 1888 ebis.tsB7.INP
+w 544 1571 100 0 n#42 estatus.dprStatus.LK07 416 1568 672 1568 672 1856 1280 1856 ebis.tsB7.SLNK
+w 568 1475 100 0 n#43 estatus.dprStatus.BI09 416 1472 720 1472 720 1680 1280 1680 ebis.tsB9.INP
+w 576 1443 100 0 n#44 estatus.dprStatus.LK09 416 1440 736 1440 736 1648 1280 1648 ebis.tsB9.SLNK
+w 584 1411 100 0 n#45 estatus.dprStatus.BI10 416 1408 752 1408 752 1576 1280 1576 ebis.tsB10.INP
+w 592 1379 100 0 n#46 estatus.dprStatus.LK10 416 1376 768 1376 768 1544 1280 1544 ebis.tsB10.SLNK
+w 600 1347 100 0 n#47 estatus.dprStatus.BI11 416 1344 784 1344 784 1472 1280 1472 ebis.tsB11.INP
+w 608 1315 100 0 n#48 estatus.dprStatus.LK11 416 1312 800 1312 800 1440 1280 1440 ebis.tsB11.SLNK
+w 616 1283 100 0 n#49 estatus.dprStatus.BI12 416 1280 816 1280 816 1368 1280 1368 ebis.tsB12.INP
+w 624 1251 100 0 n#50 estatus.dprStatus.LK12 416 1248 832 1248 832 1336 1280 1336 ebis.tsB12.SLNK
+w 632 1219 100 0 n#51 estatus.dprStatus.BI13 416 1216 848 1216 848 1264 1280 1264 ebis.tsB13.INP
+w 640 1187 100 0 n#52 estatus.dprStatus.LK13 416 1184 864 1184 864 1232 1280 1232 ebis.tsB13.SLNK
+w 648 1155 100 0 n#53 estatus.dprStatus.BI14 416 1152 880 1152 880 1160 1280 1160 ebis.tsB14.INP
+w 652 1123 100 0 n#54 estatus.dprStatus.LK14 416 1120 888 1120 888 1128 1280 1128 ebis.tsB14.SLNK
+w 504 355 100 0 n#55 estatus.dprStatus.LK26 416 352 592 352 592 -120 1280 -120 ebis.tsB26.SLNK
+w 512 387 100 0 n#56 estatus.dprStatus.BI26 416 384 608 384 608 -88 1280 -88 ebis.tsB26.INP
+w 472 1859 100 0 n#57 estatus.dprStatus.BI03 416 1856 528 1856 528 2304 1280 2304 ebis.tsB3.INP
+w 480 1827 100 0 n#58 estatus.dprStatus.LK03 416 1824 544 1824 544 2272 1280 2272 ebis.tsB3.SLNK
+w 552 1539 100 0 n#59 estatus.dprStatus.BI08 416 1536 688 1536 688 1784 1280 1784 ebis.tsB8.INP
+w 560 1507 100 0 n#60 estatus.dprStatus.LK08 416 1504 704 1504 704 1752 1280 1752 ebis.tsB8.SLNK
+w 688 1091 100 0 n#61 estatus.dprStatus.BI15 416 1088 960 1088 960 1056 1280 1056 ebis.tsB15.INP
+w 680 1059 100 0 n#62 estatus.dprStatus.LK15 416 1056 944 1056 944 1024 1280 1024 ebis.tsB15.SLNK
+w 632 867 100 0 n#63 estatus.dprStatus.LK18 416 864 848 864 848 712 1280 712 ebis.tsB18.SLNK
+w 640 899 100 0 n#64 estatus.dprStatus.BI18 416 896 864 896 864 744 1280 744 ebis.tsB18.INP
+w 10 2122 -100 0 n#65 hwin.hwin#2.in 0 2112 0 2112 estatus.dprStatus.INP
+[cell use]
+use estatus 231 -40 100 0 dprStatus
+xform 0 208 1072
+p 147 -40 100 0 -1 PV:$(top)
+p 108 2106 100 0 1 DTYP:PMAC-VME DPRAM
+p 113 2069 100 0 1 SCAN:I/O Intr
+use ebis 1696 2368 100 0 tsB2
+xform 0 1408 2376
+p 1598 2368 100 0 -1 PV:$(top)
+use ebis 1692 1956 100 0 tsB6
+xform 0 1408 1960
+p 1594 1956 100 0 -1 PV:$(top)
+use ebis 1695 2163 100 0 tsB4
+xform 0 1408 2168
+p 1597 2163 100 0 -1 PV:$(top)
+use ebis 1695 1860 100 0 tsB7
+xform 0 1408 1856
+p 1597 1860 100 0 -1 PV:$(top)
+use ebis 1696 1232 100 0 tsB13
+xform 0 1408 1232
+p 1598 1232 100 0 -1 PV:$(top)
+use ebis 1690 1542 100 0 tsB10
+xform 0 1408 1544
+p 1592 1542 100 0 -1 PV:$(top)
+use ebis 1695 2064 100 0 tsB5
+xform 0 1408 2064
+p 1597 2064 100 0 -1 PV:$(top)
+use ebis 1696 1336 100 0 tsB12
+xform 0 1408 1336
+p 1598 1336 100 0 -1 PV:$(top)
+use ebis 1696 1131 100 0 tsB14
+xform 0 1408 1128
+p 1598 1131 100 0 -1 PV:$(top)
+use ebis 1698 1746 100 0 tsB8
+xform 0 1408 1752
+p 1600 1746 100 0 -1 PV:$(top)
+use ebis 1691 2274 100 0 tsB3
+xform 0 1408 2272
+p 1593 2274 100 0 -1 PV:$(top)
+use ebis 1698 703 100 0 tsB18
+xform 0 1408 712
+p 1600 703 100 0 -1 PV:$(top)
+use ebis 1695 493 100 0 tsB20
+xform 0 1408 504
+p 1597 493 100 0 -1 PV:$(top)
+use ebis 1699 1031 100 0 tsB15
+xform 0 1408 1024
+p 1601 1031 100 0 -1 PV:$(top)
+use ebis 1698 -433 100 0 tsB29
+xform 0 1408 -432
+p 1600 -433 100 0 -1 PV:$(top)
+use ebis 1696 612 100 0 tsB19
+xform 0 1408 608
+p 1598 612 100 0 -1 PV:$(top)
+use ebis 1694 395 100 0 tsB21
+xform 0 1408 400
+p 1596 395 100 0 -1 PV:$(top)
+use ebis 1700 2478 100 0 tsB1
+xform 0 1408 2480
+p 1602 2478 100 0 -1 PV:$(top)
+use ebis 1699 816 100 0 tsB17
+xform 0 1408 816
+p 1601 816 100 0 -1 PV:$(top)
+use ebis 1695 922 100 0 tsB16
+xform 0 1408 920
+p 1597 922 100 0 -1 PV:$(top)
+use ebis 1696 1445 100 0 tsB11
+xform 0 1408 1440
+p 1598 1445 100 0 -1 PV:$(top)
+use ebis 1698 1648 100 0 tsB9
+xform 0 1408 1648
+p 1600 1648 100 0 -1 PV:$(top)
+use ebis 1695 296 100 0 tsB22
+xform 0 1408 296
+p 1597 296 100 0 -1 PV:$(top)
+use ebis 1696 -16 100 0 tsB25
+xform 0 1408 -16
+p 1598 -16 100 0 -1 PV:$(top)
+use ebis 1698 -224 100 0 tsB27
+xform 0 1408 -224
+p 1600 -224 100 0 -1 PV:$(top)
+use ebis 1698 -536 100 0 tsB30
+xform 0 1408 -536
+p 1600 -536 100 0 -1 PV:$(top)
+use ebis 1698 2582 100 0 tsB0
+xform 0 1408 2584
+p 1600 2582 100 0 -1 PV:$(top)
+use ebis 1698 190 100 0 tsB23
+xform 0 1408 192
+p 1600 190 100 0 -1 PV:$(top)
+use ebis 1695 87 100 0 tsB24
+xform 0 1408 88
+p 1597 87 100 0 -1 PV:$(top)
+use ebis 1698 -328 100 0 tsB28
+xform 0 1408 -328
+p 1600 -328 100 0 -1 PV:$(top)
+use ebis 1698 -637 100 0 tsB31
+xform 0 1408 -640
+p 1600 -637 100 0 -1 PV:$(top)
+use ebis 1696 -120 100 0 tsB26
+xform 0 1408 -120
+p 1598 -120 100 0 -1 PV:$(top)
+use hwin -192 2096 100 0 hwin#2
+xform 0 -96 2112
+p -269 2140 100 0 -1 val(in):#C0 S0 @X:$DFF4
+[comments]
