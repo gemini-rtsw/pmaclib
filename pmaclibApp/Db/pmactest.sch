@@ -2,16 +2,16 @@
 uniq 11
 [tools]
 [detail]
-w -933 1179 100 0 n#1 hwin.hwin#10.in -936 1176 -936 1176 eais.dprAi.INP
-w -245 1115 100 0 n#2 hwout.hwout#17.outp -248 1112 -248 1112 eaos.dprAo.OUT
-w -949 843 100 0 n#3 hwin.hwin#12.in -952 840 -952 840 ebis.dprBi.INP
-w -253 795 100 0 n#4 hwout.hwout#19.outp -256 792 -256 792 ebos.dprBo.OUT
-w -909 499 100 0 n#5 hwin.hwin#14.in -912 496 -912 496 elongins.dprLi.INP
-w -221 451 100 0 n#6 hwout.hwout#21.outp -224 448 -224 448 elongouts.dprLo.OUT
-w -197 59 100 0 n#7 hwout.hwout#23.outp -200 56 -200 56 embbos.pmac1mbbo.OUT
-w -149 1723 100 0 n#8 hwin.hwin#28.in -152 1720 -152 1720 estringins.mbxSi.INP
-w -765 1683 100 0 n#9 hwout.hwout#31.outp -768 1680 -768 1680 estringouts.mbxSo.OUT
-w -901 83 100 0 n#10 embbis.dprMbbi.INP -904 80 -904 80 hwin.hwin#16.in
+w -245 1115 100 0 n#1 hwout.hwout#17.outp -248 1112 -248 1112 eaos.dprAo.OUT
+w -253 795 100 0 n#2 hwout.hwout#19.outp -256 792 -256 792 ebos.dprBo.OUT
+w -221 451 100 0 n#3 hwout.hwout#21.outp -224 448 -224 448 elongouts.dprLo.OUT
+w -197 59 100 0 n#4 hwout.hwout#23.outp -200 56 -200 56 embbos.pmac1mbbo.OUT
+w -149 1723 100 0 n#5 hwin.hwin#28.in -152 1720 -152 1720 estringins.mbxSi.INP
+w -765 1683 100 0 n#6 hwout.hwout#31.outp -768 1680 -768 1680 estringouts.mbxSo.OUT
+w -926 1179 100 0 n#7 hwinl.hwinl#33.in -929 1176 -929 1176 eais.dprAi.INP
+w -950 843 100 0 n#8 hwinl.hwinl#35.in -953 840 -953 840 ebis.dprBi.INP
+w -910 499 100 0 n#9 hwinl.hwinl#37.in -913 496 -913 496 elongins.dprLi.INP
+w -895 90 -100 0 n#10 hwinl.hwinl#39.in -905 80 -905 80 embbis.dprMbbi.INP
 [cell use]
 use eais -847 1075 100 0 dprAi
 xform 0 -808 1144
@@ -113,18 +113,6 @@ p -296 -266 100 0 0 TTST:Thirteen
 p -488 -266 100 0 0 TTVL:13
 p -296 -234 100 0 0 TVST:Twelve
 p -488 -234 100 0 0 TVVL:12
-use hwin -1128 1160 100 0 hwin#10
-xform 0 -1032 1176
-p -1196 1169 100 0 -1 val(in):#C$(card) S0 @F:$DFFE
-use hwin -1144 824 100 0 hwin#12
-xform 0 -1048 840
-p -1214 833 100 0 -1 val(in):#C$(card) S0 @DP:$DFFC
-use hwin -1104 480 100 0 hwin#14
-xform 0 -1008 496
-p -1172 489 100 0 -1 val(in):#C$(card) S0 @DP:$DFFA
-use hwin -1096 64 100 0 hwin#16
-xform 0 -1000 80
-p -1165 74 100 0 -1 val(in):#C$(card) S0 @DP:$DFF8
 use hwout 24 1137 100 0 hwout#17
 xform 0 -152 1112
 p -126 1104 100 0 -1 val(outp):#C$(card) S0 @F:$DFFE
@@ -153,4 +141,16 @@ xform 0 -672 1680
 p -672 1671 100 0 -1 val(outp):#C$(card) S2
 use testPmacStatusRec -176 1368 100 0 testPmacStatusRec#32
 xform 0 -48 1440
+use hwinl -1320 1104 100 0 hwinl#33
+xform 0 -1120 1152
+p -1302 1168 100 0 -1 val(in):#C$(card) S0 @F:$DFFE
+use hwinl -1344 768 100 0 hwinl#35
+xform 0 -1144 816
+p -1326 832 100 0 -1 val(in):#C$(card) S0 @F:$DFFC
+use hwinl -1304 424 100 0 hwinl#37
+xform 0 -1104 472
+p -1286 488 100 0 -1 val(in):#C$(card) S0 @F:$DFFA
+use hwinl -1296 8 100 0 hwinl#39
+xform 0 -1096 56
+p -1278 72 100 0 -1 val(in):#C$(card) S0 @F:$DFF8
 [comments]
