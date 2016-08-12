@@ -2,16 +2,16 @@
 uniq 11
 [tools]
 [detail]
-w -245 1115 100 0 n#1 hwout.hwout#17.outp -248 1112 -248 1112 eaos.dprAo.OUT
-w -253 795 100 0 n#2 hwout.hwout#19.outp -256 792 -256 792 ebos.dprBo.OUT
-w -221 451 100 0 n#3 hwout.hwout#21.outp -224 448 -224 448 elongouts.dprLo.OUT
-w -197 59 100 0 n#4 hwout.hwout#23.outp -200 56 -200 56 embbos.pmac1mbbo.OUT
-w -926 1179 100 0 n#5 hwinl.hwinl#33.in -929 1176 -929 1176 eais.dprAi.INP
-w -950 843 100 0 n#6 hwinl.hwinl#35.in -953 840 -953 840 ebis.dprBi.INP
-w -910 499 100 0 n#7 hwinl.hwinl#37.in -913 496 -913 496 elongins.dprLi.INP
-w -902 83 100 0 n#8 hwinl.hwinl#39.in -905 80 -905 80 embbis.dprMbbi.INP
-w -958 1571 100 0 n#9 hwinm.hwinm#40.in -961 1568 -961 1568 estringins.mbxSi.INP
-w -260 1530 -100 0 n#10 hwoutm.hwoutm#41.outp -270 1520 -270 1520 estringouts.mbxSo.OUT
+w -926 1179 100 0 n#1 hwinl.hwinl#33.in -929 1176 -929 1176 eais.dprAi.INP
+w -950 843 100 0 n#2 hwinl.hwinl#35.in -953 840 -953 840 ebis.dprBi.INP
+w -910 499 100 0 n#3 hwinl.hwinl#37.in -913 496 -913 496 elongins.dprLi.INP
+w -902 83 100 0 n#4 hwinl.hwinl#39.in -905 80 -905 80 embbis.dprMbbi.INP
+w -958 1571 100 0 n#5 hwinm.hwinm#40.in -961 1568 -961 1568 estringins.mbxSi.INP
+w -267 1523 100 0 n#6 hwoutm.hwoutm#41.outp -270 1520 -270 1520 estringouts.mbxSo.OUT
+w -251 1115 100 0 n#7 hwoutl.hwoutl#42.outp -254 1112 -254 1112 eaos.dprAo.OUT
+w -251 795 100 0 n#8 hwoutl.hwoutl#44.outp -254 792 -254 792 ebos.dprBo.OUT
+w -219 451 100 0 n#9 hwoutl.hwoutl#46.outp -222 448 -222 448 elongouts.dprLo.OUT
+w -196 34 -100 0 n#10 hwoutl.hwoutl#48.outp -206 24 -206 24 embbos.pmac1mbbo.VAL
 [cell use]
 use eais -847 1075 100 0 dprAi
 xform 0 -808 1144
@@ -113,18 +113,6 @@ p -296 -266 100 0 0 TTST:Thirteen
 p -488 -266 100 0 0 TTVL:13
 p -296 -234 100 0 0 TVST:Twelve
 p -488 -234 100 0 0 TVVL:12
-use hwout 24 1137 100 0 hwout#17
-xform 0 -152 1112
-p -126 1104 100 0 -1 val(outp):#C$(card) S0 @F:$DFFE
-use hwout -256 776 100 0 hwout#19
-xform 0 -160 792
-p -160 783 100 0 -1 val(outp):#C$(card) S0 @DP:$DFFC
-use hwout -224 432 100 0 hwout#21
-xform 0 -128 448
-p -101 439 100 0 -1 val(outp):#C$(card) S0 @DP:$DFFA
-use hwout -200 40 100 0 hwout#23
-xform 0 -104 56
-p -81 50 100 0 -1 val(outp):#C$(card) S0 @DP:$DFF8
 use estringouts -465 1465 100 0 mbxSo
 xform 0 -400 1536
 p -485 1595 100 0 1 DTYP:PMAC-VME ASCII
@@ -153,4 +141,16 @@ p -1246 1560 100 0 -1 val(in):#C$(card) S2
 use hwoutm -280 1448 100 0 hwoutm#41
 xform 0 -128 1496
 p -174 1511 100 0 -1 val(outp):#C$(card) S2
+use hwoutl -256 1040 100 0 hwoutl#42
+xform 0 -64 1088
+p -158 1103 100 0 -1 val(outp):#C$(card) S0 @F:$DFFE
+use hwoutl -256 720 100 0 hwoutl#44
+xform 0 -64 768
+p -158 783 100 0 -1 val(outp):#C$(card) S0 @F:$DFFC
+use hwoutl -224 376 100 0 hwoutl#46
+xform 0 -32 424
+p -126 439 100 0 -1 val(outp):#C$(card) S0 @F:$DFFA
+use hwoutl -208 -48 100 0 hwoutl#48
+xform 0 -16 0
+p -110 15 100 0 -1 val(outp):#C$(card) S0 @F:$DFF8
 [comments]

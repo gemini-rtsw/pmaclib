@@ -66,7 +66,7 @@ w 688 1091 100 0 n#61 estatus.dprStatus.BI15 416 1088 960 1088 960 1056 1280 105
 w 680 1059 100 0 n#62 estatus.dprStatus.LK15 416 1056 944 1056 944 1024 1280 1024 ebis.tsB15.SLNK
 w 632 867 100 0 n#63 estatus.dprStatus.LK18 416 864 848 864 848 712 1280 712 ebis.tsB18.SLNK
 w 640 899 100 0 n#64 estatus.dprStatus.BI18 416 896 864 896 864 744 1280 744 ebis.tsB18.INP
-w 10 2122 -100 0 n#65 hwin.hwin#2.in 0 2112 0 2112 estatus.dprStatus.INP
+w 9 2122 -100 0 n#65 hwinl.hwinl#3.in -1 2112 -1 2112 estatus.dprStatus.INP
 [cell use]
 use estatus 231 -40 100 0 dprStatus
 xform 0 208 1072
@@ -169,7 +169,7 @@ p 1600 -637 100 0 -1 PV:$(top)
 use ebis 1696 -120 100 0 tsB26
 xform 0 1408 -120
 p 1598 -120 100 0 -1 PV:$(top)
-use hwin -192 2096 100 0 hwin#2
-xform 0 -96 2112
-p -269 2140 100 0 -1 val(in):#C$(card) S0 @X:$DFF4
+use hwinl -384 2040 100 0 hwinl#3
+xform 0 -192 2088
+p -374 2104 100 0 -1 val(in):#C$(card) S0 @X:$DFF4
 [comments]
