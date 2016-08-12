@@ -6,12 +6,12 @@ w -245 1115 100 0 n#1 hwout.hwout#17.outp -248 1112 -248 1112 eaos.dprAo.OUT
 w -253 795 100 0 n#2 hwout.hwout#19.outp -256 792 -256 792 ebos.dprBo.OUT
 w -221 451 100 0 n#3 hwout.hwout#21.outp -224 448 -224 448 elongouts.dprLo.OUT
 w -197 59 100 0 n#4 hwout.hwout#23.outp -200 56 -200 56 embbos.pmac1mbbo.OUT
-w -149 1723 100 0 n#5 hwin.hwin#28.in -152 1720 -152 1720 estringins.mbxSi.INP
-w -765 1683 100 0 n#6 hwout.hwout#31.outp -768 1680 -768 1680 estringouts.mbxSo.OUT
-w -926 1179 100 0 n#7 hwinl.hwinl#33.in -929 1176 -929 1176 eais.dprAi.INP
-w -950 843 100 0 n#8 hwinl.hwinl#35.in -953 840 -953 840 ebis.dprBi.INP
-w -910 499 100 0 n#9 hwinl.hwinl#37.in -913 496 -913 496 elongins.dprLi.INP
-w -895 90 -100 0 n#10 hwinl.hwinl#39.in -905 80 -905 80 embbis.dprMbbi.INP
+w -926 1179 100 0 n#5 hwinl.hwinl#33.in -929 1176 -929 1176 eais.dprAi.INP
+w -950 843 100 0 n#6 hwinl.hwinl#35.in -953 840 -953 840 ebis.dprBi.INP
+w -910 499 100 0 n#7 hwinl.hwinl#37.in -913 496 -913 496 elongins.dprLi.INP
+w -902 83 100 0 n#8 hwinl.hwinl#39.in -905 80 -905 80 embbis.dprMbbi.INP
+w -958 1571 100 0 n#9 hwinm.hwinm#40.in -961 1568 -961 1568 estringins.mbxSi.INP
+w -260 1530 -100 0 n#10 hwoutm.hwoutm#41.outp -270 1520 -270 1520 estringouts.mbxSo.OUT
 [cell use]
 use eais -847 1075 100 0 dprAi
 xform 0 -808 1144
@@ -125,22 +125,16 @@ p -101 439 100 0 -1 val(outp):#C$(card) S0 @DP:$DFFA
 use hwout -200 40 100 0 hwout#23
 xform 0 -104 56
 p -81 50 100 0 -1 val(outp):#C$(card) S0 @DP:$DFF8
-use estringouts -961 1625 100 0 mbxSo
-xform 0 -896 1696
-p -981 1755 100 0 1 DTYP:PMAC-VME ASCII
-p -1045 1625 100 0 -1 PV:$(top)
-use estringins -24 1614 100 0 mbxSi
-xform 0 -24 1688
-p -139 1756 100 0 1 DTYP:PMAC-VME ASCII
-p -108 1614 100 0 -1 PV:$(top)
-use hwin -344 1704 100 0 hwin#28
-xform 0 -248 1720
-p -341 1712 100 0 -1 val(in):#C$(card) S2
-use hwout -768 1664 100 0 hwout#31
-xform 0 -672 1680
-p -672 1671 100 0 -1 val(outp):#C$(card) S2
-use testPmacStatusRec -176 1368 100 0 testPmacStatusRec#32
-xform 0 -48 1440
+use estringouts -465 1465 100 0 mbxSo
+xform 0 -400 1536
+p -485 1595 100 0 1 DTYP:PMAC-VME ASCII
+p -549 1465 100 0 -1 PV:$(top)
+use estringins -832 1462 100 0 mbxSi
+xform 0 -832 1536
+p -947 1604 100 0 1 DTYP:PMAC-VME ASCII
+p -916 1462 100 0 -1 PV:$(top)
+use testPmacStatusRec -784 1784 100 0 testPmacStatusRec#32
+xform 0 -656 1856
 use hwinl -1320 1104 100 0 hwinl#33
 xform 0 -1120 1152
 p -1302 1168 100 0 -1 val(in):#C$(card) S0 @F:$DFFE
@@ -153,4 +147,10 @@ p -1286 488 100 0 -1 val(in):#C$(card) S0 @F:$DFFA
 use hwinl -1296 8 100 0 hwinl#39
 xform 0 -1096 56
 p -1278 72 100 0 -1 val(in):#C$(card) S0 @F:$DFF8
+use hwinm -1256 1496 100 0 hwinm#40
+xform 0 -1104 1544
+p -1246 1560 100 0 -1 val(in):#C$(card) S2
+use hwoutm -280 1448 100 0 hwoutm#41
+xform 0 -128 1496
+p -174 1511 100 0 -1 val(outp):#C$(card) S2
 [comments]
