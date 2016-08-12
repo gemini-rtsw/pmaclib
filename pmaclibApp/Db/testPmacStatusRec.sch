@@ -171,5 +171,5 @@ xform 0 1408 -120
 p 1598 -120 100 0 -1 PV:$(top)
 use hwin -192 2096 100 0 hwin#2
 xform 0 -96 2112
-p -269 2140 100 0 -1 val(in):#C0 S0 @X:$DFF4
+p -269 2140 100 0 -1 val(in):#C$(card) S0 @X:$DFF4
 [comments]

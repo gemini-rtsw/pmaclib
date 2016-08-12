@@ -115,28 +115,28 @@ p -296 -234 100 0 0 TVST:Twelve
 p -488 -234 100 0 0 TVVL:12
 use hwin -1128 1160 100 0 hwin#10
 xform 0 -1032 1176
-p -1196 1169 100 0 -1 val(in):#C0 S0 @F:$DFFE
+p -1196 1169 100 0 -1 val(in):#C$(card) S0 @F:$DFFE
 use hwin -1144 824 100 0 hwin#12
 xform 0 -1048 840
-p -1214 833 100 0 -1 val(in):#C0 S0 @DP:$DFFC
+p -1214 833 100 0 -1 val(in):#C$(card) S0 @DP:$DFFC
 use hwin -1104 480 100 0 hwin#14
 xform 0 -1008 496
-p -1172 489 100 0 -1 val(in):#C0 S0 @DP:$DFFA
+p -1172 489 100 0 -1 val(in):#C$(card) S0 @DP:$DFFA
 use hwin -1096 64 100 0 hwin#16
 xform 0 -1000 80
-p -1165 74 100 0 -1 val(in):#C0 S0 @DP:$DFF8
+p -1165 74 100 0 -1 val(in):#C$(card) S0 @DP:$DFF8
 use hwout 24 1137 100 0 hwout#17
 xform 0 -152 1112
-p -126 1104 100 0 -1 val(outp):#C0 S0 @F:$DFFE
+p -126 1104 100 0 -1 val(outp):#C$(card) S0 @F:$DFFE
 use hwout -256 776 100 0 hwout#19
 xform 0 -160 792
-p -160 783 100 0 -1 val(outp):#C0 S0 @DP:$DFFC
+p -160 783 100 0 -1 val(outp):#C$(card) S0 @DP:$DFFC
 use hwout -224 432 100 0 hwout#21
 xform 0 -128 448
-p -101 439 100 0 -1 val(outp):#C0 S0 @DP:$DFFA
+p -101 439 100 0 -1 val(outp):#C$(card) S0 @DP:$DFFA
 use hwout -200 40 100 0 hwout#23
 xform 0 -104 56
-p -81 50 100 0 -1 val(outp):#C0 S0 @DP:$DFF8
+p -81 50 100 0 -1 val(outp):#C$(card) S0 @DP:$DFF8
 use estringouts -961 1625 100 0 mbxSo
 xform 0 -896 1696
 p -981 1755 100 0 1 DTYP:PMAC-VME ASCII
@@ -147,10 +147,10 @@ p -139 1756 100 0 1 DTYP:PMAC-VME ASCII
 p -108 1614 100 0 -1 PV:$(top)
 use hwin -344 1704 100 0 hwin#28
 xform 0 -248 1720
-p -341 1712 100 0 -1 val(in):#C0 S2
+p -341 1712 100 0 -1 val(in):#C$(card) S2
 use hwout -768 1664 100 0 hwout#31
 xform 0 -672 1680
-p -672 1671 100 0 -1 val(outp):#C0 S2
+p -672 1671 100 0 -1 val(outp):#C$(card) S2
 use testPmacStatusRec -176 1368 100 0 testPmacStatusRec#32
 xform 0 -48 1440
 [comments]
