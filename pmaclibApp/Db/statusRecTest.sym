@@ -1,0 +1,13 @@
+[symbol2]
+bbox -528 0 -168 160
+uniq 27
+[tools]
+[attributes]
+p -519 72 100 0 1 set0:dtypSoft Channel
+p -519 48 100 0 1 set1:inplink #C0 S0 @param
+p -515 24 100 0 1 set2:dev 
+[layers]
+<symbol>
+l 100 0 0 -432 128 statusRecTest
+r 0 -528 0 -168 160
+[comments]

@@ -5,6 +5,12 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 
 #=============================
+#
+
+
+SCRIPTS_HOST += ../pmaclibTest.sh
+SCRIPTS_HOST += ../pmaclibTest.adl
+
 # Build a support module called <APPNAME>
 
 LIBRARY_IOC_RTEMS += pmaclib
