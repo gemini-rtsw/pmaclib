@@ -6,6 +6,8 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Find any .sym files in the Db directory
 vpath %.sym ..
+vpath %-edb.def ..
+vpath %-tdct.cfg ..
 
 # Install database files created from .sch files
 # using TDCT (or just install .db files) into <top>/db.
@@ -22,7 +24,11 @@ DB += pmactest.db
 
 # If .sym files are in this support module,
 # simply install them into <top>/db.
+# Also install the additional entries for the system edb.def file
+# and the TDCT configuration file into <top>/db.
 DB += $(wildcard ../*.sym)
+DB += $(wildcard ../*-edb.def)
+DB += $(wildcard ../*-tdct.cfg)
 
 
 include $(TOP)/configure/RULES
