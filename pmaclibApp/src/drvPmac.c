@@ -221,7 +221,7 @@ typedef struct  /* PMAC_DRVET */
 char * drvPmacVersion = "@(#) drvPmac.c 1.7 97/05/06";
 
 #if PMAC_DIAGNOSTICS
-volatile int   drvPmacDebug = 0;      /* must be > 0 to see messages */
+volatile int   drvPmacDebug = 1;      /* must be > 0 to see messages */
 #endif
 
 /* EPICS Driver Support Entry Table */

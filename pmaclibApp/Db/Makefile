@@ -22,7 +22,7 @@ DB += pmactest.db
 
 # If .sym files are in this support module,
 # simply install them into <top>/db.
-# DB += $(wildcard ../*.sym)
+DB += $(wildcard ../*.sym)
 
 
 include $(TOP)/configure/RULES

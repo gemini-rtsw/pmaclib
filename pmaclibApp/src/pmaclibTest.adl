@@ -5,8 +5,8 @@ file {
 }
 display {
 	object {
-		x=610
-		y=111
+		x=538
+		y=104
 		width=645
 		height=285
 	}
@@ -101,710 +101,43 @@ text {
 	textix="pmaclib status record monitor"
 	align="horiz. centered"
 }
-composite {
+text {
 	object {
 		x=54
 		y=74
 		width=510
-		height=159
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Status Record Outputs"
+	align="horiz. centered"
+}
+composite {
+	object {
+		x=45
+		y=59
+		width=538
+		height=182
 	}
 	"composite name"=""
 	children {
-		text {
-			object {
-				x=54
-				y=74
-				width=510
-				height=20
-			}
-			"basic attribute" {
-				clr=14
-			}
-			textix="Status Record Outputs"
-			align="horiz. centered"
-		}
 		composite {
 			object {
 				x=54
 				y=104
 				width=510
-				height=129
+				height=120
 			}
 			"composite name"=""
 			children {
 				composite {
 					object {
 						x=54
-						y=104
-						width=510
-						height=60
-					}
-					"composite name"=""
-					children {
-						rectangle {
-							object {
-								x=114
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB29"
-							}
-						}
-						rectangle {
-							object {
-								x=112
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=113
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="29"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=85
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB30"
-							}
-						}
-						rectangle {
-							object {
-								x=83
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=84
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="30"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=143
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB28"
-							}
-						}
-						rectangle {
-							object {
-								x=141
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=142
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="28"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=56
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB31"
-							}
-						}
-						rectangle {
-							object {
-								x=54
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=55
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="31"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=247
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB25"
-							}
-						}
-						rectangle {
-							object {
-								x=245
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=246
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="25"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=218
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB26"
-							}
-						}
-						rectangle {
-							object {
-								x=216
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=217
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="26"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=276
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB24"
-							}
-						}
-						rectangle {
-							object {
-								x=274
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=275
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="24"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=189
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB27"
-							}
-						}
-						rectangle {
-							object {
-								x=187
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=188
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="27"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=380
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB21"
-							}
-						}
-						rectangle {
-							object {
-								x=378
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=379
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="21"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=351
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB22"
-							}
-						}
-						rectangle {
-							object {
-								x=349
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=350
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="22"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=409
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB20"
-							}
-						}
-						rectangle {
-							object {
-								x=407
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=408
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="20"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=322
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB23"
-							}
-						}
-						rectangle {
-							object {
-								x=320
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=321
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="23"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=513
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB17"
-							}
-						}
-						rectangle {
-							object {
-								x=511
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=512
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="17"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=484
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB18"
-							}
-						}
-						rectangle {
-							object {
-								x=482
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=483
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="18"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=542
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB16"
-							}
-						}
-						rectangle {
-							object {
-								x=540
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=541
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="16"
-							align="horiz. centered"
-						}
-						rectangle {
-							object {
-								x=455
-								y=106
-								width=20
-								height=20
-							}
-							"basic attribute" {
-								clr=16
-							}
-							"dynamic attribute" {
-								vis="if not zero"
-								chan="$(top)tsB19"
-							}
-						}
-						rectangle {
-							object {
-								x=453
-								y=104
-								width=24
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-								fill="outline"
-								width=2
-							}
-						}
-						text {
-							object {
-								x=454
-								y=140
-								width=23
-								height=24
-							}
-							"basic attribute" {
-								clr=14
-							}
-							textix="19"
-							align="horiz. centered"
-						}
-					}
-				}
-				composite {
-					object {
-						x=54
 						y=173
 						width=510
-						height=60
+						height=51
 					}
 					"composite name"=""
 					children {
@@ -841,7 +174,7 @@ composite {
 								x=113
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -882,7 +215,7 @@ composite {
 								x=84
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -923,7 +256,7 @@ composite {
 								x=142
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -964,7 +297,7 @@ composite {
 								x=55
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1005,7 +338,7 @@ composite {
 								x=246
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1046,7 +379,7 @@ composite {
 								x=217
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1087,7 +420,7 @@ composite {
 								x=275
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1128,7 +461,7 @@ composite {
 								x=188
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1169,7 +502,7 @@ composite {
 								x=379
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1210,7 +543,7 @@ composite {
 								x=350
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1251,7 +584,7 @@ composite {
 								x=408
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1292,7 +625,7 @@ composite {
 								x=321
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1333,7 +666,7 @@ composite {
 								x=512
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1374,7 +707,7 @@ composite {
 								x=483
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1415,7 +748,7 @@ composite {
 								x=541
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1456,7 +789,7 @@ composite {
 								x=454
 								y=209
 								width=23
-								height=24
+								height=15
 							}
 							"basic attribute" {
 								clr=14
@@ -1466,19 +799,686 @@ composite {
 						}
 					}
 				}
+				composite {
+					object {
+						x=54
+						y=104
+						width=510
+						height=51
+					}
+					"composite name"=""
+					children {
+						rectangle {
+							object {
+								x=114
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB29"
+							}
+						}
+						rectangle {
+							object {
+								x=112
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=113
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="29"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=85
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB30"
+							}
+						}
+						rectangle {
+							object {
+								x=83
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=84
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="30"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=143
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB28"
+							}
+						}
+						rectangle {
+							object {
+								x=141
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=142
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="28"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=56
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB31"
+							}
+						}
+						rectangle {
+							object {
+								x=54
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=55
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="31"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=247
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB25"
+							}
+						}
+						rectangle {
+							object {
+								x=245
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=246
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="25"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=218
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB26"
+							}
+						}
+						rectangle {
+							object {
+								x=216
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=217
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="26"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=276
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB24"
+							}
+						}
+						rectangle {
+							object {
+								x=274
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=275
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="24"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=189
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB27"
+							}
+						}
+						rectangle {
+							object {
+								x=187
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=188
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="27"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=380
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB21"
+							}
+						}
+						rectangle {
+							object {
+								x=378
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=379
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="21"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=351
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB22"
+							}
+						}
+						rectangle {
+							object {
+								x=349
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=350
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="22"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=409
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB20"
+							}
+						}
+						rectangle {
+							object {
+								x=407
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=408
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="20"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=322
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB23"
+							}
+						}
+						rectangle {
+							object {
+								x=320
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=321
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="23"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=513
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB17"
+							}
+						}
+						rectangle {
+							object {
+								x=511
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=512
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="17"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=484
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB18"
+							}
+						}
+						rectangle {
+							object {
+								x=482
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=483
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="18"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=542
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB16"
+							}
+						}
+						rectangle {
+							object {
+								x=540
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=541
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="16"
+							align="horiz. centered"
+						}
+						rectangle {
+							object {
+								x=455
+								y=106
+								width=20
+								height=20
+							}
+							"basic attribute" {
+								clr=16
+							}
+							"dynamic attribute" {
+								vis="if not zero"
+								chan="$(top)tsB19"
+							}
+						}
+						rectangle {
+							object {
+								x=453
+								y=104
+								width=24
+								height=24
+							}
+							"basic attribute" {
+								clr=14
+								fill="outline"
+								width=2
+							}
+						}
+						text {
+							object {
+								x=454
+								y=140
+								width=23
+								height=15
+							}
+							"basic attribute" {
+								clr=14
+							}
+							textix="19"
+							align="horiz. centered"
+						}
+					}
+				}
 			}
 		}
-	}
-}
-rectangle {
-	object {
-		x=45
-		y=59
-		width=538
-		height=182
-	}
-	"basic attribute" {
-		clr=14
-		fill="outline"
+		rectangle {
+			object {
+				x=45
+				y=59
+				width=538
+				height=182
+			}
+			"basic attribute" {
+				clr=14
+				fill="outline"
+			}
+		}
 	}
 }

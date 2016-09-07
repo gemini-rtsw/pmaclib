@@ -1,0 +1,140 @@
+recordtype(load) {
+	include "dbCommon.dbd" 
+	field(VAL,DBF_LONG) {
+		prompt("Status value")
+		asl(ASL0)
+		interest(0)
+	}
+	field(MSG,DBF_STRING) {
+		prompt("Message Value")
+		asl(ASL0)
+		interest(0)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(OUT,DBF_OUTLINK) {
+		prompt("Hardware Specificatn")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(1)
+		promptgroup(GUI_OUTPUT)
+	}
+	field(DNL,DBF_INLINK) {
+		prompt("Download Specificatn")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(1)
+		promptgroup(GUI_INPUTS)
+	}
+	field(DNV,DBF_STRING) {
+		prompt("Download Value")
+		asl(ASL0)
+		interest(0)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(UPL,DBF_INLINK) {
+		prompt("Upload Specificatn")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(1)
+		promptgroup(GUI_INPUTS)
+	}
+	field(UPV,DBF_STRING) {
+		prompt("Upload Value")
+		asl(ASL0)
+		interest(0)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(PVAL,DBF_LONG) {
+		prompt("Prev Status Value")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(0)
+	}
+	field(PMSG,DBF_STRING) {
+		prompt("Prev Message Value")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(0)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(PDNV,DBF_STRING) {
+		prompt("Prev Download Value")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(0)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(PUPV,DBF_STRING) {
+		prompt("Prev Upload Value")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(0)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SDNL,DBF_INLINK) {
+		prompt("Sim Downld Specifctn")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(2)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SDNV,DBF_STRING) {
+		prompt("Sim Downld Value")
+		asl(ASL1)
+		interest(2)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SUPL,DBF_INLINK) {
+		prompt("Sim Upload Specifctn")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(2)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SUPV,DBF_STRING) {
+		prompt("Sim Upload Value")
+		asl(ASL1)
+		interest(2)
+                size(40)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SIOL,DBF_INLINK) {
+		prompt("Sim Value Location")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(2)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SVAL,DBF_LONG) {
+		prompt("Simulation Value")
+		asl(ASL1)
+		interest(2)
+	}
+	field(SIML,DBF_INLINK) {
+		prompt("Sim Mode Location")
+		special(SPC_NOMOD)
+		asl(ASL1)
+		interest(2)
+		promptgroup(GUI_INPUTS)
+	}
+	field(SIMM,DBF_MENU) {
+		prompt("Simulation Mode")
+		asl(ASL1)
+		interest(2)
+		menu(menuYesNo)
+	}
+	field(SIMS,DBF_MENU) {
+		prompt("Sim mode Alarm Svrty")
+		asl(ASL1)
+		interest(2)
+		promptgroup(GUI_INPUTS)
+		menu(menuAlarmSevr)
+	}
+}

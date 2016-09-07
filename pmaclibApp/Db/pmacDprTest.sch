@@ -134,9 +134,11 @@ p 954 647 100 0 -1 val(outp):#C$(card) S0 @X:$DFFA
 use hwoutl 1504 -1256 100 0 hwoutl#8
 xform 0 1072 208
 p 996 226 100 0 -1 val(outp):#C$(card) S0 @F:$DFF8
-use statusRecTest 280 1560 100 0 statusRecTest#10
-xform 0 456 1640
-p 289 1584 100 0 1 set2:dev
-p 285 1608 100 0 1 set1:inplink #C0 S0 @X:$DFFA
-p 285 1632 100 0 1 set0:dtyp PMAC-VME DPRAM
+use statusRecTest -96 1576 100 0 statusRecTest#10
+xform 0 80 1656
+p -87 1600 100 0 1 set2:dev
+p -91 1624 100 0 1 set1:inplink #C0 S0 @X:$DFFA
+p -91 1648 100 0 1 set0:dtyp PMAC-VME DPRAM
+use bkgThrTest 432 1576 100 0 bkgThrTest#11
+xform 0 608 1656
 [comments]
