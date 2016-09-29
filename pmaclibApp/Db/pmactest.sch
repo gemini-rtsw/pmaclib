@@ -34,4 +34,6 @@ use pmacMbxTest -528 1968 100 0 pmacMbxTest#49
 xform 0 -352 2072
 use pmacDprTest -984 1968 100 0 pmacDprTest#50
 xform 0 -808 2072
+use pmacUpDown -976 1704 100 0 pmacUpDown#51
+xform 0 -648 1768
 [comments]

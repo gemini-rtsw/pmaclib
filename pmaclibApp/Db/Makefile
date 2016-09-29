@@ -16,7 +16,7 @@ vpath %-tdct.cfg ..
 
 # Make depends on all .sch files
 DEPSCHS = $(wildcard ../*.sch)
-DB += pmacUpDown.db
+#DB += pmacUpDown.db
 
 # Add target .db files below here. Each must
 # correspond to a .sch file

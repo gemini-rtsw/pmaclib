@@ -32,6 +32,7 @@
 #include <menuCarstates.h>
 #include <epicsExport.h>
 #include <registryFunction.h>
+#include <epicsPrint.h>
 
 #define ERROR (-1)
 #define OK      0
@@ -50,6 +51,16 @@
 #define PLC_DISABLE_BIT       22
 #define TEMPFILE              "tempFile"
 #define RESULTS               "results"
+
+
+#define pmacUpDownDebug 1
+#define PMAC_DIAGNOSTICS TRUE
+#if PMAC_DIAGNOSTICS
+#define PMAC_MESSAGE    errlogPrintf
+#define PMAC_DEBUG(level,code)       { if (pmacUpDownDebug >= (level)) { code } }
+#else
+#define PMAC_DEBUG(level,code)      ;
+#endif
 
 long createScript( char *, char *, char * );
 long createMotionSummary( char *, char * );  
@@ -244,6 +255,7 @@ long UpDownEnd( struct genSubRecord *pgsub )
   char loadMess[MAX_STRING_SIZE];
   char saveDir[MAX_STRING_SIZE];
   char buf[MEDIUM_BUF];
+  char *MyName = "UpDownEnd";
 
   error        = 0;
   startError   = *(long *)pgsub->a;
@@ -259,6 +271,9 @@ long UpDownEnd( struct genSubRecord *pgsub )
     {
       close(fd);
       error = remove(pgsub->e);
+      PMAC_DEBUG(1,
+          PMAC_MESSAGE("%s: Could not open upload file %s\n", MyName, (char *)pgsub->e);
+      )
     }
 
     if( startError != 0 )

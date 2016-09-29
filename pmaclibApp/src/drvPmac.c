@@ -1537,13 +1537,15 @@ void drvPmacFldScan(PMAC_MBX_IO *pMbxIo)
 
    pCard = &drvPmacCard[pMbxIo->card];
 
-   if ( epicsRingPointerPush(pCard->scanFldQ,(void *)&pMbxIo) != OK )
+   //if ( epicsRingPointerPush(pCard->scanFldQ,(void *)&pMbxIo) != OK )
+   if ( epicsRingPointerPush(pCard->scanFldQ,(void *)pMbxIo) != 1  )
    {
-      errMessage (0,"drvPmacFldScan: epicsRingPointerPush overflow.");
+      errMessage (0,"drvPmacFldScan: epicsRingPointerPush failure.");
    }
 
-   PMAC_DEBUG(9,
-              PMAC_MESSAGE ("%s: epicsRingPointerPush completed.\n", MyName);
+   PMAC_DEBUG(1,
+              PMAC_MESSAGE ("%s: epicsRingPointerPush completed for card %d.\n", MyName, pCard->card);
+              PMAC_MESSAGE ("%s: pMbxIo = %p\n", MyName, pMbxIo);
    )
 
    epicsEventSignal(pCard->scanFldSem);
@@ -1578,7 +1580,7 @@ PMAC_LOCAL void drvPmacFldScanInit(int card)
       pCard->scanFldTaskId = epicsThreadCreate(pCard->scanFldTaskName,
                                                 PMAC_FLD_PRI, PMAC_FLD_STACK,
                                                 (EPICSTHREADFUNC)drvPmacFldTask,
-                                                (void *)&pCard->card );
+                                                (void *)(&pCard->card) );
       taskwdInsert (pCard->scanFldTaskId, NULL, NULL);
    }
 
@@ -1609,12 +1611,16 @@ long drvPmacFldLoop
    char  command[PMAC_MBX_OUT_BUFLEN];
    char  response[PMAC_MBX_IN_BUFLEN];
    char  errmsg[PMAC_MBX_ERR_BUFLEN];
+   char *MyName = "drvPmacFldLoop";
 
    /* Open Download File */
    fpDownload = fopen (download, "r");
    if (fpDownload == (FILE *) NULL)
    {
       sprintf (message, "FILEDOWN");
+      PMAC_DEBUG(1,
+         PMAC_MESSAGE ("%s: could not open download file %s\n", MyName, download);
+      )
       return (ERROR);
    }
 
@@ -1623,6 +1629,9 @@ long drvPmacFldLoop
    if (fpUpload == (FILE *) NULL)
    {
       sprintf (message, "FILEUP");
+      PMAC_DEBUG(1,
+         PMAC_MESSAGE ("%s: could not open upload file %s\n", MyName, upload);
+      )
       return (ERROR);
    }
 
@@ -1728,17 +1737,16 @@ EPICSTHREADFUNC drvPmacFldTask(void *c)              /* MDW OSI work 20160321 */
          }
          else
          {
-            PMAC_DEBUG(7,
+            PMAC_DEBUG(1,
                        PMAC_MESSAGE ("%s: rngBufGet completed.\n", MyName);
+                       PMAC_MESSAGE ("%s: pMbxIo= %p\n", MyName, pMbxIo);
                        PMAC_MESSAGE ("%s: card=%d download=[%s]\n", MyName, pMbxIo->card, pMbxIo->command);
                        PMAC_MESSAGE ("%s: upload=[%s]\n", MyName, pMbxIo->response);
             )
 
-            status = drvPmacFldLoop (pMbxIo->card,
-            pMbxIo->command, pMbxIo->response,
-            pMbxIo->errmsg);
+            status = drvPmacFldLoop (pMbxIo->card, pMbxIo->command, pMbxIo->response, pMbxIo->errmsg);
 
-            PMAC_DEBUG(7,
+            PMAC_DEBUG(1,
                        PMAC_MESSAGE ("%s: status=%d\n", MyName, status);
                        PMAC_MESSAGE ("%s: message=[%s]\n", MyName, pMbxIo->errmsg);
             )
@@ -1747,7 +1755,7 @@ EPICSTHREADFUNC drvPmacFldTask(void *c)              /* MDW OSI work 20160321 */
 
             callbackRequest (&pMbxIo->callback);
 
-            PMAC_DEBUG(7,
+            PMAC_DEBUG(1,
                        PMAC_MESSAGE ("%s: Callback requested.\n", MyName);
             )
          }
