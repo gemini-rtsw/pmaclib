@@ -72,7 +72,7 @@ use estatus 239 -40 100 0 $(dev)Status
 xform 0 216 1072
 p 155 -40 100 0 -1 PV:$(top)
 p 116 2106 100 0 1 DTYP:$(dtyp)
-p 121 2069 100 0 1 SCAN:I/O Intr
+p 121 2069 100 0 1 SCAN:Passive
 use ebis 1696 2368 100 0 $(dev)tsB2
 xform 0 1408 2376
 p 1598 2368 100 0 -1 PV:$(top)

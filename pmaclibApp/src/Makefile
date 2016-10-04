@@ -19,7 +19,6 @@ LIBRARY_IOC_RTEMS += pmaclib
 
 # <APPNAME>.dbd will be created and installed
 DBD += pmaclib.dbd
-#DBD += loadRecord.dbd
 
 # pmaclib.dbd will be made up from these files:
 pmaclib_DBD += base.dbd
@@ -46,6 +45,13 @@ pmaclib_SRCS += pmacUpDown.c
 INC	+= drvPmac.h
 INC	+= pmacVme.h
 INC	+= pmacTypes.h
+
+
+
+
+LIBRARY_IOC_RTEMS += pmaclibTest
+pmaclibTest_SRCS += follow.c
+DBD += pmaclibTest.dbd
 
 #=============================
 

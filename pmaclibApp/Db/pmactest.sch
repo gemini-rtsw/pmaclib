@@ -36,4 +36,6 @@ use pmacDprTest -984 1968 100 0 pmacDprTest#50
 xform 0 -808 2072
 use pmacUpDown -976 1704 100 0 pmacUpDown#51
 xform 0 -648 1768
+use tracking -976 1392 100 0 tracking#52
+xform 0 -832 1520
 [comments]

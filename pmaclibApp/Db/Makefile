@@ -26,7 +26,8 @@ DB += pmactest.db
 # simply install them into <top>/db.
 # Also install the additional entries for the system edb.def file
 # and the TDCT configuration file into <top>/db.
-DB += $(wildcard ../*.sym)
+#DB += $(wildcard ../*.sym)
+DB += eloads.sym
 DB += $(wildcard ../*-edb.def)
 DB += $(wildcard ../*-tdct.cfg)
 

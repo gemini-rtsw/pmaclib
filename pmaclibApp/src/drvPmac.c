@@ -41,7 +41,6 @@
  * DEFINES
  */
 
-#define PMAC_DIAGNOSTICS TRUE
 #define PMAC_PRIVATE FALSE
 
 #if PMAC_PRIVATE
@@ -50,12 +49,8 @@
 #define PMAC_LOCAL
 #endif
 
-#if PMAC_DIAGNOSTICS
 #define PMAC_MESSAGE   errlogPrintf
 #define PMAC_DEBUG(level,code)   { if (drvPmacDebug >= (level)) { code } }
-#else
-#define PMAC_DEBUG(level,code)      ;
-#endif
 
 #define NO_ERR_STATUS   (-1)
 
@@ -220,9 +215,7 @@ typedef struct  /* PMAC_DRVET */
 
 char * drvPmacVersion = "@(#) drvPmac.c 1.7 97/05/06";
 
-#if PMAC_DIAGNOSTICS
-volatile int   drvPmacDebug = 1;      /* must be > 0 to see messages */
-#endif
+int   drvPmacDebug = 0;      /* must be > 0 to see messages */
 
 /* EPICS Driver Support Entry Table */
 
