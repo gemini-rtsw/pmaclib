@@ -1,0 +1,19 @@
+[symbol2]
+bbox -320 0 160 224
+port -304 176 100 1792 TIME symbol 1 -320 160 0
+port -304 80 100 1792 SLNK symbol 1 -320 64 0
+uniq 2
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 200 0 0 -192 128 SET TIME
+l 200 0 0 -160 64 INTERRUPT
+r 0 -256 0 160 224
+v 0 -320 160
+-256 160
+_
+v 0 -320 64
+-256 64
+_
+[comments]
