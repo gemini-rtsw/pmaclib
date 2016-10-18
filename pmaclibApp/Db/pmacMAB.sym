@@ -1,0 +1,26 @@
+[symbol2]
+bbox -352 -96 352 160
+port -336 -48 100 1792 SLNK symbol 1 -352 -64 0
+port -336 80 100 1792 VEL symbol 1 -352 64 0
+port -336 144 100 1792 POS symbol 1 -352 128 0
+port -336 16 100 1792 SELECT symbol 1 -352 0 0
+uniq 7
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 200 0 0 -256 64 PMAC Move Argument Buffer
+r 0 -288 -96 352 160
+v 0 -352 -64
+-288 -64
+_
+v 0 -352 64
+-288 64
+_
+v 0 -352 128
+-288 128
+_
+v 0 -352 0
+-288 0
+_
+[comments]

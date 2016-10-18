@@ -1,0 +1,23 @@
+[symbol2]
+bbox -352 -64 416 96
+port -336 -16 100 1792 SLNK symbol 1 -352 -32 0
+port -336 80 100 1792 VEL symbol 1 -352 64 0
+port 400 48 100 1792 FLNK symbol 2 416 32 0
+uniq 4
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 200 0 0 -272 16 PMAC Move Argument Buffer
+l 200 0 0 -144 -48 (Bottom Velocities)
+r 0 -288 -64 352 96
+v 0 -352 -32
+-288 -32
+_
+v 0 -352 64
+-288 64
+_
+v 0 352 32
+416 32
+_
+[comments]
