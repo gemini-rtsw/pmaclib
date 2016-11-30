@@ -43,6 +43,7 @@ pmaclib_SRCS += pmacUpDown.c
 
 
 INC	+= drvPmac.h
+INC	+= drvPmacGat.h
 INC	+= pmacVme.h
 INC	+= pmacTypes.h
 
