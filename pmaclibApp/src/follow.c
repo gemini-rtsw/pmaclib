@@ -324,7 +324,7 @@ long Tracking (struct genSubRecord *pgsub)
     long   azHandShake;
     long   error;
 
-    static long   prevAzHandShake = 0;	/* top half */
+    // static long   prevAzHandShake = 0;	/* top half */
     static double  demand = 0;
 
     /* Get input values.

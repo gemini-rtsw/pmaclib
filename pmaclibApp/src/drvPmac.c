@@ -29,7 +29,6 @@
 #include <drvSup.h>
 #include <errMdef.h>
 #include <taskwd.h>
-#include <callback.h>
 #include <iocsh.h>
 
 /* local includes */

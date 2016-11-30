@@ -70,6 +70,7 @@ DEVELOPMENT CENTER AT ARGONNE NATIONAL LABORATORY (708-252-2000).
 #include <epicsEvent.h>
 #include <epicsRingPointer.h>
 #include <epicsThread.h>
+#include <callback.h>
 
 
 #ifndef FOREVER

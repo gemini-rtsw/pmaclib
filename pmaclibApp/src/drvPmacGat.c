@@ -16,7 +16,6 @@
 #include <epicsTime.h>
 #include <errMdef.h>
 #include <taskwd.h>
-#include <callback.h>
 #include <devLib.h>
 #include <errlog.h>
 #include <string.h>

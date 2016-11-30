@@ -87,7 +87,6 @@ OWNED RIGHTS.
 #include	<dbAccess.h>
 #include	<dbScan.h>
 #include	<link.h>
-#include	<callback.h>
 
 #include	<aiRecord.h>
 #include	<aoRecord.h>
