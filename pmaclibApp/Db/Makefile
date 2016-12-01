@@ -31,6 +31,15 @@ DB += eloads.sym
 DB += $(wildcard ../*-edb.def)
 DB += $(wildcard ../*-tdct.cfg)
 
+TEMPLATES_DIR=schematics
+TEMPLATES += pmacUpDown.sch pmacUpDown.sym
+TEMPLATES += pmacProgStatus.sch pmacProgStatus.sym
+TEMPLATES += pmacMAB.sch pmacMAB.sym
+TEMPLATES += pmacMABTopPos.sch pmacMABTopPos.sym
+TEMPLATES += pmacMABBotPos.sch pmacMABBotPos.sym
+TEMPLATES += pmacMABTopVel.sch pmacMABTopVel.sym
+TEMPLATES += pmacMABBotVel.sch pmacMABBotVel.sym
+
 
 include $(TOP)/configure/RULES
 #----------------------------------------
