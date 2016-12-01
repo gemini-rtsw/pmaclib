@@ -1,17 +1,3 @@
-#if 0
-#include <vxWorks.h>
-#include <stdio.h>
-#include <sysLib.h>
-#include <ioLib.h>
-#include <types.h>
-#include <math.h>
-#include <time.h>
-#include <stdlib.h>
-#include <stdioLib.h>
-#include <ctype.h>
-#include <string.h>
-#endif
-
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
