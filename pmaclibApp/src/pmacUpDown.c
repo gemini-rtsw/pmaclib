@@ -838,4 +838,6 @@ long createPlcSummary( char *readFile, char *writeFile )
 epicsRegisterFunction(UpDownTrigger);
 epicsRegisterFunction(UpDownStart);
 epicsRegisterFunction(UpDownEnd);
+epicsRegisterFunction(ProgStatusStart);
+epicsRegisterFunction(ProgStatusEnd);
 

@@ -7,11 +7,7 @@ include $(TOP)/configure/CONFIG
 #=============================
 #
 
-
 DBDINC += loadRecord
-
-SCRIPTS_HOST += ../pmaclibTest.sh
-SCRIPTS_HOST += ../pmaclibTest.adl
 
 # Build a support module called <APPNAME>
 
@@ -37,9 +33,6 @@ pmaclib_SRCS += drvPmacVme.c
 pmaclib_SRCS += drvPmac.c
 pmaclib_SRCS += drvPmacGat.c
 pmaclib_SRCS += pmacUpDown.c
-#pmaclib_SRCS += xxx.st
-
-
 
 
 INC	+= drvPmac.h
@@ -47,12 +40,6 @@ INC	+= drvPmacGat.h
 INC	+= pmacVme.h
 INC	+= pmacTypes.h
 
-
-
-
-LIBRARY_IOC_RTEMS += pmaclibTest
-pmaclibTest_SRCS += follow.c
-DBD += pmaclibTest.dbd
 
 #=============================
 

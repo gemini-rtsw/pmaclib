@@ -1,6 +1,8 @@
 function(UpDownTrigger)
 function(UpDownStart)
 function(UpDownEnd)
+function(ProgStatusStart)
+function(ProgStatusEnd)
 
 variable( pmacVmeDebug, int)
 variable( drvPmacDebug, int)
