@@ -25,8 +25,8 @@
 #include "drvPmac.h"
 #include "drvPmacGat.h"
 
-#define DEBUG       1
-#define DEBUG_WRITE 1
+#define DEBUG       0
+#define DEBUG_WRITE 0
 
 #define PMAC_GAT_READ       "pmacGatR"
 #define PMAC_GAT_WRITE      "pmacGatW"
