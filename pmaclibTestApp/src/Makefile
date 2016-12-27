@@ -10,22 +10,26 @@ include $(TOP)/configure/CONFIG
 SCRIPTS_HOST += ../pmaclibTest.sh
 SCRIPTS_HOST += ../pmaclibTest.adl
 
+PROD_IOC_RTEMS = pmaclibTest
+#LIBRARY_IOC_RTEMS = pmaclibTest
 
-LIBRARY_IOC_RTEMS += pmaclibTest
-pmaclibTest_SRCS += follow.c
-pmaclibTest_LIBS += pmaclib
-
-
-# <APPNAME>.dbd will be created and installed
 DBD += pmaclibTest.dbd
 
-# pmaclib.dbd will be made up from these files:
+# pmaclibTest.dbd will be made up from these files:
 pmaclibTest_DBD += base.dbd
 pmaclibTest_DBD += loadRecord.dbd
 pmaclibTest_DBD += genSubRecord.dbd
 pmaclibTest_DBD += statusRecord.dbd
 pmaclibTest_DBD += pmaclib.dbd
 pmaclibTest_DBD += pmaclibTestFuncs.dbd
+
+
+pmaclibTest_SRCS += follow.c
+pmaclibTest_SRCS += pmaclibTestMain.cpp
+
+pmaclibTest_LIBS += pmaclib
+pmaclibTest_LIBS += $(EPICS_BASE_IOC_LIBS)
+
 
 
 

@@ -255,6 +255,7 @@ long pmacConfig
    PMAC_CTLR     *pPmacCtlr;
    PMAC_CARD     *pCard;
 
+
    if( pmacConfigFirst == 1 )
    {
       for( i=0; i < PMAC_MAX_CARDS; i++ )
