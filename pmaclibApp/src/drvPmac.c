@@ -256,22 +256,20 @@ long pmacConfig
    PMAC_CARD     *pCard;
 
 
-   if( pmacConfigFirst == 1 )
-   {
-      for( i=0; i < PMAC_MAX_CARDS; i++ )
-      {
-    drvPmacCard[i].configured = FALSE;
-    drvPmacCard[i].card       = i;
-    drvPmacCard[i].ctlr       = i;
-    pmacVmeCtlr[i].ctlr       = i;
+   if( pmacConfigFirst == 1 ) {
+      for( i=0; i < PMAC_MAX_CARDS; i++ ) {
+         drvPmacCard[i].configured = FALSE;
+         drvPmacCard[i].card       = i;
+         drvPmacCard[i].ctlr       = i;
+         pmacVmeCtlr[i].ctlr       = i;
       }
       pmacConfigFirst = 0;
    }
 
    if ( (cardNumber < 0) | (cardNumber >= PMAC_MAX_CARDS) )
    {
-      printf ("%s: Card number %d invalid -- must be 0 to %d.\n",
-       MyName, cardNumber, PMAC_MAX_CARDS - 1);
+      epicsPrintf ("%s: Card number %d invalid -- must be 0 to %d.\n",
+            MyName, cardNumber, PMAC_MAX_CARDS - 1);
       return(ERROR);
    }
 
@@ -280,29 +278,32 @@ long pmacConfig
    pPmacCtlr->irqVector   = irqVector;
    pPmacCtlr->irqLevel    = irqLevel;
    pPmacCtlr->vmebusDpram = addrDpram;
+
    if( addrDpram == 0 )
       pPmacCtlr->enabledDpram = FALSE;
+   else
+      pPmacCtlr->enabledDpram = TRUE;
 
 
-epicsPrintf("PMAC VME BASE ADDR: 0x%lx\n", pPmacCtlr->vmebusBase);
    status = devRegisterAddress ("PMAC BASE", atVMEA24, pPmacCtlr->vmebusBase,
-    PMAC_MEM_SIZE_BASE, (void *) &(pPmacCtlr->pBase));
-epicsPrintf("PMAC LOCAL BASE ADDR: %p\n", (void *) pPmacCtlr->pBase);
-   if (!RTN_SUCCESS(status))
-   {
-      printf ("%s: Failure registering controller %d base address A24 %#010lx.\n",
-       MyName, pPmacCtlr->ctlr, pPmacCtlr->vmebusBase);
+                PMAC_MEM_SIZE_BASE, (void *) &(pPmacCtlr->pBase));
+
+
+   if (!RTN_SUCCESS(status)) {
+      printf ("%s: card %d: Failure registering controller %d base address A24 %#010lx.\n",
+              MyName, cardNumber, pPmacCtlr->ctlr, pPmacCtlr->vmebusBase);
       return (status);
    }
 
-epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val);
    if (status != OK)
    {
-      printf ("%s: Failure probing for base address.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure probing for base address.\n", MyName, cardNumber);
       return (status);
    }
+
+   epicsPrintf("PMAC #%d: regs at vme addr 0x%lx (local addr %p)\n", 
+               cardNumber, pPmacCtlr->vmebusBase, pPmacCtlr->pBase);
 
    pPmacCtlr->enabled       = FALSE;
    pPmacCtlr->present       = FALSE;
@@ -310,50 +311,51 @@ epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    pPmacCtlr->enabledBase   = TRUE;
    pPmacCtlr->presentBase   = TRUE;
    pPmacCtlr->activeBase    = FALSE;
-   pPmacCtlr->enabledDpram  = TRUE; /*MRIPPA TEST TRUE...*/
+   //pPmacCtlr->enabledDpram  = TRUE; /*MRIPPA TEST TRUE...*/
    pPmacCtlr->presentDpram  = FALSE;
    pPmacCtlr->activeDpram   = FALSE;
-   pPmacCtlr->enabledGather = TRUE; /*MRIPPA TEST TRUE...*/
+   //pPmacCtlr->enabledGather = TRUE; /*MRIPPA TEST TRUE...*/
    pPmacCtlr->activeGather  = FALSE;
 
-   if ( pPmacCtlr->enabledDpram )
-   {
+   if ( pPmacCtlr->enabledDpram ) {
       status = devRegisterAddress ("PMAC DPRAM", atVMEA24, pPmacCtlr->vmebusDpram,
-       PMAC_MEM_SIZE_DPRAM, (void *) &(pPmacCtlr->pDpramBase));
+                PMAC_MEM_SIZE_DPRAM, (void *) &(pPmacCtlr->pDpramBase));
       if (!RTN_SUCCESS(status))
       {
-    printf ("%s: Failure registering controller %d DPRAM address A24 %#010lx.\n",
-          MyName, pPmacCtlr->ctlr, pPmacCtlr->vmebusDpram);
-    return (status);
+          printf ("%s: card %d:Failure registering controller %d DPRAM address A24 %#010lx.\n",
+                   MyName, cardNumber, pPmacCtlr->ctlr, pPmacCtlr->vmebusDpram);
+          return (status);
       }
 
       block = (char) ((pPmacCtlr->vmebusDpram & 0x000fc000) >> 14);
       pBlock = ((char *) pPmacCtlr->pBase) + 0x121;
 
       PMAC_DEBUG (1, 
-                  PMAC_MESSAGE ("%s: Setting DPRAM mapping addr %#010lx val %d\n", MyName, (long unsigned int)pBlock, block);
+                  PMAC_MESSAGE ("%s: Setting DPRAM mapping addr %#010lx val %d\n", 
+                                MyName, (long unsigned int)pBlock, block);
       )
 
-    *pBlock = block;
+      *pBlock = block;
 
       status = devReadProbe ( sizeof(short), (char *) pPmacCtlr->pDpramBase, (char*)&val);
       if (status != OK)
       {
-    printf ("%s: Failure probing for DPRAM address.\n",
-          MyName);
-    return (status);
+         epicsPrintf ("%s: card %d: Failure probing for DPRAM address.\n", MyName, cardNumber);
+         return (status);
       }
       pPmacCtlr->presentDpram = TRUE;
 
+      epicsPrintf("PMAC #%d: DPRAM present at vme addr 0x%lx (local addr %p)\n", 
+               cardNumber, pPmacCtlr->vmebusDpram, pPmacCtlr->pDpramBase);
+
    }
 
-   printf("MRIPPA presentDpram set to TRUE.\n");
+   //printf("MRIPPA presentDpram set to TRUE.\n");
    pPmacCtlr->ioMbxReceiptSem = epicsEventMustCreate (epicsEventEmpty);
    if ( pPmacCtlr->ioMbxReceiptSem == NULL)
    {
       status = S_dev_internal;
-      printf ("%s: Failure creating binary semaphore.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore.\n", MyName, cardNumber);
       return (status);
    }
 
@@ -361,8 +363,8 @@ epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    if ( pPmacCtlr->ioMbxReceiptSem == NULL)
    {
       status = S_dev_internal;
-      printf ("%s: Failure creating binary semaphore.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioMbxReadmeSem).\n", 
+                     MyName, cardNumber);
       return (status);
    }
 
@@ -370,8 +372,8 @@ epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    if ( pPmacCtlr->ioMbxLockSem == NULL)
    {
       status = S_dev_internal;
-      printf ("%s: Failure creating binary semaphore.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioMbxLockSem).\n",
+                     MyName, cardNumber);
       return (status);
    }
 
@@ -379,8 +381,8 @@ epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    if ( pPmacCtlr->ioAscReadmeSem == NULL)
    {
       status = S_dev_internal;
-      printf ("%s: Failure creating binary semaphore.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioAscReadmeSem).\n", 
+              MyName, cardNumber);
       return (status);
    }
 
@@ -388,8 +390,8 @@ epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    if ( pPmacCtlr->ioAscLockSem == NULL)
    {
       status = S_dev_internal;
-      printf ("%s: Failure creating binary semaphore.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioAscLockSem).\n",
+               MyName, cardNumber);
       return (status);
    }
 
@@ -397,64 +399,71 @@ epicsPrintf("PMAC Probe addr: %p\n", (void *) pPmacCtlr->pBase);
    if ( pPmacCtlr->ioGatBufferSem == NULL)
    {
       status = S_dev_internal;
-      printf ("%s: Failure creating binary semaphore.\n",
-       MyName);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioGatBufferSem).\n",
+                    MyName, cardNumber);
       return (status);
    }
 
-   status = devConnectInterruptVME (pPmacCtlr->irqVector - 1, adapterMbxRx, (void *) pPmacCtlr);
+   status = devConnectInterruptVME (pPmacCtlr->irqVector-1, pmacMbxReceiptISR, (void *)pPmacCtlr);
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to connect interrupt.\n", MyName);
+      epicsPrintf ("%s: card %d: Failure to connect interrupt vector 0x%02x for pmacMbxReceiptISR()\n", 
+                   MyName, cardNumber, pPmacCtlr->irqVector-1);
       return (status);
    }
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterMbxRx\n", MyName, pPmacCtlr->irqVector - 1);
+        PMAC_MESSAGE ("%s: card %d: Connected to interrupt vector 0x%02x for pmacMbxReceiptISR()\n", 
+                  MyName, cardNumber, pPmacCtlr->irqVector - 1);
    )
 
 
-   status = devConnectInterruptVME (pPmacCtlr->irqVector, adapterMbxReadme, (void *) pPmacCtlr);
+   status = devConnectInterruptVME (pPmacCtlr->irqVector, pmacMbxReadmeISR, (void *)pPmacCtlr);
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to connect interrupt.\n", MyName);
+      epicsPrintf ("%s: card %d: Failure to connect interrupt vector 0x%02x for pmacMbxReadmeISR()\n", 
+                      MyName, cardNumber, pPmacCtlr->irqVector);
       return (status);
    }
-
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterMbxReadme\n", MyName, pPmacCtlr->irqVector);
+        PMAC_MESSAGE ("%s: card %d: Connected to interrupt vector 0x%02x for pmacMbxReadmeISR()\n", 
+                    MyName, cardNumber, pPmacCtlr->irqVector);
    )
 
-   status = devConnectInterruptVME(pPmacCtlr->irqVector + 1, adapterAscIn, (void *) pPmacCtlr);
+   status = devConnectInterruptVME(pPmacCtlr->irqVector + 1, pmacAscInISR, (void *)pPmacCtlr);
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to connect interrupt.\n", MyName);
+      epicsPrintf ("%s: card %d: Failure to connect interrupt vector 0x%02x for pmacAscInISR()\n", 
+           MyName, cardNumber, pPmacCtlr->irqVector+1);
       return (status);
    }
-
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterAscIn\n", MyName, pPmacCtlr->irqVector + 1);
+              PMAC_MESSAGE ("%s: card %d: Connected to interrupt vector 0x%02x for pmacAscInISR()\n", 
+                    MyName, cardNumber, pPmacCtlr->irqVector + 1);
    )
 
-   status = devConnectInterruptVME ( pPmacCtlr->irqVector + 2, adapterGatBuffer, (void *) pPmacCtlr);
+   status = devConnectInterruptVME ( pPmacCtlr->irqVector + 2, pmacGatBufferISR, (void *)pPmacCtlr);
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to connect interrupt.\n", MyName);
+      printf ("%s: card %d: Failure to connect interrupt vector 0x%02x for pmacGatBufferISR()\n", 
+                   MyName, cardNumber, pPmacCtlr->irqVector+2);
       return (status);
    }
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Connected to interrupt vector 0x%02x for adapterGatBuffer\n", MyName, pPmacCtlr->irqVector + 2);
+        PMAC_MESSAGE ("%s: card %d: Connected to interrupt vector 0x%02x for pmacGatBufferISR()\n", 
+                MyName, cardNumber, pPmacCtlr->irqVector + 2);
    )
 
 
    status = devEnableInterruptLevelVME (pPmacCtlr->irqLevel);
 
    PMAC_DEBUG(1,
-              PMAC_MESSAGE ("%s: Enabled interrupt level %d\n", MyName, pPmacCtlr->irqLevel);
+        PMAC_MESSAGE ("%s: card %d: Enabled interrupt level %d\n", MyName, cardNumber, pPmacCtlr->irqLevel);
    )
 
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: Failure to enable interrupt level %d.\n", MyName, pPmacCtlr->irqLevel);
+      epicsPrintf ("%s: card %d: Failure to enable interrupt level %d.\n", 
+                    MyName, cardNumber, pPmacCtlr->irqLevel);
       return (status);
    }
 

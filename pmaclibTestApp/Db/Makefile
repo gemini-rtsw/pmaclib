@@ -17,7 +17,8 @@ DEPSCHS = $(wildcard ../*.sch)
 
 # Add target .db files below here. Each must
 # correspond to a .sch file
-DB += pmactest.db
+DB += pmactest.db     # this is everything
+DB += pmacMbxTest.db  # just the mailbox records
 
 include $(TOP)/configure/RULES
 #----------------------------------------

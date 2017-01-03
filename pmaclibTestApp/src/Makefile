@@ -17,17 +17,17 @@ DBD += pmaclibTest.dbd
 
 # pmaclibTest.dbd will be made up from these files:
 pmaclibTest_DBD += base.dbd
-pmaclibTest_DBD += loadRecord.dbd
-pmaclibTest_DBD += genSubRecord.dbd
-pmaclibTest_DBD += statusRecord.dbd
+pmaclibTest_DBD += geminiRecords.dbd
 pmaclibTest_DBD += pmaclib.dbd
 pmaclibTest_DBD += pmaclibTestFuncs.dbd
 
+pmaclibTest_LIBS += geminiRecords
+pmaclibTest_LIBS += pmaclib
 
+pmaclibTest_SRCS += pmaclibTest_registerRecordDeviceDriver.cpp
 pmaclibTest_SRCS += follow.c
 pmaclibTest_SRCS += pmaclibTestMain.cpp
 
-pmaclibTest_LIBS += pmaclib
 pmaclibTest_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 

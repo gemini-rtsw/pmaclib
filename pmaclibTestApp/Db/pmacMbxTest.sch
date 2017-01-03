@@ -20,7 +20,7 @@ _
 n -791 74 -502 218 100
 The stringin record with
 DTYP = PMAC-VME ASCII
-and VMEIO Signal = S1
+and VMEIO Signal = S0
 uses the VMEIO @parm
 parameter as the command to
 send to the mailbox.
@@ -53,11 +53,12 @@ p -163 188 100 0 1 DTYP:PMAC-VME ASCII
 p -132 46 100 0 -1 PV:$(top)
 use hwinm -472 80 100 0 hwinm#12
 xform 0 -320 128
-p -462 144 100 0 -1 val(in):#C$(card) S1 @ver
+p -462 144 100 0 -1 val(in):#C$(card) S0 @ver
 use statusRecTest -208 576 100 0 statusRecTest#13
 xform 0 -32 656
 p -199 600 100 0 1 set2:dev mbx
 p -203 648 100 0 1 set0:dtyp PMAC-VME ASCII
+p -203 624 100 0 1 set1:inplink #C$(card) S0 @param
 use estringouts 335 41 100 0 mbxSoSig0
 xform 0 400 112
 p 315 171 100 0 1 DTYP:PMAC-VME ASCII
@@ -82,8 +83,8 @@ p 304 -246 100 0 -1 PV:$(top)
 p 303 -79 100 0 1 DTYP:PMAC-VME ASCII
 use hwinm -480 -224 100 0 hwinm#23
 xform 0 -328 -176
-p -470 -160 100 0 -1 val(in):#C$(card) S0 @I99=
+p -470 -160 100 0 -1 val(in):#C$(card) S0 @I99
 use hwoutm 504 -256 100 0 hwoutm#25
 xform 0 656 -208
-p 610 -193 100 0 -1 val(outp):#C$(card) S0 @I99
+p 610 -193 100 0 -1 val(outp):#C$(card) S0 @I99=
 [comments]

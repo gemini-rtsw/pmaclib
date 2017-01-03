@@ -142,15 +142,10 @@ PMAC_LOCAL PMAC_CTLR    pmacVmeCtlr[PMAC_MAX_CARDS];
  * FORWARD DECLARATIONS
  */
 
-void adapterMbxRx(void *p);
-void adapterMbxReadme(void *p);
-void adapterAscIn(void *p);
-void adapterGatBuffer(void *p);
-
-PMAC_LOCAL void pmacMbxReceiptISR (PMAC_CTLR * pPmacCtlr);
-PMAC_LOCAL void pmacMbxReadmeISR (PMAC_CTLR * pPmacCtlr);
-PMAC_LOCAL void pmacAscInISR (PMAC_CTLR * pPmacCtlr);
-PMAC_LOCAL void pmacGatBufferISR (PMAC_CTLR * pPmacCtlr);
+PMAC_LOCAL void pmacMbxReceiptISR (void *);
+PMAC_LOCAL void pmacMbxReadmeISR (void *);
+PMAC_LOCAL void pmacAscInISR (void *);
+PMAC_LOCAL void pmacGatBufferISR (void *);
 
 PMAC_LOCAL long pmacVmeInit (void);
 
@@ -198,6 +193,6 @@ PMAC_LOCAL long pmacRamPutSX (PMAC_DPRAM * pRam, long val);
 PMAC_LOCAL long pmacRamPutDP (PMAC_DPRAM * pRam, long val);
 PMAC_LOCAL long pmacRamPutF (PMAC_DPRAM * pRam, double val);
 
-PMAC_LOCAL void pmacGatBufferSem (int ctlr);
+// PMAC_LOCAL void pmacGatBufferSem (int ctlr);
 
 #endif /* __INCpmacVmeH */

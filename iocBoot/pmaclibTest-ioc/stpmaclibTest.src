@@ -7,12 +7,16 @@ dbLoadDatabase("dbd/pmaclibTest.dbd")
 pmaclibTest_registerRecordDeviceDriver(pdbbase)
 
 ## Load record instances
-#dbLoadTemplate("db/mcs-cp-ioc.substitutions")
-#dbLoadRecords("db/mcs-cp-ioc.db", "user=rrojas")
+#dbLoadRecords("db/pmactest.db", "top=pmac0:,card=0")
+#dbLoadRecords("db/pmactest.db", "top=pmac1:,card=1")
+dbLoadRecords("db/pmacMbxTest.db", "top=pmac0:,card=0")
+dbLoadRecords("db/pmacMbxTest.db", "top=pmac1:,card=1")
 
-dbLoadRecords("db/iocAdminRTEMS.db"," IOC=pmac,TODFORMAT=%m/%d/%Y %H:%M:%S")
+#dbLoadRecords("db/iocAdminRTEMS.db","IOC=pmac,TODFORMAT=%m/%d/%Y %H:%M:%S")
 
 
+var drvPmacDebug 1
+var devPmacMbxDebug 1
 # configure pmac card:
 # pmacConfig( cardNumber, addrBase, addrDpram, irqVector, irqLevel)
 pmacConfig(0, 0x7fa000, 0x700000, 0xa1, 6)
