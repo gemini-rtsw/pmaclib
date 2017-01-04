@@ -272,7 +272,6 @@ PMAC_LOCAL char pmacMbxRead
     
    pPmacCtlr = &pmacVmeCtlr[ctlr];
 
-epicsPrintf("pmacMbxRead: card %d: waiting for ioMbxReadmeSem (%p)\n", ctlr, pPmacCtlr->ioMbxReadmeSem);
    while( (terminator == 0) && (status == epicsEventWaitOK) ) {
       pPmacCtlr->pBase->mailbox.MB[1].data = 0;
       status      = epicsEventWaitWithTimeout( pPmacCtlr->ioMbxReadmeSem, MBX_TIMEOUT);
@@ -281,7 +280,7 @@ epicsPrintf("pmacMbxRead: card %d: waiting for ioMbxReadmeSem (%p)\n", ctlr, pPm
    }
  
    if( status == epicsEventWaitTimeout )
-      printf("pmacMbxRead: card %d: Read from PMAC Mailbox timed out: waiting for readme semaphore\n", ctlr);
+      epicsPrintf("pmacMbxRead: card %d: Read from PMAC Mailbox timed out: waiting for readme semaphore\n", ctlr);
    else if( status == epicsEventWaitError )
       epicsPrintf("pmacMbxRead: card %d: Read from PMAC Mailbox error: waiting for readme semaphore\n", ctlr);
 
