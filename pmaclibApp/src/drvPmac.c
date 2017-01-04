@@ -10,7 +10,6 @@
  */
 
 
-/* VxWorks Includes */
 
 #include <epicsStdioRedirect.h>
 #include <epicsString.h>
@@ -20,8 +19,6 @@
 #include <epicsRingPointer.h>
 #include <epicsExport.h>
 #include <string.h>
-
-/* EPICS Includes */
 
 #include <recSup.h>
 #include <devLib.h>
@@ -60,10 +57,6 @@
 #define PMAC_MBX_SCAN      "pmacMbx"
 #define PMAC_MBX_PRI      (45)
 #define PMAC_MBX_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
-/*
-#define PMAC_MBX_OPT      (VX_FP_TASK)
-#define PMAC_MBX_STACK      (8000)
-*/
 
 #define PMAC_ASC_QUEUE_SIZE 1000
 
@@ -112,11 +105,6 @@
  *
  */
 
-/*
-#define PMAC_BKG_OPT      (VX_FP_TASK)
-#define PMAC_BKG_STACK      (8000)
-*/
-
 #define PMAC_VAR_SCAN      "pmacVar"
 #define PMAC_VAR_PRI      (44)
 #define PMAC_VAR_RATE      0.05
@@ -134,10 +122,6 @@
 #define PMAC_VAR_RATE      (sysClkRateGet()/20)
  *
  */
-/*
-#define PMAC_VAR_OPT      (VX_FP_TASK)
-#define PMAC_VAR_STACK      (8000)
-*/
 
 
 #define PMAC_OPN_SCAN     "pmacOpn"
@@ -154,19 +138,11 @@
 /**
  * #define PMAC_OPN_RATE      (sysClkRateGet()/40)
  */
-/*
-#define PMAC_OPN_OPT      (VX_FP_TASK)
-#define PMAC_OPN_STACK      (16000)
-*/
 #define PMAC_FLD_QUEUE_SIZE 100
 
 #define PMAC_FLD_SCAN      "pmacFld"
 #define PMAC_FLD_PRI      (45)
 #define PMAC_FLD_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
-/*
-#define PMAC_FLD_OPT      (VX_FP_TASK)
-#define PMAC_FLD_STACK      (8000)
-*/
 
 #define PMAC_DPRAM_SVO      1
 #define PMAC_DPRAM_BKG      2
@@ -1390,7 +1366,10 @@ char drvPmacMbxWriteRead
    }
 
    
-   printf("drvPmacMbxWriteRead: card = %d, writebuf = %s\n", card, writebuf);
+   PMAC_DEBUG( 1,
+      PMAC_MESSAGE("drvPmacMbxWriteRead: card = %d, writebuf = %s\n", card, writebuf);
+   )
+
    pmacMbxLock(card);
    terminator = pmacMbxWrite (card, writebuf);
    terminator = pmacMbxRead (card, readbuf, errmsg);
@@ -1400,7 +1379,9 @@ char drvPmacMbxWriteRead
    }
 
    pmacMbxUnlock(card);
-   printf("drvPmacMbxWriteRead: card = %d, readbuf = %s, errmsg = %s\n", card, readbuf, errmsg);
+   PMAC_DEBUG(1, 
+       PMAC_MESSAGE("drvPmacMbxWriteRead: card = %d, readbuf = %s, errmsg = %s\n", card, readbuf, errmsg);
+   )
 
    return (terminator);
 }
