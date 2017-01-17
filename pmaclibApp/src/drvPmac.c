@@ -19,7 +19,6 @@
 #include <epicsRingPointer.h>
 #include <epicsExport.h>
 #include <string.h>
-
 #include <recSup.h>
 #include <devLib.h>
 #include <devSup.h>
@@ -266,7 +265,7 @@ long pmacConfig
 
 
    if (!RTN_SUCCESS(status)) {
-      printf ("%s: card %d: Failure registering controller %d base address A24 %#010lx.\n",
+      epicsPrintf ("%s: card %d: Failure registering controller %d base address A24 %#010lx.\n",
               MyName, cardNumber, pPmacCtlr->ctlr, pPmacCtlr->vmebusBase);
       return (status);
    }
@@ -287,10 +286,10 @@ long pmacConfig
    pPmacCtlr->enabledBase   = TRUE;
    pPmacCtlr->presentBase   = TRUE;
    pPmacCtlr->activeBase    = FALSE;
-   //pPmacCtlr->enabledDpram  = TRUE; /*MRIPPA TEST TRUE...*/
+   pPmacCtlr->enabledDpram  = TRUE; /*MRIPPA TEST TRUE...*/
    pPmacCtlr->presentDpram  = FALSE;
    pPmacCtlr->activeDpram   = FALSE;
-   //pPmacCtlr->enabledGather = TRUE; /*MRIPPA TEST TRUE...*/
+   pPmacCtlr->enabledGather = TRUE; /*MRIPPA TEST TRUE...*/
    pPmacCtlr->activeGather  = FALSE;
 
    if ( pPmacCtlr->enabledDpram ) {
@@ -298,7 +297,7 @@ long pmacConfig
                 PMAC_MEM_SIZE_DPRAM, (void *) &(pPmacCtlr->pDpramBase));
       if (!RTN_SUCCESS(status))
       {
-          printf ("%s: card %d:Failure registering controller %d DPRAM address A24 %#010lx.\n",
+          errlogPrintf ("%s: card %d:Failure registering controller %d DPRAM address A24 %#010lx.\n",
                    MyName, cardNumber, pPmacCtlr->ctlr, pPmacCtlr->vmebusDpram);
           return (status);
       }
@@ -321,21 +320,29 @@ long pmacConfig
       }
       pPmacCtlr->presentDpram = TRUE;
 
-      epicsPrintf("PMAC #%d: DPRAM present at vme addr 0x%lx (local addr %p)\n", 
+      epicsPrintf("PMAC #%d: DPRAM present at vme A24 addr 0x%lx (local addr %p)\n", 
                cardNumber, pPmacCtlr->vmebusDpram, pPmacCtlr->pDpramBase);
 
    }
 
-   //printf("MRIPPA presentDpram set to TRUE.\n");
    pPmacCtlr->ioMbxReceiptSem = epicsEventMustCreate (epicsEventEmpty);
+   PMAC_DEBUG (1, 
+              PMAC_MESSAGE ("%s: card %d, ioMbxReceiptSem = %p\n", 
+                                MyName, cardNumber, pPmacCtlr->ioMbxReceiptSem);
+   )
+
    if ( pPmacCtlr->ioMbxReceiptSem == NULL)
    {
       status = S_dev_internal;
-      epicsPrintf ("%s: card %d: Failure creating binary semaphore.\n", MyName, cardNumber);
+      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioMbxReceiptSem).\n", MyName, cardNumber);
       return (status);
    }
 
    pPmacCtlr->ioMbxReadmeSem = epicsEventMustCreate (epicsEventEmpty);
+   PMAC_DEBUG (1, 
+              PMAC_MESSAGE ("%s: card %d, ioMbxReadmeSem = %p\n", 
+                                MyName, cardNumber, pPmacCtlr->ioMbxReadmeSem);
+   )
    if ( pPmacCtlr->ioMbxReceiptSem == NULL)
    {
       status = S_dev_internal;
@@ -344,16 +351,28 @@ long pmacConfig
       return (status);
    }
 
-   pPmacCtlr->ioMbxLockSem = epicsEventMustCreate (epicsEventEmpty);
-   if ( pPmacCtlr->ioMbxLockSem == NULL)
-   {
-      status = S_dev_internal;
-      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioMbxLockSem).\n",
-                     MyName, cardNumber);
-      return (status);
-   }
+   //pPmacCtlr->ioMbxLockSem = epicsEventMustCreate (epicsEventEmpty);
+   pPmacCtlr->ioMbxLockMtx = epicsMutexMustCreate();
+   PMAC_DEBUG (1, 
+              PMAC_MESSAGE ("%s: card %d, ioMbxLockMtx = %p\n", 
+                                MyName, cardNumber, pPmacCtlr->ioMbxLockMtx);
+   )
+
+
+   //if ( pPmacCtlr->ioMbxLockMtx == NULL)
+   //{
+   //   status = S_dev_internal;
+   //   epicsPrintf ("%s: card %d: Failure creating mutex (ioMbxLockMtx).\n",
+   //                  MyName, cardNumber);
+   //   return (status);
+   //}
 
    pPmacCtlr->ioAscReadmeSem = epicsEventMustCreate (epicsEventEmpty);
+   PMAC_DEBUG (1, 
+              PMAC_MESSAGE ("%s: card %d, ioAscReadmeSem = %p\n", 
+                                MyName, cardNumber, pPmacCtlr->ioAscReadmeSem);
+   )
+
    if ( pPmacCtlr->ioAscReadmeSem == NULL)
    {
       status = S_dev_internal;
@@ -362,16 +381,30 @@ long pmacConfig
       return (status);
    }
 
-   pPmacCtlr->ioAscLockSem = epicsEventMustCreate (epicsEventEmpty);
-   if ( pPmacCtlr->ioAscLockSem == NULL)
-   {
-      status = S_dev_internal;
-      epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioAscLockSem).\n",
-               MyName, cardNumber);
-      return (status);
-   }
+   // pPmacCtlr->ioAscLockSem = epicsEventMustCreate (epicsEventEmpty);
+   // if ( pPmacCtlr->ioAscLockSem == NULL)
+   //
+   pPmacCtlr->ioAscLockMtx = epicsMutexMustCreate();
+   PMAC_DEBUG (1, 
+              PMAC_MESSAGE ("%s: card %d, ioAscLockMtx = %p\n", 
+                                MyName, cardNumber, pPmacCtlr->ioAscLockMtx);
+   )
+
+
+   //if ( pPmacCtlr->ioAscLockMtx == NULL)
+   //{
+   //   status = S_dev_internal;
+   //   epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioAscLockSem).\n",
+   //            MyName, cardNumber);
+   //   return (status);
+   //}
 
    pPmacCtlr->ioGatBufferSem = epicsEventMustCreate (epicsEventEmpty);
+   PMAC_DEBUG (1, 
+              PMAC_MESSAGE ("%s: card %d, ioGatBufferSem = %p\n", 
+                                MyName, cardNumber, pPmacCtlr->ioGatBufferSem);
+   )
+
    if ( pPmacCtlr->ioGatBufferSem == NULL)
    {
       status = S_dev_internal;
@@ -420,7 +453,7 @@ long pmacConfig
    status = devConnectInterruptVME ( pPmacCtlr->irqVector + 2, pmacGatBufferISR, (void *)pPmacCtlr);
    if (!RTN_SUCCESS(status))
    {
-      printf ("%s: card %d: Failure to connect interrupt vector 0x%02x for pmacGatBufferISR()\n", 
+      errlogPrintf ("%s: card %d: Failure to connect interrupt vector 0x%02x for pmacGatBufferISR()\n", 
                    MyName, cardNumber, pPmacCtlr->irqVector+2);
       return (status);
    }
@@ -507,11 +540,6 @@ PMAC_LOCAL long drvPmac_report(int level)
             drvPmacCard[i].numVarIo, drvPmacCard[i].numOpnIo);
          }
       }
-   }
-
-   if (level > 1)
-   {
-      printf ("Print even more info. The user may be prompted for options.\n");
    }
 
    return (0);
@@ -1361,7 +1389,7 @@ char drvPmacMbxWriteRead
 
    if( !drvPmacCard[card].configured )
    {
-      printf("drvPmacMbxWriteRead card %d is not configured\n", card);
+      errlogPrintf("drvPmacMbxWriteRead card %d is not configured\n", card);
       return 0;
    }
 
@@ -1400,7 +1428,7 @@ void drvPmacMbxScan(PMAC_MBX_IO *pMbxIo)
 
    if( !pCard->configured )
    {
-      printf("drvPmacMbxScan: card %d is not configured\n", pMbxIo->card);
+      errlogPrintf("drvPmacMbxScan: card %d is not configured\n", pMbxIo->card);
       return;
    }
 

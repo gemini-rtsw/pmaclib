@@ -84,8 +84,10 @@ PMAC_LOCAL long pmacVmeInit (void)
       {
          if ( pPmacCtlr->presentBase & pPmacCtlr->enabledBase )
          {
-            epicsEventSignal (pPmacCtlr->ioMbxLockSem);   
-            epicsEventSignal (pPmacCtlr->ioAscLockSem);
+            //epicsEventSignal (pPmacCtlr->ioMbxLockSem);   
+            //epicsEventSignal (pPmacCtlr->ioAscLockSem);
+            epicsMutexUnlock (pPmacCtlr->ioMbxLockMtx);   
+            epicsMutexUnlock (pPmacCtlr->ioAscLockMtx);
          
             pPmacCtlr->activeBase = TRUE;
          }
@@ -171,7 +173,7 @@ PMAC_LOCAL char pmacMbxOut
     length = strlen (writebuf);
 
     PMAC_DEBUG(1, 
-         PMAC_MESSAGE("pmacMbxOut: card %d: input=%s,length=%d\n", ctlr, writebuf, length);
+         PMAC_MESSAGE("pmacMbxOut: card %d: writebuf=%s,length=%d\n", ctlr, writebuf, length);
     )
 
     firstcharacter = writebuf[0];
@@ -231,6 +233,11 @@ PMAC_LOCAL char pmacMbxIn
       if (chr == PMAC_TERM_CR || chr == PMAC_TERM_ACK || chr == PMAC_TERM_BELL) {
          terminator = chr;
          readbuf[i] = '\0';   /* MJR 20160312 OSI work. this used to assign to NULL*/
+
+         PMAC_DEBUG( 1,
+             PMAC_MESSAGE("pmacMbxIn: card %d, terminator 0x%02x, readbuf=%s\n", ctlr, terminator, readbuf);
+         )
+
          if (terminator == PMAC_TERM_BELL) {
             for (j=0, i++; (i < PMAC_BASE_MBX_REGS_IN) && (terminext == 0); j++, i++) {
                chr = pPmacCtlr->pBase->mailbox.MB[i].data;
@@ -243,6 +250,7 @@ PMAC_LOCAL char pmacMbxIn
                }
             }
          }
+         //else if(chr == PMAC_TERM_CR) { pPmacCtlr->pBase->mailbox.MB[1].data = 0; }
       }
       else {
          readbuf[i] = chr;
@@ -338,13 +346,21 @@ long pmacMbxLock
    PMAC_CTLR   *pPmacCtlr;
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
+
    PMAC_DEBUG
-   (  10,
-      PMAC_MESSAGE ("%s: card %d: PMAC MBX LOCK\n", 
+   (  1,
+      PMAC_MESSAGE ("%s: card %d: before PMAC MBX LOCK\n", 
                   MyName, pPmacCtlr->ctlr);
    )
     
-   epicsEventMustWait (pPmacCtlr->ioMbxLockSem);
+   //epicsEventMustWait (pPmacCtlr->ioMbxLockSem);
+   epicsMutexLock (pPmacCtlr->ioMbxLockMtx);
+   PMAC_DEBUG
+   (  1,
+      PMAC_MESSAGE ("%s: card %d: after PMAC MBX LOCK\n", 
+                  MyName, pPmacCtlr->ctlr);
+   )
+    
    return (0);
 }
 
@@ -363,12 +379,19 @@ long pmacMbxUnlock
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
    PMAC_DEBUG
-   (  10,
-      PMAC_MESSAGE ("%s: card %d: PMAC MBX UNLOCK\n", 
+   (  1,
+      PMAC_MESSAGE ("%s: card %d: after PMAC MBX UNLOCK\n", 
                   MyName, pPmacCtlr->ctlr);
    )
     
-   epicsEventSignal (pPmacCtlr->ioMbxLockSem);
+//   epicsEventSignal (pPmacCtlr->ioMbxLockSem);
+   epicsMutexUnlock(pPmacCtlr->ioMbxLockMtx);
+   PMAC_DEBUG
+   (  1,
+      PMAC_MESSAGE ("%s: card %d: after PMAC MBX UNLOCK\n", 
+                  MyName, pPmacCtlr->ctlr);
+   )
+    
    return (0);
 }
 
@@ -386,7 +409,8 @@ long pmacAscLock
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
     
-   epicsEventMustWait (pPmacCtlr->ioAscLockSem);
+   //epicsEventMustWait (pPmacCtlr->ioAscLockSem);
+   epicsMutexLock (pPmacCtlr->ioAscLockMtx);
    return (0);
 }
 
@@ -404,7 +428,8 @@ long pmacAscUnlock
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
     
-   epicsEventSignal (pPmacCtlr->ioAscLockSem);
+   //epicsEventSignal (pPmacCtlr->ioAscLockSem);
+   epicsMutexUnlock (pPmacCtlr->ioAscLockMtx);
    return (0);
 }
 

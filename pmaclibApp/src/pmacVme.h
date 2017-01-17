@@ -68,6 +68,7 @@ DEVELOPMENT CENTER AT ARGONNE NATIONAL LABORATORY (708-252-2000).
 
 #include "pmacTypes.h"
 #include <epicsEvent.h>
+#include <epicsMutex.h>
 
 /* PMAC Hardware Constants */
 
@@ -127,10 +128,12 @@ typedef struct  /* PMAC_CTLR */
 	unsigned	irqLevel;
 	unsigned long	vmebusBase;
 	unsigned long	vmebusDpram;
-	epicsEventId	ioMbxLockSem;
+	//epicsEventId	ioMbxLockSem;
+	epicsMutexId	ioMbxLockMtx;
 	epicsEventId	ioMbxReceiptSem;
 	epicsEventId	ioMbxReadmeSem;
-	epicsEventId	ioAscLockSem;
+	//epicsEventId	ioAscLockSem;
+	epicsMutexId	ioAscLockMtx;
 	epicsEventId	ioAscReadmeSem;
 	epicsEventId	ioGatBufferSem;
 	char		firmwareVersion[PMAC_STRLEN_FWVER];
