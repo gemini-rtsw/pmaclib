@@ -19,8 +19,8 @@
 #include <devLib.h>
 #include <errlog.h>
 #include <string.h>
-
 #include <epicsPrint.h>
+
 #include "pmacVme.h"
 #include "drvPmac.h"
 #include "drvPmacGat.h"
@@ -71,42 +71,27 @@ long write_buffer( int, char *, int );
 
 PMAC_LOCAL void drvPmacGatScanInit( int   card )
 {
-  PMAC_CARD *pCard = &drvPmacCard[card];
+   PMAC_CARD *pCard = &drvPmacCard[card];
   
-  /* pCard->scanGatReadSem = semBCreate(SEM_Q_FIFO,SEM_EMPTY); */
-  pCard->scanGatReadSem = epicsEventMustCreate(epicsEventEmpty);;
-  if( pCard->scanGatReadSem == NULL )
-    printf("drvPmacGatScanInit: read semBcreate failed");
-  else
-  {
-    sprintf(pCard->scanGatReadName, "%s%d", PMAC_GAT_READ, pCard->card);
-    pCard->scanGatReadId = epicsThreadCreate(pCard->scanGatReadName,
+   pCard->scanGatReadSem = epicsEventMustCreate(epicsEventEmpty);;
+   sprintf(pCard->scanGatReadName, "%s%d", PMAC_GAT_READ, pCard->card);
+   pCard->scanGatReadId = epicsThreadCreate(pCard->scanGatReadName,
                               PMAC_GAT_PRI, PMAC_GAT_STACK,
                               (EPICSTHREADFUNC)drvPmacGatReadTask,
                               pCard);
-    taskwdInsert(pCard->scanGatReadId, NULL, NULL);
-  }
+   taskwdInsert(pCard->scanGatReadId, NULL, NULL);
 
-  //printf("Bypass scanGatWriteCreate...\n");
-  //return;
+   pCard->scanGatWriteSem = epicsEventMustCreate(epicsEventEmpty);
+   sprintf(pCard->scanGatWriteName, "%s%d", PMAC_GAT_WRITE, pCard->card);
+   pCard->scanGatWriteId = epicsThreadCreate( pCard->scanGatWriteName,
+                  PMAC_GAT_PRI, PMAC_GAT_STACK,
+                       (EPICSTHREADFUNC)drvPmacGatWriteTask,
+                       pCard);
+   taskwdInsert(pCard->scanGatWriteId, NULL, 0L);
 
-  /* pCard->scanGatWriteSem = semBCreate(SEM_Q_FIFO,SEM_EMPTY); */
-  pCard->scanGatWriteSem = epicsEventMustCreate(epicsEventEmpty);
-  if( pCard->scanGatWriteSem == NULL )
-    errMessage (0, "drvPmacGatScanInit: write semBcreate failed");
-  else
-  {
-    sprintf(pCard->scanGatWriteName, "%s%d", PMAC_GAT_WRITE, pCard->card);
-    pCard->scanGatWriteId = epicsThreadCreate( pCard->scanGatWriteName,
-                   PMAC_GAT_PRI, PMAC_GAT_STACK,
-                        (EPICSTHREADFUNC)drvPmacGatWriteTask,
-                        pCard);
-    taskwdInsert(pCard->scanGatWriteId, NULL, 0L);
-  }
+   gatherBuffer[card] = NULL;
 
-  gatherBuffer[card] = NULL;
-
-  return;
+   return;
 }
 
 
@@ -171,16 +156,16 @@ long drvPmacGatSources( int card )
   sprintf(command, "DELETE GATHER");
   terminator = drvPmacMbxWriteRead(card, command, response, errmsg);
   if( errmsg[0] )
-    printf("Error message returned from DELETE GATHER command: %s\n", errmsg);
+    errlogPrintf("Error message returned from DELETE GATHER command: %s\n", errmsg);
 
   DPRAMsize[card] = DPRAM_FACTOR*totSinglewords;
   sprintf(command, "DEFINE GATHER %ld", DPRAMsize[card]);
   terminator = drvPmacMbxWriteRead(card, command, response, errmsg);
   if( errmsg[0] )
-    printf("Error message returned from DEFINE GATHER %ld command: %s\n", DPRAMsize[card], errmsg);
+    errlogPrintf("Error message returned from DEFINE GATHER %ld command: %s\n", DPRAMsize[card], errmsg);
 
 #if DEBUG
-  printf("drvPmacGatSources: DPRAMsize[%d] = %ld, totSinglewords = %d\n", 
+  epicsPrintf("drvPmacGatSources: DPRAMsize[%d] = %ld, totSinglewords = %d\n", 
           card, DPRAMsize[card], totSinglewords);
 #endif
 
@@ -207,7 +192,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
 
    delay = 0.02;   /* 50 Hz */
    card = pCard->card;
-   errlogPrintf("Gat Read Task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
+   epicsPrintf("Gat Read Task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
 
    terminator = drvPmacMbxWriteRead(card, "version", response, errmsg);
 
@@ -225,7 +210,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
       {
          pmac_gat_offset[card]   = 0x0800;
          pmac_gat_nextaddr[card] = 0x07FE;
-         errlogPrintf("PMAC Card %d - Firmware version %s\n", card, response);
+         epicsPrintf("PMAC Card %d - Firmware version %s\n", card, response);
       }
       else if( !strncmp(response, "1.16C", 5) ||
                !strncmp(response, "1.16D", 5) ||
@@ -234,7 +219,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
       {
          pmac_gat_offset[card]   = 0x0900;
          pmac_gat_nextaddr[card] = 0x08FE;
-         errlogPrintf("PMAC Card %d - Firmware version %s\n", card, response);
+         epicsPrintf("PMAC Card %d - Firmware version %s\n", card, response);
       }
       else
       {
@@ -244,7 +229,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
    }
    FOREVER
    {
-      epicsEventMustWait(pCard->scanGatReadSem);
+      epicsEventMustWait(pCard->scanGatReadSem); /* I think this should be moved to just before the FOREVER above -- MDW */
 
       while(pCard->logFlag)
       {
@@ -272,7 +257,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
             {
                if(writingFile[card])
                {
-                  printf("Overwriting about to occur\n");
+                  errlogPrintf("Overwriting about to occur\n");
                   strcpy(errorString[card], "Write file error");
                   drvPmacGatStop(card);
                   break;
@@ -282,7 +267,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
             }
 
 #if DEBUG
-            printf("WRAPPED(%ld), read (top) = %ld, read (bottom) = %ld, prevDPRAMend = %ld\n",
+            epicsPrintf("WRAPPED(%ld), read (top) = %ld, read (bottom) = %ld, prevDPRAMend = %ld\n",
                                DPRAMsize[card], size, end, prevDPRAMend[card]);
 #endif
 
@@ -292,13 +277,13 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
             {
                if(writingFile[card])
                {
-                  printf("Overwriting about to occur\n");
+                  errlogPrintf("Overwriting about to occur\n");
                   strcpy(errorString[card], "Write file error");
                   drvPmacGatStop(card);
                   break;
                }
                else
-               epicsEventSignal(pCard->scanGatWriteSem);
+                  epicsEventSignal(pCard->scanGatWriteSem);
             }
          }
          else                    /* we haven't wrapped around the DPRAM buffer */
@@ -306,7 +291,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
             size = end - prevDPRAMend[card];
 
 #if DEBUG
-            printf("NOT WRAPPED(%ld), Amount read = %ld, prevDPRAMend = %ld\n", 
+            epicsPrintf("NOT WRAPPED(%ld), Amount read = %ld, prevDPRAMend = %ld\n", 
                             DPRAMsize[card], size, prevDPRAMend[card]);
 #endif
 
@@ -315,7 +300,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
             {
                if(writingFile[card])
                {
-                  printf("Overwriting about to occur\n");
+                  errlogPrintf("Overwriting about to occur\n");
                   strcpy(errorString[card], "Write file error");
                   drvPmacGatStop(card);
                   break;
@@ -340,36 +325,32 @@ int drvPmacGatWriteTask(PMAC_CARD *pCard)
    int       card;
 
    card = pCard->card;
-   printf("Gat Write task starting for CARD[%d]\n", card);
+   epicsPrintf("Gat Write task starting for CARD[%d]\n", card);
 
    FOREVER
    {
       epicsEventMustWait(pCard->scanGatWriteSem)
-#if 1
+#if DEBUG 
       printf("drvPmacGatWriteTask - writing to disk\n");
 #endif
       writingFile[card] = 1;
       if( writeFlag[card] == WRITE_BOTTOM )
       {
-         /* ticksBefore[card] = tickGet(); */
          epicsTimeGetCurrent(&ticksBefore[card]);
          fwrite( gatherBuffer[card], 1, pmac_buf_size[card]/2, fd[card] );
-         /* ticksAfter[card]  = tickGet(); */
          epicsTimeGetCurrent(&ticksAfter[card]);
          writeFlag[card] = WRITE_TOP;
       }
       else
       {
-         /* ticksBefore[card] = tickGet(); */
          epicsTimeGetCurrent(&ticksBefore[card]);
          fwrite( gatherBuffer[card]+pmac_buf_size[card]/2, 1, pmac_buf_size[card]/2, fd[card] );
-         /* ticksAfter[card]  = tickGet(); */
          epicsTimeGetCurrent(&ticksAfter[card]);
          writeFlag[card] = WRITE_BOTTOM;
       }
       writingFile[card]   = 0;
       amountWritten[card] = pmac_buf_size[card]/2;
-#if 1
+#if DEBUG 
       drvPmacGatWriteMonitor( card, &wflag, &rate );
       if( wflag == 0 )
          epicsPrintf("drvPmacGatWriteTask - finished writing to disk: Rate = %f\n", rate);
@@ -440,7 +421,6 @@ int drvPmacGatStart(int card, long size)
    {
       /* Set the flag which starts continuous reading of DPRAM */
       pCard->logFlag = 1;
-      /* semGive(pCard->scanGatReadSem); */
       epicsEventSignal(pCard->scanGatReadSem);
    }
    return(0);
@@ -452,7 +432,7 @@ int drvPmacGatStop(int card)
    PMAC_CARD *pCard = &drvPmacCard[card];
  
 #if DEBUG
-   printf("Calling drvPmacGatStop: logging = %d, writingFile = %d\n", 
+   epicsPrintf("Calling drvPmacGatStop: logging = %d, writingFile = %d\n", 
                         pCard->logFlag, writingFile[card]);
 #endif
 
@@ -474,7 +454,7 @@ int drvPmacGatStop(int card)
    }
 
 #if DEBUG
-   printf("End of drvPmacGatStop\n");
+   epicsPrintf("End of drvPmacGatStop\n");
 #endif
 
    return(0);
@@ -486,19 +466,17 @@ int drvPmacGatFlush(int card)
    if( writeFlag[card] == WRITE_BOTTOM )
    {
 #if DEBUG
-      printf("drvPmacGatFlush(BOTTOM): buf_pos = %ld\n", buf_pos[card]);
+      epicsPrintf("drvPmacGatFlush(BOTTOM): buf_pos = %ld\n", buf_pos[card]);
 #endif
-      /* ticksBefore[card] = tickGet(); */
       epicsTimeGetCurrent(&ticksBefore[card]);
       fwrite( gatherBuffer[card], 1, buf_pos[card], fd[card] );
-      /* ticksAfter[card] = tickGet(); */
       epicsTimeGetCurrent(&ticksAfter[card]);
       amountWritten[card] = buf_pos[card];
    }
    else
    {
 #if DEBUG
-      printf("drvPmacGatFlush(TOP): buf_pos = %ld\n", buf_pos[card]);
+      epicsPrintf("drvPmacGatFlush(TOP): buf_pos = %ld\n", buf_pos[card]);
 #endif
       if( buf_pos[card] < pmac_buf_size[card]/2 )
       {
@@ -506,21 +484,17 @@ int drvPmacGatFlush(int card)
             that buf_pos is somewhere in the top-half, what has happened is
             that is has already wrapped around to the bottom again. In this
             case, just flush the TOP */
-         /* ticksBefore[card] = tickGet(); */
          epicsTimeGetCurrent(&ticksBefore[card]);
          fwrite( gatherBuffer[card]+pmac_buf_size[card]/2, 1, 
                    pmac_buf_size[card]/2, fd[card] );
-         /* ticksAfter[card] = tickGet(); */
          epicsTimeGetCurrent(&ticksAfter[card]);
          amountWritten[card] = pmac_buf_size[card]/2;
       }
       else
       {
-         /* ticksBefore[card] = tickGet(); */
          epicsTimeGetCurrent(&ticksBefore[card]);
          fwrite( gatherBuffer[card]+pmac_buf_size[card]/2, 1, 
                   (buf_pos[card] - pmac_buf_size[card]/2), fd[card] );
-         /* ticksAfter[card] = tickGet(); */
          epicsTimeGetCurrent(&ticksAfter[card]);
          amountWritten[card] = (buf_pos[card] - pmac_buf_size[card]/2);
       } 
@@ -546,10 +520,8 @@ int drvPmacGatWriteMonitor( long card, long *wFlag, double *rate )
    else
    {
       *wFlag = 0;
-      /* if( ticksBefore[card] ) */
       if(epicsTimeGreaterThan(&ticksBefore[card], &zerotime))
       {
-         /* totalSecs          = (ticksAfter[card]-ticksBefore[card])/(double)sysClkRateGet(); */
          totalSecs =  epicsTimeDiffInSeconds(&ticksAfter[card], &ticksBefore[card]);
          transferRate[card] = (double)amountWritten[card]/(1024.0 * totalSecs);
       }
@@ -582,7 +554,7 @@ long write_buffer(int card, char *buf, int size)
    long prevPos;
 
 #if DEBUG_WRITE
-   printf("Entering write_buffer with buf_pos = %ld, size = %d\n", buf_pos[card], size);
+   epicsPrintf("Entering write_buffer with buf_pos = %ld, size = %d\n", buf_pos[card], size);
 #endif
 
    prevPos = buf_pos[card];
@@ -621,7 +593,7 @@ long write_buffer(int card, char *buf, int size)
       ret = 0;
 
 #if DEBUG_WRITE
-   printf("Leaving write_buffer with buf_pos = %ld, size = %d\n", buf_pos[card], size);
+   epicsPrintf("Leaving write_buffer with buf_pos = %ld, size = %d\n", buf_pos[card], size);
 #endif
 
    return(ret);
