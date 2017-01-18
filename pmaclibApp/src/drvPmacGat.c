@@ -320,9 +320,12 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
 
 int drvPmacGatWriteTask(PMAC_CARD *pCard)
 {
+   int       card;
+
+#if DEBUG
    long      wflag;
    double    rate;
-   int       card;
+#endif
 
    card = pCard->card;
    epicsPrintf("Gat Write task starting for CARD[%d]\n", card);
