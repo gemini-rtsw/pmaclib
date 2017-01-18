@@ -19,6 +19,8 @@ variable( mbxRcptISRcnt, int)
 variable( gatBufISRcnt, int)
 variable( ascInISRcnt, int)
 
+variable( pmacGatReadCnt, int)
+
 # ASCII Mailbox Device Support
 device( ai,        VME_IO, devPmacMbxAi,     "PMAC-VME ASCII" )
 device( ao,        VME_IO, devPmacMbxAo,     "PMAC-VME ASCII" )

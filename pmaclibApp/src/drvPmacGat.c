@@ -20,6 +20,7 @@
 #include <errlog.h>
 #include <string.h>
 #include <epicsPrint.h>
+#include <epicsExport.h>
 
 #include "pmacVme.h"
 #include "drvPmac.h"
@@ -68,6 +69,8 @@ char drvPmacMbxWriteRead( int, char *, char *, char *);
 void init_buffer( int card );
 long write_buffer( int, char *, int );
 
+long pmacGatReadCnt = 0;
+epicsExportAddress(int, pmacGatReadCnt);
 
 PMAC_LOCAL void drvPmacGatScanInit( int   card )
 {
@@ -230,6 +233,7 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
    FOREVER
    {
       epicsEventMustWait(pCard->scanGatReadSem); /* I think this should be moved to just before the FOREVER above -- MDW */
+      pmacGatReadCnt++;
 
       while(pCard->logFlag)
       {
