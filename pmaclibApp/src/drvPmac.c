@@ -270,7 +270,7 @@ long pmacConfig
       return (status);
    }
 
-   status = devReadProbe (sizeof(short), (void *)pPmacCtlr->pBase, (short *)&val);
+   status = devReadProbe (sizeof(char), (void *) &pPmacCtlr->pBase->mailbox.MB[0].data, (char *)&val);
    if (status != OK)
    {
       epicsPrintf ("%s: card %d: Failure probing for base address.\n", MyName, cardNumber);
@@ -312,7 +312,7 @@ long pmacConfig
 
       *pBlock = block;
 
-      status = devReadProbe ( sizeof(short), (char *) pPmacCtlr->pDpramBase, (char*)&val);
+      status = devReadProbe ( sizeof(char), (char *) pPmacCtlr->pDpramBase, (char*)&val);
       if (status != OK)
       {
          epicsPrintf ("%s: card %d: Failure probing for DPRAM address.\n", MyName, cardNumber);
