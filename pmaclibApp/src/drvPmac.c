@@ -26,6 +26,7 @@
 #include <errMdef.h>
 #include <taskwd.h>
 #include <iocsh.h>
+#include <dbDefs.h>
 
 /* local includes */
 
@@ -44,8 +45,8 @@
 #define PMAC_LOCAL
 #endif
 
-#define PMAC_MESSAGE   errlogPrintf
-#define PMAC_DEBUG(level,code)   { if (drvPmacDebug >= (level)) { code } }
+#define PMAC_MESSAGE   epicsPrintf
+#define PMAC_DEBUG(level,code)   { if (drvPmacDebug >= (level)) { code } fflush(stdout); }
 
 #define NO_ERR_STATUS   (-1)
 
@@ -62,81 +63,26 @@
 #define PMAC_ASC_SCAN      "pmacAsc"
 #define PMAC_ASC_PRI      (45)
 #define PMAC_ASC_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
-/*
-#define PMAC_ASC_OPT      (VX_FP_TASK)
-#define PMAC_ASC_STACK      (8000)
-*/
 
 #define PMAC_SVO_SCAN      "pmacSvo"
 #define PMAC_SVO_PRI      (45)
 #define   PMAC_SVO_RATE      0.1
 #define PMAC_SVO_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
-/**
- *
- * MJR 20160316   OSI Change *
- *
- * PMAC RATE THE MCS USES is 80 ticks/second * 0.1  ==> 8 ticks to yield 100 ms.
- *
- */
-/**
- * #define PMAC_SVO_RATE      (sysClkRateGet()/10)
- *
- */
-/*
-#define PMAC_SVO_OPT      (VX_FP_TASK)
-#define PMAC_SVO_STACK      (8000)
-*/
 
 #define PMAC_BKG_SCAN      "pmacBkg"
 #define PMAC_BKG_PRI      (44)
 #define PMAC_BKG_RATE      0.05
 #define PMAC_BKG_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
-/**
- *
- * MJR 20160316   OSI Change *
- *
- * PMAC RATE THE MCS USES is 80 ticks/second * 0.05  ==> 4 ticks to yield 50 ms.
- *
- */
-/**
- *
-#define PMAC_BKG_RATE      (sysClkRateGet()/20)
- *
- */
 
 #define PMAC_VAR_SCAN      "pmacVar"
 #define PMAC_VAR_PRI      (44)
 #define PMAC_VAR_RATE      0.05
 #define PMAC_VAR_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
-/**
- *
- * MJR 20160316   OSI Change *
- *
- * PMAC RATE THE MCS USES is 80 ticks/second * 0.05  ==> 4 ticks to yield 50 ms.
- *
- */
-/**
- *
-#define PMAC_VAR_RATE      (sysClkRateGet()/20)
- *
- */
-
-
 #define PMAC_OPN_SCAN     "pmacOpn"
 #define PMAC_OPN_PRI      (43)
 #define PMAC_OPN_RATE     0.025
 #define PMAC_OPN_STACK    epicsThreadGetStackSize(epicsThreadStackBig)
-/**
- *
- * MJR 20160316   OSI Change *
- *
- * PMAC RATE THE MCS USES is 80 ticks/second * 0.0025  ==> 2 ticks to yield 25 ms.
- *
- */
-/**
- * #define PMAC_OPN_RATE      (sysClkRateGet()/40)
- */
 #define PMAC_FLD_QUEUE_SIZE 100
 
 #define PMAC_FLD_SCAN      "pmacFld"
@@ -186,9 +132,7 @@ typedef struct  /* PMAC_DRVET */
 /*
  * GLOBALS
  */
-
-char * drvPmacVersion = "@(#) drvPmac.c 1.7 97/05/06";
-
+char * drvPmacVersion = "@(#) drvPmac.c 2017 CCB debug";
 int   drvPmacDebug = 0;      /* must be > 0 to see messages */
 
 /* EPICS Driver Support Entry Table */
@@ -351,21 +295,12 @@ long pmacConfig
       return (status);
    }
 
-   //pPmacCtlr->ioMbxLockSem = epicsEventMustCreate (epicsEventEmpty);
    pPmacCtlr->ioMbxLockMtx = epicsMutexMustCreate();
    PMAC_DEBUG (1, 
               PMAC_MESSAGE ("%s: card %d, ioMbxLockMtx = %p\n", 
                                 MyName, cardNumber, pPmacCtlr->ioMbxLockMtx);
    )
 
-
-   //if ( pPmacCtlr->ioMbxLockMtx == NULL)
-   //{
-   //   status = S_dev_internal;
-   //   epicsPrintf ("%s: card %d: Failure creating mutex (ioMbxLockMtx).\n",
-   //                  MyName, cardNumber);
-   //   return (status);
-   //}
 
    pPmacCtlr->ioAscReadmeSem = epicsEventMustCreate (epicsEventEmpty);
    PMAC_DEBUG (1, 
@@ -381,23 +316,12 @@ long pmacConfig
       return (status);
    }
 
-   // pPmacCtlr->ioAscLockSem = epicsEventMustCreate (epicsEventEmpty);
-   // if ( pPmacCtlr->ioAscLockSem == NULL)
-   //
    pPmacCtlr->ioAscLockMtx = epicsMutexMustCreate();
    PMAC_DEBUG (1, 
               PMAC_MESSAGE ("%s: card %d, ioAscLockMtx = %p\n", 
                                 MyName, cardNumber, pPmacCtlr->ioAscLockMtx);
    )
 
-
-   //if ( pPmacCtlr->ioAscLockMtx == NULL)
-   //{
-   //   status = S_dev_internal;
-   //   epicsPrintf ("%s: card %d: Failure creating binary semaphore (ioAscLockSem).\n",
-   //            MyName, cardNumber);
-   //   return (status);
-   //}
 
    pPmacCtlr->ioGatBufferSem = epicsEventMustCreate (epicsEventEmpty);
    PMAC_DEBUG (1, 
@@ -673,7 +597,7 @@ long drvPmacMemSpecParse(char *pmacAdrSpec,int *memType,int *pmacAdr)
 
    parmCount = sscanf (pmacAdrSpec, "%[^:]:$%x", memTypeStr, pmacAdr);
 
-   PMAC_DEBUG (1,
+   PMAC_DEBUG (2,
                PMAC_MESSAGE ("%s: parse '%s' results parmCount %d\n", MyName, pmacAdrSpec, parmCount);
                PMAC_MESSAGE ("%s: memTypeStr '%s' pmacAdr %x\n", MyName, memTypeStr, *pmacAdr);
    )
@@ -682,9 +606,8 @@ long drvPmacMemSpecParse(char *pmacAdrSpec,int *memType,int *pmacAdr)
    if ( (parmCount != 2) )
    {
       status = S_dev_badInit;
-      errPrintf (status, __FILE__, __LINE__,
-          "%s: Improper address specification '%s'.",
-          MyName, pmacAdrSpec);
+      errlogPrintf("%s: Improper address specification '%s' status = %ld\n",
+          MyName, pmacAdrSpec, status);
       return (status);
    }
 
@@ -737,7 +660,7 @@ long drvPmacMemSpecParse(char *pmacAdrSpec,int *memType,int *pmacAdr)
       return (status);
    }
 
-   PMAC_DEBUG(1,
+   PMAC_DEBUG(2,
               PMAC_MESSAGE ("%s: memType %d\n", MyName, *memType);
    )
 
@@ -817,8 +740,8 @@ long drvPmacDpramRequest
       pSvoIo->pParm    = pParm;
 
       PMAC_DEBUG(1,
-                 PMAC_MESSAGE ("%s: Svo -- index %d memType %d hostOfs %x pAddress %p\n",
-                                MyName, i, pSvoIo->memType, pSvoIo->hostOfs, pSvoIo->pAddress);
+                 PMAC_MESSAGE ("%s: card %d: Servo    -- index %d memType %d hostOfs %x pAddress %p\n",
+                                MyName, card, i, pSvoIo->memType, pSvoIo->hostOfs, pSvoIo->pAddress);
       )
 
       pCard->numSvoIo++;
@@ -846,8 +769,8 @@ long drvPmacDpramRequest
       pBkgIo->pParm    = pParm;
 
       PMAC_DEBUG(1,
-                 PMAC_MESSAGE ("%s: Bkg -- index %d memType %d hostOfs %x pAddress %p\n",
-                               MyName, i, pBkgIo->memType, pBkgIo->hostOfs, pBkgIo->pAddress);
+                 PMAC_MESSAGE ("%s: card %d: BkgFixed -- index %d memType %d hostOfs %x pAddress %p\n",
+                               MyName, card, i, pBkgIo->memType, pBkgIo->hostOfs, pBkgIo->pAddress);
       )
 
       pCard->numBkgIo++;
@@ -869,8 +792,8 @@ long drvPmacDpramRequest
       pVarIo->pParm    = pParm;
 
       PMAC_DEBUG(1,
-                 PMAC_MESSAGE ("%s: Var -- index %d memType %d\n",
-                               MyName, i, pVarIo->memType);
+                 PMAC_MESSAGE ("%s: card %d: BkgVar   -- index %d memType %d\n",
+                               MyName, card, i, pVarIo->memType);
       )
 
       pCard->numVarIo++;
@@ -898,8 +821,8 @@ long drvPmacDpramRequest
       pOpnIo->pParm    = pParm;
 
       PMAC_DEBUG(1,
-                 PMAC_MESSAGE ("%s: Opn -- index %d memType %d hostOfs %x pAddress %p\n",
-                                MyName, i, pOpnIo->memType, pOpnIo->hostOfs, pOpnIo->pAddress);
+                 PMAC_MESSAGE ("%s: card %d: OpenUse  -- index %d memType %d hostOfs %x pAddress %p\n",
+                                MyName, card, i, pOpnIo->memType, pOpnIo->hostOfs, pOpnIo->pAddress);
       )
 
       if( inputRec )      /* Only interested in scanning input records */
@@ -913,8 +836,8 @@ long drvPmacDpramRequest
    {
       status = S_dev_badRequest;
       errPrintf (status, __FILE__, __LINE__,
-                 "%s: Unsupported DPRAM address range %#06x.",
-                  MyName, pmacAdr);
+                 "%s: card %d: Unsupported DPRAM address range %#06x.",
+                  MyName, card, pmacAdr);
       return (status);
    }
 
@@ -1397,7 +1320,6 @@ char drvPmacMbxWriteRead
    PMAC_DEBUG( 1,
       PMAC_MESSAGE("drvPmacMbxWriteRead: card = %d, writebuf = %s\n", card, writebuf);
    )
-
    pmacMbxLock(card);
    terminator = pmacMbxWrite (card, writebuf);
    terminator = pmacMbxRead (card, readbuf, errmsg);
@@ -1434,7 +1356,7 @@ void drvPmacMbxScan(PMAC_MBX_IO *pMbxIo)
 
    if ( !epicsRingPointerPush(pCard->scanMbxQ,(void *)pMbxIo)  )
    {
-      errMessage (0,"drvPmacMbxScan: epicsRingPointerPush overflow.");
+      errlogPrintf("drvPmacMbxScan: epicsRingPointerPush overflow.");
    }
 
    PMAC_DEBUG(6,
@@ -1458,24 +1380,18 @@ PMAC_LOCAL void drvPmacMbxScanInit(int card)
 
    if ( pCard->scanMbxQ == NULL )
    {
-      errMessage (0, "drvPmacMbxScanInit: epicsRingPointerCreate failed");
+      errlogPrintf ("drvPmacMbxScanInit: epicsRingPointerCreate failed");
       epicsExit(1);
    }
 
    pCard->scanMbxSem = epicsEventMustCreate(epicsEventEmpty);
-   if ( pCard->scanMbxSem == NULL )
-   {
-      errMessage (0, "drvPmacMbxScanInit: epicsEventMustCreate failed.");
-   }
-   else
-   {
-      sprintf ( pCard->scanMbxTaskName, "%s%d", PMAC_MBX_SCAN, pCard->card);
-      pCard->scanMbxTaskId = epicsThreadCreate (pCard->scanMbxTaskName,
-                                                PMAC_MBX_PRI, PMAC_MBX_STACK,
-                                                (EPICSTHREADFUNC)drvPmacMbxTask,
-                                                pCard);
-      taskwdInsert (pCard->scanMbxTaskId, NULL, NULL);
-   }
+
+   sprintf ( pCard->scanMbxTaskName, "%s%d", PMAC_MBX_SCAN, pCard->card);
+   pCard->scanMbxTaskId = epicsThreadCreate (pCard->scanMbxTaskName,
+                                             PMAC_MBX_PRI, PMAC_MBX_STACK,
+                                             (EPICSTHREADFUNC)drvPmacMbxTask,
+                                             pCard);
+   taskwdInsert (pCard->scanMbxTaskId, NULL, NULL);
 
    return;
 }
@@ -1485,11 +1401,9 @@ PMAC_LOCAL void drvPmacMbxScanInit(int card)
  * drvPmacMbxTask - task for PMAC MBX input/output
  *
  */
-EPICSTHREADFUNC drvPmacMbxTask(PMAC_CARD *pCard)     /* MDW OSI wor 20160321 */
+EPICSTHREADFUNC drvPmacMbxTask(PMAC_CARD *pCard)     /* MDW OSI work 20160321 */
 {
-   //int card = *(int *)c;
    char *MyName = "drvPmacMbxTask";
-   //PMAC_CARD *pCard = &drvPmacCard[card];
    PMAC_MBX_IO *pMbxIo;
 
    FOREVER
@@ -1548,10 +1462,9 @@ void drvPmacFldScan(PMAC_MBX_IO *pMbxIo)
 
    pCard = &drvPmacCard[pMbxIo->card];
 
-   //if ( epicsRingPointerPush(pCard->scanFldQ,(void *)&pMbxIo) != OK )
    if ( epicsRingPointerPush(pCard->scanFldQ,(void *)pMbxIo) != 1  )
    {
-      errMessage (0,"drvPmacFldScan: epicsRingPointerPush failure.");
+      errlogPrintf ("drvPmacFldScan: epicsRingPointerPush failure.");
    }
 
    PMAC_DEBUG(1,
@@ -1576,24 +1489,18 @@ PMAC_LOCAL void drvPmacFldScanInit(int card)
 
    if ( pCard->scanFldQ == NULL )
    {
-      errMessage (0, "drvPmacFldScanInit: epicsRingPointerCreate() failed");
+      errlogPrintf("drvPmacFldScanInit: epicsRingPointerCreate() failed");
       epicsExit(1);
    }
 
    pCard->scanFldSem = epicsEventMustCreate(epicsEventEmpty);
-   if ( pCard->scanFldSem == NULL )
-   {
-      errMessage (0, "drvPmacFldScanInit: semBcreate failed.");
-   }
-   else
-   {
-      sprintf ( pCard->scanFldTaskName, "%s%d", PMAC_FLD_SCAN, pCard->card);
-      pCard->scanFldTaskId = epicsThreadCreate(pCard->scanFldTaskName,
-                                                PMAC_FLD_PRI, PMAC_FLD_STACK,
-                                                (EPICSTHREADFUNC)drvPmacFldTask,
-                                                (void *)(&pCard->card) );
-      taskwdInsert (pCard->scanFldTaskId, NULL, NULL);
-   }
+
+   sprintf ( pCard->scanFldTaskName, "%s%d", PMAC_FLD_SCAN, pCard->card);
+   pCard->scanFldTaskId = epicsThreadCreate(pCard->scanFldTaskName,
+                                             PMAC_FLD_PRI, PMAC_FLD_STACK,
+                                             (EPICSTHREADFUNC)drvPmacFldTask,
+                                             (void *)(&pCard->card) );
+   taskwdInsert (pCard->scanFldTaskId, NULL, NULL);
 
    return;
 }
@@ -1629,9 +1536,7 @@ long drvPmacFldLoop
    if (fpDownload == (FILE *) NULL)
    {
       sprintf (message, "FILEDOWN");
-      PMAC_DEBUG(1,
-         PMAC_MESSAGE ("%s: could not open download file %s\n", MyName, download);
-      )
+      errlogPrintf("%s: could not open download file %s\n", MyName, download);
       return (ERROR);
    }
 
@@ -1640,9 +1545,7 @@ long drvPmacFldLoop
    if (fpUpload == (FILE *) NULL)
    {
       sprintf (message, "FILEUP");
-      PMAC_DEBUG(1,
-         PMAC_MESSAGE ("%s: could not open upload file %s\n", MyName, upload);
-      )
+      errlogPrintf("%s: could not open upload file %s\n", MyName, upload);
       return (ERROR);
    }
 
@@ -1650,51 +1553,60 @@ long drvPmacFldLoop
    terminator = 0;
    err        = 0;
 
-   terminator = drvPmacMbxWriteRead( card, "CLOSE", response, errmsg );
+   //terminator = drvPmacMbxWriteRead( card, "CLOSE\n", response, errmsg );
+
+
    if( terminator == PMAC_TERM_BELL )
       return (ERROR);
 
    /* Get Command String */
    if(!(status = (int) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
       exitNow = TRUE;
-
    /* Loop Until Exit */
    while( !exitNow )
    {
-    /*
-      printf("%s\n", textline);
-    */
+printf("FldLoop: in while() loop\n"); fflush(stdout);
       if( (textline[0] != ';') && (textline[0] != '\n') && (textline[0] != '\r') )
       {
          sscanf(textline, "%79[^\r;]", command);
 
-         printf("Sent to PMAC: command=[%s]\n", command);
+         PMAC_DEBUG(1,
+              PMAC_MESSAGE("drvPmacFldLoop: card %d: Sent to PMAC: command=[%s]\n", card, command);
+         )
 
          terminator = drvPmacMbxWriteRead( card, command, response, errmsg );
+
+
+/* 20170131 MDW -- There seems to be something missing here, namely writing the response (such as a program listing) to the upload file */
+         PMAC_DEBUG( 1,
+              PMAC_MESSAGE("drvPmacFldLoop: card %d: This is where I'm supposed to be  writing out to the upload file\n", card);)
+
          if( terminator == PMAC_TERM_BELL )
          {
             fprintf (fpUpload, "[%s]\n", errmsg);
             sprintf (message, "%s", errmsg);
 
-            printf("Error message from PMAC: %s\n", errmsg);
+            errlogPrintf("drvPmacFldLoop: card %d: Error message from PMAC: %s\n", card, errmsg);
 
             exitNow = TRUE;
             err     = 1;
          }
       }
       else
-         printf("Rejected...\n");
-            if( !exitNow )
-            {
-               /* Get Next Command */
-                  if(!(status = (int) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
-                     exitNow = TRUE;
-            }
+        errlogPrintf("drvPmacFldLoop: card %d: Command rejected...\n", card);
+
+      if( !exitNow )
+      {
+         /* Get Next Command */
+            if(!(status = (int) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
+               exitNow = TRUE;
+      }
+printf("FldLoop: next command - %s, status=%d, exitNow=%d\n", textline, status, exitNow);
    }
 
    /* Send Final String To PMAC */
 
-   terminator = drvPmacMbxWriteRead( card, "CLOSE", response, errmsg );
+   //terminator = drvPmacMbxWriteRead( card, "CLOSE\n", response, errmsg );
    if( terminator == PMAC_TERM_BELL )
       return (ERROR);
 
@@ -1754,14 +1666,14 @@ EPICSTHREADFUNC drvPmacFldTask(void *c)              /* MDW OSI work 20160321 */
                        PMAC_MESSAGE ("%s: card=%d download=[%s]\n", MyName, pMbxIo->card, pMbxIo->command);
                        PMAC_MESSAGE ("%s: upload=[%s]\n", MyName, pMbxIo->response);
             )
-
+printf("before drvPmacFldLoop\n");
             status = drvPmacFldLoop (pMbxIo->card, pMbxIo->command, pMbxIo->response, pMbxIo->errmsg);
+printf("after drvPmacFldLoop\n");
 
             PMAC_DEBUG(1,
                        PMAC_MESSAGE ("%s: status=%d\n", MyName, status);
                        PMAC_MESSAGE ("%s: message=[%s]\n", MyName, pMbxIo->errmsg);
             )
-
             pMbxIo->terminator = (char) status;
 
             callbackRequest (&pMbxIo->callback);

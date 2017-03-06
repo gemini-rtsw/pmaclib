@@ -18,6 +18,7 @@
 #include <devLib.h>
 #include <errMdef.h>
 #include <epicsExport.h>
+#include <dbDefs.h>
 
 /* Local Includes */
 
@@ -37,8 +38,8 @@
 #endif
 
 #if PMAC_DIAGNOSTICS
-#define PMAC_MESSAGE   errlogPrintf
-#define PMAC_DEBUG(level,code)       { if (pmacVmeDebug >= (level)) { code } }
+#define PMAC_MESSAGE   epicsPrintf
+#define PMAC_DEBUG(level,code)       { if (drvPmacVmeDebug >= (level)) { code } fflush(stdout);}
 #else
 #define PMAC_DEBUG(level,code)      ;
 #endif
@@ -51,7 +52,7 @@
 char * pmacVmeVersion = "@(#) drvPmacVme.c 1.6 97/05/06";
 
 #if PMAC_DIAGNOSTICS
-volatile int   pmacVmeDebug = 0;      /* must be > 0 to see messages */
+volatile int   drvPmacVmeDebug = 0;      /* must be > 0 to see messages */
 #endif
 
 
@@ -286,11 +287,16 @@ PMAC_LOCAL char pmacMbxRead
       terminator = pmacMbxIn (ctlr, &readbuf[i], errmsg);
       i += PMAC_BASE_MBX_REGS_IN;
    }
+
  
    if( status == epicsEventWaitTimeout )
       epicsPrintf("pmacMbxRead: card %d: Read from PMAC Mailbox timed out: waiting for readme semaphore\n", ctlr);
    else if( status == epicsEventWaitError )
       epicsPrintf("pmacMbxRead: card %d: Read from PMAC Mailbox error: waiting for readme semaphore\n", ctlr);
+
+PMAC_DEBUG( 1,
+    PMAC_MESSAGE("pmacMbxRead:  readbuf=%s, terminator=%02x\n", readbuf, terminator);
+)
 
    return (terminator);
 }
@@ -347,17 +353,10 @@ long pmacMbxLock
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
 
-   PMAC_DEBUG
-   (  1,
-      PMAC_MESSAGE ("%s: card %d: before PMAC MBX LOCK\n", 
-                  MyName, pPmacCtlr->ctlr);
-   )
-    
-   //epicsEventMustWait (pPmacCtlr->ioMbxLockSem);
    epicsMutexLock (pPmacCtlr->ioMbxLockMtx);
    PMAC_DEBUG
    (  1,
-      PMAC_MESSAGE ("%s: card %d: after PMAC MBX LOCK\n", 
+      PMAC_MESSAGE ("%s: card %d: PMAC MBX Mutex Locked\n", 
                   MyName, pPmacCtlr->ctlr);
    )
     
@@ -378,17 +377,11 @@ long pmacMbxUnlock
    PMAC_CTLR   *pPmacCtlr;
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
-   PMAC_DEBUG
-   (  1,
-      PMAC_MESSAGE ("%s: card %d: after PMAC MBX UNLOCK\n", 
-                  MyName, pPmacCtlr->ctlr);
-   )
     
-//   epicsEventSignal (pPmacCtlr->ioMbxLockSem);
    epicsMutexUnlock(pPmacCtlr->ioMbxLockMtx);
    PMAC_DEBUG
    (  1,
-      PMAC_MESSAGE ("%s: card %d: after PMAC MBX UNLOCK\n", 
+      PMAC_MESSAGE ("%s: card %d: MBX Mutex Unlocked\n", 
                   MyName, pPmacCtlr->ctlr);
    )
     
@@ -1224,7 +1217,7 @@ PMAC_LOCAL void pmacGatBufferISR(void *p)
    gatBufISRcnt++;
    return;
 }
-epicsExportAddress(int, pmacVmeDebug); 
+epicsExportAddress(int, drvPmacVmeDebug); 
 epicsExportAddress(int, mbxoutA); 
 epicsExportAddress(int, mbxoutB); 
 epicsExportAddress(int, mbxoutC); 

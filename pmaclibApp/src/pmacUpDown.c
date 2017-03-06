@@ -27,7 +27,8 @@
 #define SMALL_BUF             16
 #define MEDIUM_BUF            64
 #define LARGE_BUF             6144
-#define HEADER                "A\nCLOSE\nDELETE GATHER\nDELETE TRACE\n"
+//#define HEADER                "A\nCLOSE\nDELETE GATHER\nDELETE TRACE\n"
+#define HEADER                "CLOSE\nDELETE GATHER\nDELETE TRACE\n"
 #define MASK                  0xFFFF
 #define MOTION_PROG_BASEADDR  0x0E00
 #define MOTION_PROG_TOTAL     256
@@ -39,14 +40,16 @@
 #define RESULTS               "results"
 
 
-#define pmacUpDownDebug 1
 #define PMAC_DIAGNOSTICS TRUE
 #if PMAC_DIAGNOSTICS
-#define PMAC_MESSAGE    errlogPrintf
-#define PMAC_DEBUG(level,code)       { if (pmacUpDownDebug >= (level)) { code } }
+#define PMAC_MESSAGE    epicsPrintf
+#define PMAC_DEBUG(level,code)       { if (pmacUpDownDebug >= (level)) { code } fflush(stdout);}
 #else
 #define PMAC_DEBUG(level,code)      ;
 #endif
+
+int pmacUpDownDebug = 0;     /* must be >= 1 to see debug messages */
+epicsExportAddress(int, pmacUpDownDebug);
 
 long createScript( char *, char *, char * );
 long createMotionSummary( char *, char * );  
@@ -182,6 +185,7 @@ long UpDownStart( struct genSubRecord *pgsub )
           strncpy(pgsub->valb, bufCheck, MAX_STRING_SIZE);
         }
 
+
         write( fd, buffer, strlen(buffer) );
         close(fd);
         strncpy(pgsub->valc, pgsub->valb, MAX_STRING_SIZE);
@@ -253,7 +257,8 @@ long UpDownEnd( struct genSubRecord *pgsub )
   if( !strcmp(pgsub->g, "UPLOAD") )
   {
     fd = open(pgsub->e, O_RDONLY, 0644);
-    if(fd != ERROR)
+    //if(fd != ERROR)
+    if(fd == ERROR)
     {
       close(fd);
       error = remove(pgsub->e);
@@ -413,6 +418,7 @@ long ProgStatusStart( struct genSubRecord *pgsub )
       strcat(bufLarge, bufSmall);
       base++;
     }
+printf("%s", bufLarge);
     write( fd, bufLarge, strlen(bufLarge) );
     close(fd);
   }
@@ -424,7 +430,7 @@ long ProgStatusStart( struct genSubRecord *pgsub )
   strncpy(pgsub->valb, bufLarge, MAX_STRING_SIZE);
   strncpy(pgsub->vald, progType, MAX_STRING_SIZE);
   strncpy(pgsub->vale, pgsub->c, MAX_STRING_SIZE);
-
+printf("ProgStatusStart done\n");
   return(status);
 }
 

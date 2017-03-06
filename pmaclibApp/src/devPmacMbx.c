@@ -123,8 +123,8 @@ OWNED RIGHTS.
 #endif
 
 #if PMAC_DIAGNOSTICS
-#define PMAC_MESSAGE	errlogPrintf
-#define PMAC_DEBUG(level,code)       { if (devPmacMbxDebug >= (level)) { code } }
+#define PMAC_MESSAGE	epicsPrintf
+#define PMAC_DEBUG(level,code)       { if (devPmacMbxDebug >= (level)) { code } fflush(stdout);}
 #define PMAC_TRACE(level,code)       { if ( (pRec->tpro > (0)) || (devPmacMbxDebug >= (level)) ) { code } }
 #else
 #define PMAC_DEBUG(level,code)      ;
