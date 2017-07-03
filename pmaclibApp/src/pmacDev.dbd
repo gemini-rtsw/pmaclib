@@ -15,9 +15,13 @@ variable( mbxoutB, int)
 variable( mbxoutC, int)
 variable( mbxoutD, int)
 
+variable( cntReadmeISR, int)
 variable( mbxReadmeISRcnt, int)
+variable( cntRxISR, int)
 variable( mbxRcptISRcnt, int)
+variable( cntGatbufISR, int)
 variable( gatBufISRcnt, int)
+variable( cntAscinISR, int)
 variable( ascInISRcnt, int)
 
 variable( pmacGatReadCnt, int)
