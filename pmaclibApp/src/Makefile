@@ -24,6 +24,11 @@ pmaclib_DBD += statusRecord.dbd
 # List local .dbd files here
 pmaclib_DBD += pmacDev.dbd
 
+#pmaclib_LIBS += electricFence
+#USR_LDFLAGS += -Wl,--wrap,malloc -Wl,--wrap,realloc -Wl,--wrap,calloc -Wl,--wrap,free
+#USR_LDFLAGS += -Wl,--wrap,_malloc_r -Wl,--wrap,_realloc_r -Wl,--wrap,_calloc_r -Wl,--wrap,_free_r
+
+
 # specify all source files to be compiled
 # including sequencer (.st) source files
 pmaclib_SRCS += loadRecord.c
