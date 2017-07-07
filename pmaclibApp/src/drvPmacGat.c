@@ -336,7 +336,7 @@ int drvPmacGatWriteTask(PMAC_CARD *pCard)
 
    FOREVER
    {
-      epicsEventMustWait(pCard->scanGatWriteSem)
+       epicsEventMustWait(pCard->scanGatWriteSem);
 #if DEBUG 
       printf("drvPmacGatWriteTask - writing to disk\n");
 #endif
