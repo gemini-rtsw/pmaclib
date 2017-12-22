@@ -19,13 +19,19 @@
 # Build settings that are NOT module paths should appear in a
 # CONFIG_SITE file.
 
+
+EPICS_RELEASE=R3.14.12.7
+
+PROD_SUPP=/gem_sw/prod/$(EPICS_RELEASE)/support
+WORK_SUPP=/gem_sw/work/$(EPICS_RELEASE)/support
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
 # Need this for the Status Record device support and pmaclib test harness
-GEMREC=/gem_sw/prod/R3.14.12.4/support/geminiRec/4-1-5
+GEMREC=$(PROD_SUPP)/geminiRec/4-1-6
+GEMUTIL=$(PROD_SUPP)/gemUtil/1-5
 
 # EPICS_BASE usually appears last so other apps can override stuff:
-EPICS_BASE=/gem_sw/epics/R3.14.12.4/base
+EPICS_BASE = /gem_sw/epics/$(EPICS_RELEASE)/base
 
 # Set RULES here if you want to take build rules from somewhere
 # other than EPICS_BASE:

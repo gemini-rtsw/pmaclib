@@ -20,6 +20,10 @@ CHECK_RELEASE = YES
 #   for a subset of the cross-compiled target architectures
 #   that Base is built for.
 #CROSS_COMPILER_TARGET_ARCHS = vxWorks-68040
+#
+#
+# exclude compiling for mvme3100 because of gemUtil and electricFence..
+CROSS_COMPILER_TARGET_ARCHS = RTEMS-beatnik RTEMS-mvme2307 
 
 # To install files into a location other than $(TOP) define
 #   INSTALL_LOCATION here.
