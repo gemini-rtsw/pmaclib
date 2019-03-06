@@ -20,7 +20,7 @@
 # CONFIG_SITE file.
 
 
-EPICS_RELEASE=R3.14.12.7
+EPICS_RELEASE=R3.14.12.8
 
 PROD_SUPP=/gem_sw/prod/$(EPICS_RELEASE)/support
 WORK_SUPP=/gem_sw/work/$(EPICS_RELEASE)/support
