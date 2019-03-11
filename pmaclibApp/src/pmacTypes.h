@@ -13,7 +13,13 @@
 
 typedef volatile short	PMAC_DPRAM;
 typedef int STATUS;
+
+#ifndef ERROR
 #define ERROR  -1
+#endif
+
+#ifndef OK
 #define OK 	0
+#endif
 
 #endif
