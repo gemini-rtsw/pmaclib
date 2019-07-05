@@ -6,6 +6,9 @@
  * Author:      Thomas A. Coleman
  * Date:        97/05/06
  *
+ *              20190705  mdw  Converted VxWorks priority levels to 
+ *                             EPICS OSI priority levels
+ *
  *      Experimental Physics and Industrial Control System (EPICS)
  */
 
@@ -54,44 +57,58 @@
 
 #define PMAC_MBX_QUEUE_SIZE 1000
 
+
+
+/* The thread priorities were for VxWorks. Priorities 43, 44 and 45 are fairly high priority levels
+ * In VxWorks, the lower the priority number, the higher the priority.
+ * IN EPICS OSI, priorities are 0 thru 100, with higher numbers being higher priority.
+ * We need to choose relatively high priorities for the following and reverse the order of the priorty numbers
+ */
 #define PMAC_MBX_SCAN      "pmacMbx"
-#define PMAC_MBX_PRI      (45)
+//#define PMAC_MBX_PRI      (45)
+#define PMAC_MBX_PRI        (90)   
 #define PMAC_MBX_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
 #define PMAC_ASC_QUEUE_SIZE 1000
 
 #define PMAC_ASC_SCAN      "pmacAsc"
-#define PMAC_ASC_PRI      (45)
+// #define PMAC_ASC_PRI     (45)
+#define PMAC_ASC_PRI        (90)
 #define PMAC_ASC_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
 #define PMAC_SVO_SCAN      "pmacSvo"
-#define PMAC_SVO_PRI      (45)
-#define   PMAC_SVO_RATE      0.1
+//#define PMAC_SVO_PRI      (45)
+#define PMAC_SVO_PRI        (90)
+#define PMAC_SVO_RATE       0.1
 #define PMAC_SVO_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
 #define PMAC_BKG_SCAN      "pmacBkg"
-#define PMAC_BKG_PRI      (44)
-#define PMAC_BKG_RATE      0.05
+//#define PMAC_BKG_PRI      (44)
+#define PMAC_BKG_PRI        (91)
+#define PMAC_BKG_RATE       0.05
 #define PMAC_BKG_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
 #define PMAC_VAR_SCAN      "pmacVar"
-#define PMAC_VAR_PRI      (44)
-#define PMAC_VAR_RATE      0.05
+//#define PMAC_VAR_PRI      (44)
+#define PMAC_VAR_PRI        (91)
+#define PMAC_VAR_RATE       0.05
 #define PMAC_VAR_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
-#define PMAC_OPN_SCAN     "pmacOpn"
-#define PMAC_OPN_PRI      (43)
-#define PMAC_OPN_RATE     0.025
-#define PMAC_OPN_STACK    epicsThreadGetStackSize(epicsThreadStackBig)
+#define PMAC_OPN_SCAN      "pmacOpn"
+//#define PMAC_OPN_PRI      (43)
+#define PMAC_OPN_PRI        (92)
+#define PMAC_OPN_RATE       0.025
+#define PMAC_OPN_STACK      epicsThreadGetStackSize(epicsThreadStackBig)
 #define PMAC_FLD_QUEUE_SIZE 100
 
 #define PMAC_FLD_SCAN      "pmacFld"
-#define PMAC_FLD_PRI      (45)
+//#define PMAC_FLD_PRI      (45)
+#define PMAC_FLD_PRI        (90)
 #define PMAC_FLD_STACK      epicsThreadGetStackSize(epicsThreadStackMedium)
 
 #define PMAC_DPRAM_SVO      1
 #define PMAC_DPRAM_BKG      2
-#define   PMAC_DPRAM_VAR      3
+#define PMAC_DPRAM_VAR      3
 #define PMAC_DPRAM_OPN      4
 #define PMAC_DPRAM_NONE      (-1)
 
