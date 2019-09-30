@@ -27,10 +27,8 @@ WORK_SUPP=/gem_sw/work/$(EPICS_RELEASE)/support
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
 # Need this for the Status Record device support and pmaclib test harness
-GEMREC=$(PROD_SUPP)/geminiRec/4-1-6
-GEMUTIL=$(PROD_SUPP)/gemUtil/1-5
-#GEMREC=/gem_sw/work/R3.14.12.8/support/geminiRec
-#GEMUTIL=/gem_sw/work/R3.14.12.8/support/gemUtil
+GEMREC=$(PROD_SUPP)/geminiRec/4-1-9
+GEMUTIL=$(PROD_SUPP)/gemUtil/1-11
 
 # EPICS_BASE usually appears last so other apps can override stuff:
 EPICS_BASE = /gem_sw/epics/$(EPICS_RELEASE)/base
