@@ -71,7 +71,6 @@
 /* Create RSET - Record Support Entry Table*/
 static long init_record();
 static long process();
-static long get_value();
 #define report             NULL
 #define initialize         NULL
 #define special            NULL
@@ -94,7 +93,7 @@ rset loadRSET={
 	init_record,
 	process,
 	special,
-	get_value,
+	NULL,
 	cvt_dbaddr,
 	get_array_info,
 	put_array_info,
@@ -236,14 +235,6 @@ static long process( loadRecord *pRec )
     return(status);
 }
 
-
-static long get_value( loadRecord *pRec, struct valueDes *pvdes )
-{
-    pvdes->field_type  = DBF_LONG;
-    pvdes->no_elements = 1;
-    pvdes->pvalue      = (void *)(&pRec->val);
-    return(0);
-}
 
 
 static void monitor( loadRecord *pRec )

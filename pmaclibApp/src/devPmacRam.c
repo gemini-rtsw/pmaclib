@@ -1270,7 +1270,8 @@ LOCAL long devPmacRamEvent_read
 
 	pDpvt = (PMAC_RAM_DPVT *) pRec->dpvt;
 	
-	pRec->val = (short) (0x00ffff & pDpvt->dpramData.ramLong);
+	//pRec->val = (short) (0x00ffff & pDpvt->dpramData.ramLong);
+	sprintf(pRec->val, "%d", (int)(0x00ffff & pDpvt->dpramData.ramLong));
 	pRec->udf = FALSE;
 
     return(0);
