@@ -17,7 +17,6 @@ LIBRARY_IOC_RTEMS += pmaclib
 DBD += pmaclib.dbd
 
 # pmaclib.dbd will be made up from these files:
-pmaclib_DBD += base.dbd
 pmaclib_DBD += loadRecord.dbd
 pmaclib_DBD += genSubRecord.dbd
 pmaclib_DBD += statusRecord.dbd
