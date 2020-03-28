@@ -23,11 +23,10 @@
 EPICS_RELEASE=R3.15.6
 
 PROD_SUPP=/gem_sw/prod/$(EPICS_RELEASE)/support
-WORK_SUPP=/gem_sw/work/$(EPICS_RELEASE)/support
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-GEMREC=$(PROD_SUPP)/geminiRec/4-1-12
-GEMUTIL=$(PROD_SUPP)/gemUtil/1-14
+GEMREC=$(PROD_SUPP)/geminiRec/4-1-11-R315
+GEMUTIL=$(PROD_SUPP)/gemUtil/1-13-R315
 
 # EPICS_BASE usually appears last so other apps can override stuff:
 EPICS_BASE = /gem_sw/epics/$(EPICS_RELEASE)/base
