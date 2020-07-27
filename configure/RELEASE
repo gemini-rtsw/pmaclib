@@ -20,16 +20,14 @@
 # CONFIG_SITE file.
 
 
-EPICS_RELEASE=R3.15.6
-
-PROD_SUPP=/gem_sw/prod/$(EPICS_RELEASE)/support
+PROD_SUPP=/gem_base/epics/support
 TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 
-GEMREC=$(PROD_SUPP)/geminiRec/4-1-11-R315
-GEMUTIL=$(PROD_SUPP)/gemUtil/1-13-R315
+GEMREC=$(PROD_SUPP)/geminiRec
+GEMUTIL=$(PROD_SUPP)/gemUtil
 
 # EPICS_BASE usually appears last so other apps can override stuff:
-EPICS_BASE = /gem_sw/epics/$(EPICS_RELEASE)/base
+EPICS_BASE = /gem_base/epics/epics-base
 
 # Set RULES here if you want to take build rules from somewhere
 # other than EPICS_BASE:
