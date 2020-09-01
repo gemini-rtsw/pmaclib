@@ -12,3 +12,4 @@ include
 lib
 .git
 templates
+/configure/RELEASE.local
