@@ -19,7 +19,7 @@
 Summary: %{name} Package, a module for EPICS base
 Name: %{name}
 Version: 1.1.12
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: EPICS Open License
 Group: Applications/Engineering
 Source0: %{name}-%{version}.tar.gz
@@ -87,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
    /%{_prefix}/%{name}/configure
 
 %changelog
+* Thu Oct 08 2020 fkraemer <fkraemer@gemini.edu> 1.1.12-2
+- applied new version/release scheme and new yum repository structure
+
 * Fri Aug 28 2020 Felix Kraemer <fkraemer@gemini.edu> 3.15.8-1.1.12.2020082821234d2d4e7
 - adjustments to read in local configuration configure/RELEASE.local from
   within configure/RELEASE (fkraemer@gemini.edu)
