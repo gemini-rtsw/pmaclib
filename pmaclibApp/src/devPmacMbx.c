@@ -1593,11 +1593,11 @@ LOCAL void devPmacMbxCallback
 {
 	char            *MyName = "devPmacMbxCallback";
 	struct dbCommon *pRec;
-	struct rset     *pRset;
+	//struct rset     *pRset;
 
 	callbackGetUser (pRec, pCallback);
 
-	pRset = pRec->rset;
+	//pRset = pRec->rset;
 
 	PMAC_TRACE
 	(	2,
@@ -1606,7 +1606,8 @@ LOCAL void devPmacMbxCallback
 	)
 
         dbScanLock (pRec);
-	(*(pRset->process))(pRec);
+	//(*(pRset->process))(pRec);  // error: dereferencing pointer to incomplete type 'struct rset'
+        (*pRec->rset->process)(pRec);
         dbScanUnlock (pRec);
 				
 	return;

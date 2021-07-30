@@ -962,17 +962,19 @@ long drvPmacSvoRead(int card)
 {
    char *   MyName = "drvPmacSvoRead";
    int   i;
-   long   status;
+   //long   status;
    long   pmacStatus;
    PMAC_CARD *   pCard   = &drvPmacCard[card];
    PMAC_RAM_IO *   pSvoIo;
 
    /* Set Host Busy Bit */
-   status = pmacRamPutH ( pmacRamAddr(card,0x024), 1 );
+   //status = pmacRamPutH ( pmacRamAddr(card,0x024), 1 );
+   pmacRamPutH ( pmacRamAddr(card,0x024), 1 );
    do
    {
       /* Check PMAC Busy Bit */
-      status = pmacRamGetH ( pmacRamAddr(card,0x026), &pmacStatus );
+      //status = pmacRamGetH ( pmacRamAddr(card,0x026), &pmacStatus );
+      pmacRamGetH ( pmacRamAddr(card,0x026), &pmacStatus );
 
       PMAC_DEBUG(5,
                  PMAC_MESSAGE ("%s: PMAC waiting status %ld\n", MyName, pmacStatus);
@@ -984,11 +986,13 @@ long drvPmacSvoRead(int card)
    for (i=0; i < pCard->numSvoIo; i++)
    {
       pSvoIo = &pCard->SvoIo[i];
-      status = drvPmacRamGetData (pSvoIo);
+      //status = drvPmacRamGetData (pSvoIo);
+      drvPmacRamGetData (pSvoIo);
    }
 
    /* Clear Host Busy Bit */
-   status = pmacRamPutH ( pmacRamAddr(card,0x024), 0);
+   //status = pmacRamPutH ( pmacRamAddr(card,0x024), 0);
+   pmacRamPutH ( pmacRamAddr(card,0x024), 0);
 
    /* Notify Requester Of New Data */
    for (i=0; i < pCard->numSvoIo; i++)
@@ -1011,13 +1015,14 @@ long drvPmacBkgRead(int card)
 {
    char *   MyName = "drvPmacBkgRead";
    int   i;
-   long   status;
+   //long   status;
    long   pmacStatus;
    PMAC_CARD *   pCard   = &drvPmacCard[card];
    PMAC_RAM_IO *   pBkgIo;
 
    /* Check for PMAC Data Ready */
-   status = pmacRamGetH ( pmacRamAddr(card,0x0228), &pmacStatus );
+   //status = pmacRamGetH ( pmacRamAddr(card,0x0228), &pmacStatus );
+   pmacRamGetH ( pmacRamAddr(card,0x0228), &pmacStatus );
 
    PMAC_DEBUG(5,
               PMAC_MESSAGE ("%s: PMAC status %ld\n", MyName, pmacStatus);
@@ -1037,11 +1042,13 @@ long drvPmacBkgRead(int card)
    for (i=0; i<pCard->numBkgIo; i++)
    {
       pBkgIo = &pCard->BkgIo[i];
-      status = drvPmacRamGetData (pBkgIo);
+      //status = drvPmacRamGetData (pBkgIo);
+      drvPmacRamGetData (pBkgIo);
    }
 
    /* Clear Data Ready Bit For Next Data */
-   status = pmacRamPutH ( pmacRamAddr(card,0x0228), 0);
+   //status = pmacRamPutH ( pmacRamAddr(card,0x0228), 0);
+   pmacRamPutH ( pmacRamAddr(card,0x0228), 0);
 
    /* Notify Requester Of New Data */
    for (i=0; i < pCard->numBkgIo; i++)
@@ -1063,13 +1070,14 @@ long drvPmacVarRead(int card)
 {
    char *   MyName = "drvPmacVarRead";
    int   i;
-   long   status;
+   //long   status;    warning: variable 'status' set but not used [-Wunused-but-set-variable]
    long   pmacStatus;
    PMAC_CARD *   pCard   = &drvPmacCard[card];
    PMAC_RAM_IO *   pVarIo;
 
    /* Check For PMAC Data Ready */
-   status = pmacRamGetH ( pmacRamAddr(card,0x07E8), &pmacStatus );
+   //status = pmacRamGetH ( pmacRamAddr(card,0x07E8), &pmacStatus );
+   pmacRamGetH ( pmacRamAddr(card,0x07E8), &pmacStatus );
 
    PMAC_DEBUG(5,
               PMAC_MESSAGE ("%s: PMAC status %ld\n", MyName, pmacStatus);
@@ -1085,11 +1093,13 @@ long drvPmacVarRead(int card)
    for (i=0; i<pCard->numVarIo; i++)
    {
       pVarIo = &pCard->VarIo[i];
-      status = drvPmacRamGetData (pVarIo);
+      //status = drvPmacRamGetData (pVarIo);
+      drvPmacRamGetData (pVarIo);
    }
 
    /* Clear PMAC Data Ready Bit For Next Data */
-   status = pmacRamPutH ( pmacRamAddr(card,0x07E8), 0);
+   //status = pmacRamPutH ( pmacRamAddr(card,0x07E8), 0);
+   pmacRamPutH ( pmacRamAddr(card,0x07E8), 0);
 
    /* Notify Requester Of New Data */
    for (i=0; i < pCard->numVarIo; i++)
@@ -1237,39 +1247,46 @@ int pmacOpnShow(int card,int index)
  */
 PMAC_LOCAL long drvPmacRamGetData(PMAC_RAM_IO *pRamIo)
 {
-   long   status;
+   // long   status;  warning: variable 'status' set but not used [-Wunused-but-set-variable]
 
    switch (pRamIo->memType)
    {
       case (PMAC_MEMTYP_Y) :
       case (PMAC_MEMTYP_X) :
-         status = pmacRamGetY (pRamIo->pAddress, &pRamIo->valLong);
+         //status = pmacRamGetY (pRamIo->pAddress, &pRamIo->valLong);
+         pmacRamGetY (pRamIo->pAddress, &pRamIo->valLong);
          pRamIo->valDouble = (double) pRamIo->valLong;
          break;
       case (PMAC_MEMTYP_SY) :
       case (PMAC_MEMTYP_SX) :
-         status = pmacRamGetSY (pRamIo->pAddress, &pRamIo->valLong);
+         //status = pmacRamGetSY (pRamIo->pAddress, &pRamIo->valLong);
+         pmacRamGetSY (pRamIo->pAddress, &pRamIo->valLong);
          pRamIo->valDouble = (double) pRamIo->valLong;
          break;
       case (PMAC_MEMTYP_HY) :
       case (PMAC_MEMTYP_HX) :
-         status = pmacRamGetH (pRamIo->pAddress, &pRamIo->valLong);
+         //status = pmacRamGetH (pRamIo->pAddress, &pRamIo->valLong);
+         pmacRamGetH (pRamIo->pAddress, &pRamIo->valLong);
          pRamIo->valDouble = (double) pRamIo->valLong;
          break;
       case (PMAC_MEMTYP_DP) :
-         status = pmacRamGetDP (pRamIo->pAddress, &pRamIo->valLong);
+         //status = pmacRamGetDP (pRamIo->pAddress, &pRamIo->valLong);
+         pmacRamGetDP (pRamIo->pAddress, &pRamIo->valLong);
          pRamIo->valDouble = (double) pRamIo->valLong;
          break;
       case (PMAC_MEMTYP_F) :
-         status = pmacRamGetF (pRamIo->pAddress, &pRamIo->valDouble);
+         //status = pmacRamGetF (pRamIo->pAddress, &pRamIo->valDouble);
+         pmacRamGetF (pRamIo->pAddress, &pRamIo->valDouble);
          pRamIo->valLong = 0;
          break;
       case (PMAC_MEMTYP_D) :
-         status = pmacRamGetD (pRamIo->pAddress, &pRamIo->valDouble);
+         //status = pmacRamGetD (pRamIo->pAddress, &pRamIo->valDouble);
+         pmacRamGetD (pRamIo->pAddress, &pRamIo->valDouble);
          pRamIo->valLong = 0;
          break;
       case (PMAC_MEMTYP_L) :
-         status = pmacRamGetL (pRamIo->pAddress, &pRamIo->valDouble);
+         //status = pmacRamGetL (pRamIo->pAddress, &pRamIo->valDouble);
+         pmacRamGetL (pRamIo->pAddress, &pRamIo->valDouble);
          pRamIo->valLong = 0;
          break;
    }
@@ -1284,27 +1301,32 @@ PMAC_LOCAL long drvPmacRamGetData(PMAC_RAM_IO *pRamIo)
  */
 PMAC_LOCAL long drvPmacRamPutData(PMAC_RAM_IO *pRamIo)
 {
-   long   status;
+   //long   status;   warning: variable 'status' set but not used [-Wunused-but-set-variable]
 
    switch (pRamIo->memType)
    {
       case (PMAC_MEMTYP_Y) :
       case (PMAC_MEMTYP_X) :
-         status = pmacRamPutY (pRamIo->pAddress, pRamIo->valLong);
+         //status = pmacRamPutY (pRamIo->pAddress, pRamIo->valLong);
+         pmacRamPutY (pRamIo->pAddress, pRamIo->valLong);
          break;
       case (PMAC_MEMTYP_SY) :
       case (PMAC_MEMTYP_SX) :
-         status = pmacRamPutSY (pRamIo->pAddress, pRamIo->valLong);
+         //status = pmacRamPutSY (pRamIo->pAddress, pRamIo->valLong);
+         pmacRamPutSY (pRamIo->pAddress, pRamIo->valLong);
          break;
       case (PMAC_MEMTYP_HY) :
       case (PMAC_MEMTYP_HX) :
-         status = pmacRamPutH (pRamIo->pAddress, pRamIo->valLong);
+         //status = pmacRamPutH (pRamIo->pAddress, pRamIo->valLong);
+         pmacRamPutH (pRamIo->pAddress, pRamIo->valLong);
          break;
       case (PMAC_MEMTYP_DP) :
-         status = pmacRamPutDP (pRamIo->pAddress, pRamIo->valLong);
+         //status = pmacRamPutDP (pRamIo->pAddress, pRamIo->valLong);
+         pmacRamPutDP (pRamIo->pAddress, pRamIo->valLong);
          break;
       case (PMAC_MEMTYP_F) :
-         status = pmacRamPutF (pRamIo->pAddress, pRamIo->valDouble);
+         //status = pmacRamPutF (pRamIo->pAddress, pRamIo->valDouble);
+         pmacRamPutF (pRamIo->pAddress, pRamIo->valDouble);
          break;
    }
 
@@ -1810,11 +1832,12 @@ EPICSTHREADFUNC  drvPmacVarTask(void *c) /* MDW OSI work 20160321 */
  */
 PMAC_LOCAL void drvPmacVarScanInit(int card)
 {
-   long  status;
+   //long  status;  warning: variable 'status' set but not used [-Wunused-but-set-variable]
 
    PMAC_CARD *pCard = &drvPmacCard[card];
 
-   status = drvPmacVarSetup (pCard->card);
+   //status = drvPmacVarSetup (pCard->card);
+   drvPmacVarSetup (pCard->card);
 
    sprintf ( pCard->scanVarTaskName, "%s%d", PMAC_VAR_SCAN, pCard->card);
    pCard->scanVarTaskId = epicsThreadCreate (pCard->scanVarTaskName,
@@ -1875,7 +1898,7 @@ PMAC_LOCAL void drvPmacOpnScanInit(int card)
 long drvPmacOpnRead(int card )
 {
    int          i;
-   long         status;
+   //long         status;  warning: variable 'status' set but not used [-Wunused-but-set-variable]
    PMAC_CARD   *pCard = &drvPmacCard[card];
    PMAC_RAM_IO *pOpnIo;
 
@@ -1885,7 +1908,8 @@ long drvPmacOpnRead(int card )
       pOpnIo = &pCard->OpnIo[i];
       if(pOpnIo->inputRec )
       {
-         status = drvPmacRamGetData(pOpnIo);
+         //status = drvPmacRamGetData(pOpnIo);
+         drvPmacRamGetData(pOpnIo);
 
          /* Notify Requester Of New Data */
 
