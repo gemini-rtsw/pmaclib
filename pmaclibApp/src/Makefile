@@ -11,7 +11,8 @@ DBDINC += loadRecord
 
 # Build a support module called <APPNAME>
 
-LIBRARY_IOC_RTEMS += pmaclib
+LIBRARY_IOC += pmaclib
+#LIBRARY_IOC_RTEMS += pmaclib
 
 # <APPNAME>.dbd will be created and installed
 DBD += pmaclib.dbd
