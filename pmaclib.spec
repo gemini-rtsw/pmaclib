@@ -49,7 +49,9 @@ This is the module %{name}.
 # virtual X env for tdct
 #Xvfb :1  -ac -nolisten tcp -nolisten unix &
 
-#make distclean uninstall
+make distclean uninstall
+make
+
 #DISPLAY=:1 make
 
 #killall Xvfb
