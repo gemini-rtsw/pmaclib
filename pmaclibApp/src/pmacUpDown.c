@@ -103,16 +103,16 @@ long UpDownStart( struct genSubRecord *pgsub )
   long pmacNum;
   char downfile[MEDIUM_BUF];
   char buffer[MEDIUM_BUF];
-  char bufCheck[MEDIUM_BUF];
+  char bufCheck[MEDIUM_BUF+2];
   char progType[MAX_STRING_SIZE];
   char pmacString[SMALL_BUF];
   char saveDir[MAX_STRING_SIZE];
 
   status  = 0;
   pmacNum = (long)(*(double *)pgsub->a);
-  strncpy(progType, pgsub->b, MAX_STRING_SIZE);
+  memccpy(progType, pgsub->b, '\0', MAX_STRING_SIZE );
   progNum = (long)(*(double *)pgsub->c);
-  strncpy(saveDir, pgsub->d, MAX_STRING_SIZE);
+  memccpy(saveDir, pgsub->d, '\0', MAX_STRING_SIZE);
 
   if( !strcmp( pgsub->e, "UPLOAD") )
   {
@@ -171,10 +171,10 @@ long UpDownStart( struct genSubRecord *pgsub )
         if( !strcmp(progType, "PLC") )
         {
           sprintf(buffer, "%sOPEN PLC %ld\nLIST\nCLOSE\n", HEADER, progNum);
-          sprintf(bufCheck, "%s/pmac%s_%ld.plc", saveDir, pmacString, progNum);
+          snprintf(bufCheck, sizeof(bufCheck), "%s/pmac%s_%ld.plc", saveDir, pmacString, progNum);
           if( strlen(bufCheck) > MAX_STRING_SIZE )
             printf("UpDownStart: %s\n", bufCheck);
-          strncpy(pgsub->valb, bufCheck, MAX_STRING_SIZE);
+          memccpy(pgsub->valb, bufCheck, '\0', MAX_STRING_SIZE);
         }
         else
         {
@@ -182,7 +182,7 @@ long UpDownStart( struct genSubRecord *pgsub )
           sprintf(bufCheck, "%s/pmac%s_%ld.mpg", saveDir, pmacString, progNum);
           if( strlen(bufCheck) > MAX_STRING_SIZE )
             printf("UpDownStart: %s\n", bufCheck);
-          strncpy(pgsub->valb, bufCheck, MAX_STRING_SIZE);
+          memccpy(pgsub->valb, bufCheck, '\0', MAX_STRING_SIZE);
         }
 
 
@@ -191,7 +191,7 @@ long UpDownStart( struct genSubRecord *pgsub )
         strncpy(pgsub->valc, pgsub->valb, MAX_STRING_SIZE);
       }
     }
-    strncpy(pgsub->vala, downfile, MAX_STRING_SIZE);
+    memccpy(pgsub->vala, downfile, '\0', MAX_STRING_SIZE);
   }
   else  /* Case of Download */
   {
@@ -199,7 +199,7 @@ long UpDownStart( struct genSubRecord *pgsub )
     sprintf(bufCheck, "%s/errors.pmc", saveDir);
     if( strlen(bufCheck) > MAX_STRING_SIZE )
       printf("UpDownStart: %s\n", bufCheck);
-    strncpy(pgsub->valb, bufCheck, MAX_STRING_SIZE);
+    memccpy(pgsub->valb, bufCheck, '\0', MAX_STRING_SIZE);
     strncpy(pgsub->valc, pgsub->valb, MAX_STRING_SIZE);
   }
 
@@ -249,10 +249,10 @@ long UpDownEnd( struct genSubRecord *pgsub )
 
   error        = 0;
   startError   = *(long *)pgsub->a;
-  strncpy(startMess, pgsub->b, MAX_STRING_SIZE);
+  memccpy(startMess, pgsub->b, '\0', MAX_STRING_SIZE);
   loadError    = *(long *)pgsub->c;
-  strncpy(loadMess, pgsub->d, MAX_STRING_SIZE);
-  strncpy(saveDir, pgsub->h, MAX_STRING_SIZE);
+  memccpy(loadMess, pgsub->d, '\0', MAX_STRING_SIZE);
+  memccpy(saveDir, pgsub->h, '\0', MAX_STRING_SIZE);
 
   if( !strcmp(pgsub->g, "UPLOAD") )
   {
@@ -288,7 +288,7 @@ long UpDownEnd( struct genSubRecord *pgsub )
     }
     else
     {
-      strncpy(str, pgsub->f, MAX_STRING_SIZE);
+      memccpy(str, pgsub->f, '\0', MAX_STRING_SIZE);
       if(!(c   = (char *)strtok(str, "/"))) {
          printf("Bad file name in %s at line %d\n", __FILE__, __LINE__);
          return ERROR; 
@@ -382,8 +382,8 @@ long ProgStatusStart( struct genSubRecord *pgsub )
   char saveDir[MAX_STRING_SIZE];
 
   status  = 0;
-  strncpy(progType, pgsub->b, MAX_STRING_SIZE);
-  strncpy(saveDir, pgsub->c, MAX_STRING_SIZE);
+  memccpy(progType, pgsub->b, '\0', MAX_STRING_SIZE);
+  memccpy(saveDir, pgsub->c, '\0', MAX_STRING_SIZE);
 
   sprintf(downfile, "%s/%s", saveDir, TEMPFILE);
   fd = open(downfile, O_CREAT | O_RDWR, 0644);
@@ -423,11 +423,11 @@ printf("%s", bufLarge);
     close(fd);
   }
 
-  strncpy(pgsub->vala, downfile, MAX_STRING_SIZE);
+  memccpy(pgsub->vala, downfile, '\0', MAX_STRING_SIZE);
   sprintf(bufLarge, "%s/%s", saveDir, RESULTS);
   if( strlen(bufLarge) > MAX_STRING_SIZE )
     printf("ProgStatusStart: %s\n", bufLarge);
-  strncpy(pgsub->valb, bufLarge, MAX_STRING_SIZE);
+  memccpy(pgsub->valb, bufLarge, '\0',  MAX_STRING_SIZE);
   strncpy(pgsub->vald, progType, MAX_STRING_SIZE);
   strncpy(pgsub->vale, pgsub->c, MAX_STRING_SIZE);
 printf("ProgStatusStart done\n");
@@ -467,16 +467,16 @@ long ProgStatusEnd( struct genSubRecord *pgsub )
   long pmacNum;
   char loadMess[MAX_STRING_SIZE];
   char saveDir[MAX_STRING_SIZE];
-  char buffer[MEDIUM_BUF];
+  char buffer[MEDIUM_BUF+22];
   char pmacString[SMALL_BUF];
-  char summaryFile[MEDIUM_BUF];
+  char summaryFile[MEDIUM_BUF+8];
 
   error        = 0;
   startError   = *(long *)pgsub->a;
-  strncpy(startMess, pgsub->b, MAX_STRING_SIZE);
+  memccpy(startMess, pgsub->b, '\0', MAX_STRING_SIZE);
   loadError    = *(long *)pgsub->c;
-  strncpy(loadMess, pgsub->d, MAX_STRING_SIZE);
-  strncpy(saveDir, pgsub->h, MAX_STRING_SIZE);
+  memccpy(loadMess, pgsub->d, '\0',MAX_STRING_SIZE);
+  memccpy(saveDir, pgsub->h, '\0', MAX_STRING_SIZE);
   pmacNum      = (long)(*(double *)pgsub->i);
 
   switch(pmacNum)
@@ -574,14 +574,14 @@ long ProgStatusEnd( struct genSubRecord *pgsub )
               sprintf(buffer, "Result is in %s", summaryFile);
               if( strlen(buffer) > MAX_STRING_SIZE )
                 printf("%s\n", buffer);
-              strncpy(pgsub->valc, buffer, MAX_STRING_SIZE);
+              memccpy(pgsub->valc, buffer, '\0', MAX_STRING_SIZE);
             }
             else
             {
               sprintf(buffer, "Error removing file %s", (char *)pgsub->f);
               if( strlen(buffer) > MAX_STRING_SIZE )
                 printf("%s\n", buffer);
-              strncpy(pgsub->vala, buffer, MAX_STRING_SIZE);
+              memccpy(pgsub->vala, buffer, '\0', MAX_STRING_SIZE);
               *(long *)pgsub->valb = menuCarstatesERROR;
               strcpy(pgsub->valc, " ");
             }
@@ -631,14 +631,14 @@ long ProgStatusEnd( struct genSubRecord *pgsub )
               sprintf(buffer, "Result is in %s", summaryFile);
               if( strlen(buffer) > MAX_STRING_SIZE )
                 printf("%s\n", buffer);
-              strncpy(pgsub->valc, buffer, MAX_STRING_SIZE);
+              memccpy(pgsub->valc, buffer, '\0', MAX_STRING_SIZE);
             }
             else
             {
               sprintf(buffer, "Error removing file %s", (char *)pgsub->f);
               if( strlen(buffer) > MAX_STRING_SIZE )
                 printf("%s\n", buffer);
-              strncpy(pgsub->vala, buffer, MAX_STRING_SIZE);
+              memccpy(pgsub->vala, buffer, '\0', MAX_STRING_SIZE);
               *(long *)pgsub->valb = menuCarstatesERROR;
               strcpy(pgsub->valc, " ");
             }

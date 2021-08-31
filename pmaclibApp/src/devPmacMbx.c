@@ -1435,8 +1435,7 @@ LOCAL long devPmacMbxSi_read
                   MyName, pRec->name, pMbxIo->response);
 		)
 		
-		pRec->val[39] = '\0';
-		strncpy (pRec->val, pMbxIo->response, 39);
+		memccpy(pRec->val, pMbxIo->response, '\0', MAX_STRING_SIZE );
 
 		pRec->udf = FALSE;
 		return (0);
@@ -1498,8 +1497,7 @@ LOCAL long devPmacMbxSo_write
 		switch (pRec->out.value.vmeio.signal)
 		{
 		case (1):
-			pRec->val[39] = '\0';
-			strncpy (pRec->val, pMbxIo->response, 39);
+			memccpy (pRec->val, pMbxIo->response, '\0', MAX_STRING_SIZE);
 			break;
 		case (0):
 		default:

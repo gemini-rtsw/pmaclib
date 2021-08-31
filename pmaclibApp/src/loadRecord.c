@@ -246,19 +246,19 @@ static void monitor( loadRecord *pRec )
     if(strncmp(pRec->pdnv,pRec->dnv,sizeof(pRec->dnv)))
     {
       db_post_events(pRec,&(pRec->dnv[0]),monitor_mask|DBE_VALUE);
-      strncpy(pRec->pdnv,pRec->dnv,sizeof(pRec->dnv));
+      strncpy(pRec->pdnv,pRec->dnv,sizeof(pRec->pdnv));
     }
 
     if(strncmp(pRec->pupv,pRec->upv,sizeof(pRec->upv)))
     {
       db_post_events(pRec,&(pRec->upv[0]),monitor_mask|DBE_VALUE);
-      strncpy(pRec->pupv,pRec->upv,sizeof(pRec->upv));
+      strncpy(pRec->pupv,pRec->upv,sizeof(pRec->pupv));
     }
 
     if(strncmp(pRec->pmsg,pRec->msg,sizeof(pRec->msg))) 
     {
       db_post_events(pRec,&(pRec->msg[0]),monitor_mask|DBE_VALUE);
-      strncpy(pRec->pmsg,pRec->msg,sizeof(pRec->msg));
+      strncpy(pRec->pmsg,pRec->msg,sizeof(pRec->pmsg));
     }
 
     if(pRec->pval != pRec->val)
@@ -299,12 +299,12 @@ static long download( loadRecord *pRec )
       status = dbGetLink(&(pRec->sdnl), DBR_STRING, &(pRec->sdnv), 0, 0);
       if(status == 0)
       {
-        strncpy(pRec->dnv,pRec->sdnv,sizeof(pRec->sdnv));
+        strncpy(pRec->dnv,pRec->sdnv,sizeof(pRec->dnv));
 
         status = dbGetLink(&(pRec->supl), DBR_STRING, &(pRec->supv), 0, 0);
 	if(status == 0)
         {
-	  strncpy(pRec->upv,pRec->supv,sizeof(pRec->supv));
+	  strncpy(pRec->upv,pRec->supv,sizeof(pRec->upv));
 
           status = dbGetLink(&(pRec->siol), DBR_LONG, &(pRec->sval), 0, 0);
 	  if(status == 0)

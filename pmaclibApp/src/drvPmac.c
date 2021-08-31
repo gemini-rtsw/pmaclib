@@ -31,6 +31,8 @@
 #include <iocsh.h>
 #include <dbDefs.h>
 
+#include <stdint.h>
+
 /* local includes */
 
 #include "pmacVme.h"
@@ -1128,18 +1130,18 @@ int pmacSvoShow(int card,int index)
             MyName,
             pSvoIo->memType,
             pSvoIo->pmacAdr);
-   printf ("%s: hostOfs %#x pAddress %#010x\n",
-            MyName,
-            pSvoIo->hostOfs,
-            (unsigned int)pSvoIo->pAddress);
+   printf ("%s: hostOfs %#x pAddress %#010x\n", 
+            MyName, 
+            pSvoIo->hostOfs, 
+            (unsigned int) (uintptr_t) pSvoIo->pAddress);
    printf ("%s: valLong %ld valDouble %f\n",
             MyName,
             pSvoIo->valLong,
             pSvoIo->valDouble );
    printf ("%s: pFunc %#010x pParm %#010x\n",
             MyName,
-            (unsigned int)pSvoIo->pFunc,
-            (unsigned int)pSvoIo->pParm );
+            (unsigned int) (uintptr_t) pSvoIo->pFunc,
+            (unsigned int) (uintptr_t) pSvoIo->pParm );
 
    return (0);
 }
@@ -1163,15 +1165,15 @@ int pmacBkgShow(int card,int index)
    printf ("%s: hostOfs %#x pAddress %#010x\n",
             MyName,
             pBkgIo->hostOfs,
-            (unsigned int)pBkgIo->pAddress);
+            (unsigned int)(uintptr_t) pBkgIo->pAddress);
    printf ("%s: valLong %ld valDouble %f\n",
             MyName,
-            pBkgIo->valLong,
+            (long) (intptr_t) pBkgIo->valLong,
             pBkgIo->valDouble );
    printf ("%s: pFunc %#010x pParm %#010x\n",
             MyName,
-            (unsigned int)pBkgIo->pFunc,
-            (unsigned int)pBkgIo->pParm );
+            (unsigned int) (uintptr_t) pBkgIo->pFunc,
+            (unsigned int) (uintptr_t)pBkgIo->pParm );
 
    return (0);
 }
@@ -1195,15 +1197,15 @@ int pmacVarShow(int card,int index)
    printf ("%s: hostOfs %#x pAddress %#010x\n",
             MyName,
             pVarIo->hostOfs,
-            (unsigned int)pVarIo->pAddress);
+            (unsigned int) (uintptr_t) pVarIo->pAddress);
    printf ("%s: valLong %ld valDouble %f\n",
            MyName,
            pVarIo->valLong,
            pVarIo->valDouble );
    printf ("%s: pFunc %#010x pParm %#010x\n",
            MyName,
-           (unsigned int)pVarIo->pFunc,
-           (unsigned int)pVarIo->pParm );
+           (unsigned int) (uintptr_t) pVarIo->pFunc,
+           (unsigned int) (uintptr_t) pVarIo->pParm );
 
    return (0);
 }
@@ -1226,15 +1228,15 @@ int pmacOpnShow(int card,int index)
    printf ("%s: hostOfs %#x pAddress %#010x\n",
            MyName,
            pOpnIo->hostOfs,
-           (unsigned int)pOpnIo->pAddress);
+           (unsigned int) (uintptr_t) pOpnIo->pAddress);
    printf ("%s: valLong %ld valDouble %f\n",
            MyName,
            pOpnIo->valLong,
            pOpnIo->valDouble );
    printf ("%s: pFunc %#010x pParm %#010x\n",
            MyName,
-           (unsigned int)pOpnIo->pFunc,
-           (unsigned int)pOpnIo->pParm );
+           (unsigned int) (uintptr_t) pOpnIo->pFunc,
+           (unsigned int) (uintptr_t) pOpnIo->pParm );
 
    return (0);
 }
@@ -1599,7 +1601,7 @@ long drvPmacFldLoop
       return (ERROR);
 
    /* Get Command String */
-   if(!(status = (int) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
+   if(!(status = (int) (intptr_t) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
       exitNow = TRUE;
    /* Loop Until Exit */
    while( !exitNow )
@@ -1637,7 +1639,7 @@ printf("FldLoop: in while() loop\n"); fflush(stdout);
       if( !exitNow )
       {
          /* Get Next Command */
-            if(!(status = (int) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
+            if(!(status = (int) (intptr_t) fgets (textline, FILE_TEXT_BUFLEN - 1, fpDownload)))
                exitNow = TRUE;
       }
 printf("FldLoop: next command - %s, status=%d, exitNow=%d\n", textline, status, exitNow);
