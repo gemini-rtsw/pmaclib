@@ -1435,8 +1435,8 @@ LOCAL long devPmacMbxSi_read
                   MyName, pRec->name, pMbxIo->response);
 		)
 		
-		memccpy(pRec->val, pMbxIo->response, '\0', MAX_STRING_SIZE );
-
+		if ( memccpy(pRec->val, pMbxIo->response,  '\0', MAX_STRING_SIZE ))
+                   pRec->val[MAX_STRING_SIZE -1] = '\0';
 		pRec->udf = FALSE;
 		return (0);
 	}
@@ -1497,8 +1497,9 @@ LOCAL long devPmacMbxSo_write
 		switch (pRec->out.value.vmeio.signal)
 		{
 		case (1):
-			memccpy (pRec->val, pMbxIo->response, '\0', MAX_STRING_SIZE);
-			break;
+			if (memccpy (pRec->val, pMbxIo->response, '\0', MAX_STRING_SIZE) ==NULL)
+                             pRec->val[MAX_STRING_SIZE -1] = '\0';
+                        break;
 		case (0):
 		default:
 			break;
@@ -1591,11 +1592,9 @@ LOCAL void devPmacMbxCallback
 {
 	char            *MyName = "devPmacMbxCallback";
 	struct dbCommon *pRec;
-	//struct rset     *pRset;
 
 	callbackGetUser (pRec, pCallback);
 
-	//pRset = pRec->rset;
 
 	PMAC_TRACE
 	(	2,
@@ -1604,7 +1603,6 @@ LOCAL void devPmacMbxCallback
 	)
 
         dbScanLock (pRec);
-	//(*(pRset->process))(pRec);  // error: dereferencing pointer to incomplete type 'struct rset'
         (*pRec->rset->process)(pRec);
         dbScanUnlock (pRec);
 				
