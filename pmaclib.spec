@@ -59,16 +59,14 @@ export DONT_STRIP=1
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_prefix}/%{name}
 cp -r dbd $RPM_BUILD_ROOT/%{_prefix}/%{name}
-#cp -r bin $RPM_BUILD_ROOT/%{_prefix}/%{name}
 cp -r lib $RPM_BUILD_ROOT/%{_prefix}/%{name}
 cp -r include $RPM_BUILD_ROOT/%{_prefix}/%{name}
 cp -r configure $RPM_BUILD_ROOT/%{_prefix}/%{name}
-#find $RPM_BUILD_ROOT/%{_prefix}/%{name}/configure -name ".git" -exec rm -rf {} \;
 
 
 %postun
 if [ "$1" = "0" ]; then
-	rm -rf %{_prefix}/%{name}
+    rm -rf %{_prefix}/%{name}
 fi
 
 
@@ -77,7 +75,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-#   /%{_prefix}/%{name}/bin
    /%{_prefix}/%{name}/lib
 
 %files devel
