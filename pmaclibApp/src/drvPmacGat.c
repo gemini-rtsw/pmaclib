@@ -100,7 +100,6 @@ PMAC_LOCAL void drvPmacGatScanInit( int   card )
 
 long drvPmacGatSources( int card )
 {
-  //long      terminator;    warning: variable 'status' set but not used [-Wunused-but-set-variable]
   char      command[PMAC_MBX_OUT_BUFLEN];
   char      response[PMAC_MBX_IN_BUFLEN];
   char      errmsg[PMAC_MBX_ERR_BUFLEN];
@@ -111,7 +110,6 @@ long drvPmacGatSources( int card )
 
   totSinglewords = 0;
   sprintf(command, "I20");
-  //terminator = drvPmacMbxWriteRead(card, command, response, errmsg);
   drvPmacMbxWriteRead(card, command, response, errmsg);
   sscanf(response, "%d", &I20);
 
@@ -119,7 +117,6 @@ long drvPmacGatSources( int card )
   {
     pCard->GatIo[source].srcEna = ((I20 >> source) && 0x1);
     sprintf (command, "I%d", (source + 21));
-    //terminator = drvPmacMbxWriteRead (card, command, response, errmsg);
     drvPmacMbxWriteRead (card, command, response, errmsg);
     sscanf (response, "%d", &pCard->GatIo[source].srcIx);
     pCard->GatIo[source].srcType = ((0x00FF0000 & pCard->GatIo[source].srcIx) >> 16);
@@ -159,14 +156,12 @@ long drvPmacGatSources( int card )
   }
 
   sprintf(command, "DELETE GATHER");
-  //terminator = drvPmacMbxWriteRead(card, command, response, errmsg);
   drvPmacMbxWriteRead(card, command, response, errmsg);
   if( errmsg[0] )
     errlogPrintf("Error message returned from DELETE GATHER command: %s\n", errmsg);
 
   DPRAMsize[card] = DPRAM_FACTOR*totSinglewords;
   sprintf(command, "DEFINE GATHER %ld", DPRAMsize[card]);
-  //terminator = drvPmacMbxWriteRead(card, command, response, errmsg);
   drvPmacMbxWriteRead(card, command, response, errmsg);
   if( errmsg[0] )
     errlogPrintf("Error message returned from DEFINE GATHER %ld command: %s\n", DPRAMsize[card], errmsg);
@@ -184,11 +179,9 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
 {
    int       ofs;
    char      *val;
-   //long      status;  warning: variable 'status' set but not used [-Wunused-but-set-variable]
    long      end;
    long      size;
    long      ret;
-   //long      terminator;   warning: variable 'status' set but not used [-Wunused-but-set-variable]
    long      pmac_gat_offset[PMAC_MAX_CARDS];
    long      pmac_gat_nextaddr[PMAC_MAX_CARDS];
    double    delay;
@@ -201,7 +194,6 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
    card = pCard->card;
    epicsPrintf("Gat Read Task Frequency for CARD[%d] = %d Hz\n", card, (int)(1.0/delay));
 
-   //terminator = drvPmacMbxWriteRead(card, "version", response, errmsg);
    drvPmacMbxWriteRead(card, "version", response, errmsg);
 
 
@@ -246,7 +238,6 @@ int drvPmacGatReadTask(PMAC_CARD *pCard)
          /* taskLock(); */
          readingDPRAM[card] = 1;
          ofs                = 4*prevDPRAMend[card] + pmac_gat_offset[card];
-         //status             = pmacRamGetH(pmacRamAddr(card, pmac_gat_nextaddr[card]), &end);
          pmacRamGetH(pmacRamAddr(card, pmac_gat_nextaddr[card]), &end);
          val                = (char *)pmacRamAddr(card, ofs);
 

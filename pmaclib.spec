@@ -47,12 +47,14 @@ This is the module %{name}.
 
 %build
 # virtual X env for tdct
-Xvfb :1  -ac -nolisten tcp -nolisten unix &
+#Xvfb :1  -ac -nolisten tcp -nolisten unix &
 
 make distclean uninstall
-DISPLAY=:1 make
+make
 
-killall Xvfb
+#DISPLAY=:1 make
+
+#killall Xvfb
 
 %install
 export DONT_STRIP=1
