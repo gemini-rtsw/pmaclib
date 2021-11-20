@@ -3,30 +3,15 @@ TOP=../..
 include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
-
 #=============================
 #
 
-DBDINC += loadRecord
+# <APPNAME>.dbd will be created and installed
+DBDINC += loadRecord.h
+DBD += pmacDev.dbd
 
 # Build a support module called <APPNAME>
-
 LIBRARY_IOC += pmaclib
-#LIBRARY_IOC_RTEMS += pmaclib
-
-# <APPNAME>.dbd will be created and installed
-DBD += pmaclib.dbd
-
-# change to ai
-pmaclib_DBD += base.dbd
-
-# pmaclib.dbd will be made up from these files:
-pmaclib_DBD += loadRecord.dbd
-pmaclib_DBD += genSubRecord.dbd
-pmaclib_DBD += statusRecord.dbd
-# List local .dbd files here
-pmaclib_DBD += pmacDev.dbd
-
 
 #pmaclib_LIBS += electricFence
 #USR_LDFLAGS += -Wl,--wrap,malloc -Wl,--wrap,realloc -Wl,--wrap,calloc -Wl,--wrap,free
@@ -43,15 +28,14 @@ pmaclib_SRCS += drvPmac.c
 pmaclib_SRCS += drvPmacGat.c
 pmaclib_SRCS += pmacUpDown.c
 
+pmaclib_LIB += $(EPICS_BASE_IOC_LIBS)
 
 INC	+= drvPmac.h
 INC	+= drvPmacGat.h
 INC	+= pmacVme.h
 INC	+= pmacTypes.h
 
-
 #=============================
-
 include $(TOP)/configure/RULES
 #----------------------------------------
 #  ADD RULES AFTER THIS LINE
