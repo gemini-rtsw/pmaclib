@@ -1,8 +1,8 @@
-#function(UpDownTrigger)
-#function(UpDownStart)
-#function(UpDownEnd)
-#function(ProgStatusStart)
-#function(ProgStatusEnd)
+function(UpDownTrigger)
+function(UpDownStart)
+function(UpDownEnd)
+function(ProgStatusStart)
+function(ProgStatusEnd)
 
 variable( drvPmacVmeDebug, int)
 variable( drvPmacDebug, int)
