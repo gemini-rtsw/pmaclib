@@ -19,6 +19,7 @@
 #include <errMdef.h>
 #include <epicsExport.h>
 #include <dbDefs.h>
+#include <unistd.h>
 
 /* Local Includes */
 
@@ -66,7 +67,6 @@ PMAC_LOCAL long pmacVmeInit (void)
    int       i;
    PMAC_CTLR *pPmacCtlr;
    char *   MyName = "pmacVmeInit";
-
    
    for ( i=0; i < PMAC_MAX_CARDS; i++)
    {
@@ -87,8 +87,8 @@ PMAC_LOCAL long pmacVmeInit (void)
          {
             //epicsEventSignal (pPmacCtlr->ioMbxLockSem);   
             //epicsEventSignal (pPmacCtlr->ioAscLockSem);
-            epicsMutexUnlock (pPmacCtlr->ioMbxLockMtx);   
-            epicsMutexUnlock (pPmacCtlr->ioAscLockMtx);
+            //epicsMutexUnlock (pPmacCtlr->ioMbxLockMtx);   
+            //epicsMutexUnlock (pPmacCtlr->ioAscLockMtx);
          
             pPmacCtlr->activeBase = TRUE;
          }
@@ -352,8 +352,10 @@ long pmacMbxLock
    PMAC_CTLR   *pPmacCtlr;
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
+   if (epicsMutexTryLock(pPmacCtlr->ioMbxLockMtx) != epicsMutexLockOK ) { 
+      epicsMutexLock (pPmacCtlr->ioMbxLockMtx);
+   }
 
-   epicsMutexLock (pPmacCtlr->ioMbxLockMtx);
    PMAC_DEBUG
    (  1,
       PMAC_MESSAGE ("%s: card %d: PMAC MBX Mutex Locked\n", 
@@ -377,7 +379,7 @@ long pmacMbxUnlock
    PMAC_CTLR   *pPmacCtlr;
 
    pPmacCtlr = &pmacVmeCtlr[ctlr];
-    
+   
    epicsMutexUnlock(pPmacCtlr->ioMbxLockMtx);
    PMAC_DEBUG
    (  1,
@@ -403,7 +405,10 @@ long pmacAscLock
    pPmacCtlr = &pmacVmeCtlr[ctlr];
     
    //epicsEventMustWait (pPmacCtlr->ioAscLockSem);
-   epicsMutexLock (pPmacCtlr->ioAscLockMtx);
+
+   if (epicsMutexTryLock(pPmacCtlr->ioAscLockMtx) != epicsMutexLockOK ) { 
+      epicsMutexLock (pPmacCtlr->ioAscLockMtx);
+   }
    return (0);
 }
 
