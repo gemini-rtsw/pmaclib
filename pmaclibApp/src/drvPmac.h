@@ -192,7 +192,7 @@ typedef struct  /* PMAC_CARD */
 
 } PMAC_CARD;
 
-PMAC_LOCAL PMAC_CARD    drvPmacCard[PMAC_MAX_CARDS];
+extern PMAC_CARD    drvPmacCard[PMAC_MAX_CARDS];
 
 
 /* Function Prototypes */

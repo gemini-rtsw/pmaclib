@@ -139,7 +139,7 @@ typedef struct  /* PMAC_CTLR */
 	char		firmwareVersion[PMAC_STRLEN_FWVER];
 } PMAC_CTLR;
 
-PMAC_LOCAL PMAC_CTLR    pmacVmeCtlr[PMAC_MAX_CARDS];
+extern PMAC_CTLR    pmacVmeCtlr[PMAC_MAX_CARDS];
 
 /*
  * FORWARD DECLARATIONS

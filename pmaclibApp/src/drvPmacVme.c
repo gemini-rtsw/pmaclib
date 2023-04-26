@@ -38,6 +38,8 @@
 #define PMAC_LOCAL
 #endif
 
+PMAC_LOCAL PMAC_CTLR    pmacVmeCtlr[PMAC_MAX_CARDS];
+
 #if PMAC_DIAGNOSTICS
 #define PMAC_MESSAGE   epicsPrintf
 #define PMAC_DEBUG(level,code)       { if (drvPmacVmeDebug >= (level)) { code } fflush(stdout);}
