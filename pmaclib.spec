@@ -28,10 +28,10 @@ ExclusiveArch: %{arch}
 Prefix: %{_prefix}
 ## You may specify dependencies here
 BuildRequires: re2c
-BuildRequires: epics-base-devel = 7.0.7-0.git.f9e3717%{?dist}
+BuildRequires: epics-base-devel = 7.0.7-0.git.054b1d4%{?dist}
 BuildRequires: gemini-ade 
-BuildRequires: gemUtil-devel = 1.6.13-2.git.9268b49%{?dist}
-BuildRequires: geminiRec-devel = 4.1.13-3.git.6f58677%{?dist}
+BuildRequires: gemUtil-devel = 1.6.13-2.git.cd2bab4%{?dist}
+BuildRequires: geminiRec-devel = 4.1.13-3.git.5dcd2db%{?dist}
 BuildRequires: psmisc
 #Requires: epics-base gemUtil geminiRec
 ## Switch dependency checking off
@@ -46,10 +46,10 @@ Summary: %{name}-devel Package
 Group: Development/Gemini
 Requires: %{name} = %{version}-%{release}
 Requires: re2c
-Requires: epics-base-devel = 7.0.7-0.git.f9e3717%{?dist}
+Requires: epics-base-devel = 7.0.7-0.git.054b1d4%{?dist}
 Requires: gemini-ade 
-Requires: gemUtil-devel = 1.6.13-2.git.9268b49%{?dist}
-Requires: geminiRec-devel = 4.1.13-3.git.6f58677%{?dist}
+Requires: gemUtil-devel = 1.6.13-2.git.cd2bab4%{?dist}
+Requires: geminiRec-devel = 4.1.13-3.git.5dcd2db%{?dist}
 Requires: psmisc
 %description devel
 This is the module %{name}.
